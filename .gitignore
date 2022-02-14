@@ -1,0 +1,6 @@
+bin
+obj
+SummerTrainingSystem/appsettings.json
+SummerTrainingSystem/wwwroot
+.vs
+.vscode
