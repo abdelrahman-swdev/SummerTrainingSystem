@@ -1,0 +1,14 @@
+﻿@model IEnumerable<SummerTrainingSystem.Data.Entities.Trainning>
+@{
+    ViewData["Title"] = "Trainings";
+}
+
+<h1>Trainings</h1>
+
+@foreach(var tr in Model)
+{
+    <h2>@tr.Title</h2>
+    <p>@tr.Description</p>
+    <h2>@tr.StartAt</h2>
+    <h2>@tr.EndAt</h2>
+}

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using SummerTrainingSystem.Data.Entities;
 
 namespace SummerTrainingSystem.Data
 {
@@ -10,6 +11,10 @@ namespace SummerTrainingSystem.Data
             : base(options)
         {
         }
+
+        public virtual DbSet<Student> Students { get; set; }
+        public virtual DbSet<Department> Departments { get; set; }
+        public virtual DbSet<Trainning> Trainnings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
