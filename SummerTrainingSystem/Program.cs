@@ -3,8 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using SummerTrainingSystem.Data;
-using SummerTrainingSystem.Data.SeedData;
+using SummerTrainingSystemEF.Data;
+using SummerTrainingSystemEF.Data.SeedData;
 using System;
 using System.Threading.Tasks;
 

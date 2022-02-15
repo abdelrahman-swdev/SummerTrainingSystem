@@ -1,11 +1,11 @@
 ﻿using Microsoft.Extensions.Logging;
-using SummerTrainingSystem.Data.Entities;
+using SummerTrainingSystemEF.Data.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SummerTrainingSystem.Data.SeedData
+namespace SummerTrainingSystemEF.Data.SeedData
 {
     public static class Seeding
     {
@@ -30,35 +30,35 @@ namespace SummerTrainingSystem.Data.SeedData
                     IEnumerable<Trainning> trainnings = new List<Trainning>()
                     {
                         new Trainning{
-                            Title ="Junior.Net Web Developer", 
+                            Title ="Junior.Net Web Developer",
                             Description = @"Work with team in building web services and web-based applications using .NET technologies.
                                     Define, design, and implement multi-tiered object-oriented distributed software applications.
                                     Produce clean, efficient code based on client specifications.
                                     Integrate software components and third-party programs to meet specifications.",
-                            DepartmentId = 2,
+                            DepartmentId = 1,
                             CreatedAt = DateTime.UtcNow,
                             StartAt = DateTime.UtcNow,
                             EndAt = DateTime.UtcNow.AddDays(90),
                         },
 
                         new Trainning{
-                            Title ="System Analyst", 
+                            Title ="System Analyst",
                             Description = @"Provide documentation of all processes and training as needed.
                                 Liaising with users to track additional requirements and features.
                                 Examining and evaluating current systems.",
-                            DepartmentId = 3,
+                            DepartmentId = 2,
                             CreatedAt = DateTime.UtcNow,
                             StartAt = DateTime.UtcNow,
                             EndAt = DateTime.UtcNow.AddDays(60),
                         },
 
                         new Trainning{
-                            Title ="IT Cyber Security Engineer", 
+                            Title ="IT Cyber Security Engineer",
                             Description = @"Optimization of cybersecurity solutions.
                                 Troubleshooting security and network/systems problems.
                                 Responding to all system and/or network/System security breaches.
                                 Participating in the change management process.",
-                            DepartmentId = 4,
+                            DepartmentId = 3,
                             CreatedAt = DateTime.UtcNow,
                             StartAt = DateTime.UtcNow,
                             EndAt = DateTime.UtcNow.AddDays(45),

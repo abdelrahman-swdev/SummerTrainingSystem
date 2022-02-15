@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
-using SummerTrainingSystem.Data;
+using SummerTrainingSystemEF.Data;
 
 namespace SummerTrainingSystem.Areas.Identity.Pages.Account
 {

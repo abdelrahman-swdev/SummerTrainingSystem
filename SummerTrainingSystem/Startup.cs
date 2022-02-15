@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using SummerTrainingSystem.Data;
+using SummerTrainingSystemEF.Data;
 using SummerTrainingSystem.Extensions;
 
 namespace SummerTrainingSystem

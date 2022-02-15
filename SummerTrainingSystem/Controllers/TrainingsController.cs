@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SummerTrainingSystem.Data.Entities;
+using SummerTrainingSystemEF.Data.Entities;
 using SummerTrainingSystem.Models;
 using SummerTrainingSystemCore.Interfaces;
 
@@ -58,7 +58,7 @@ namespace SummerTrainingSystem.Controllers
         // POST: TrainingsController/Create
         [HttpPost("new")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(TrainingVM model)
+        public ActionResult Create(TrainingVM model)
         {
             if (ModelState.IsValid)
             {

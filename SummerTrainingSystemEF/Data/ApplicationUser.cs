@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 
-namespace SummerTrainingSystem.Data
+namespace SummerTrainingSystemEF.Data
 {
     public class ApplicationUser : IdentityUser
     {

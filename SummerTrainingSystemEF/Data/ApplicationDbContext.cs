@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using SummerTrainingSystem.Data.Entities;
+using SummerTrainingSystemEF.Data.Entities;
 
-namespace SummerTrainingSystem.Data
+namespace SummerTrainingSystemEF.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
@@ -12,7 +12,6 @@ namespace SummerTrainingSystem.Data
         {
         }
 
-        public virtual DbSet<Student> Students { get; set; }
         public virtual DbSet<Department> Departments { get; set; }
         public virtual DbSet<Trainning> Trainnings { get; set; }
 

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SummerTrainingSystem.Data.Entities
+namespace SummerTrainingSystemEF.Data.Entities
 {
     public class Department
     {

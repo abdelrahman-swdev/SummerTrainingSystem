@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SummerTrainingSystem.Data;
+using SummerTrainingSystemEF.Data;
 using SummerTrainingSystemCore.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;

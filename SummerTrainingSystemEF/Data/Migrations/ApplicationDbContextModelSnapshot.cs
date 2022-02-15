@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using SummerTrainingSystem.Data;
+using SummerTrainingSystemEF.Data;
 
-namespace SummerTrainingSystem.Data.Migrations
+namespace SummerTrainingSystemEF.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -16,7 +16,7 @@ namespace SummerTrainingSystem.Data.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.13")
+                .HasAnnotation("ProductVersion", "5.0.14")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -150,7 +150,7 @@ namespace SummerTrainingSystem.Data.Migrations
                     b.ToTable("UserTokens");
                 });
 
-            modelBuilder.Entity("SummerTrainingSystem.Data.ApplicationUser", b =>
+            modelBuilder.Entity("SummerTrainingSystemEF.Data.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -225,7 +225,7 @@ namespace SummerTrainingSystem.Data.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("SummerTrainingSystem.Data.Entities.Department", b =>
+            modelBuilder.Entity("SummerTrainingSystemEF.Data.Entities.Department", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -247,7 +247,7 @@ namespace SummerTrainingSystem.Data.Migrations
                     b.ToTable("Departments");
                 });
 
-            modelBuilder.Entity("SummerTrainingSystem.Data.Entities.Trainning", b =>
+            modelBuilder.Entity("SummerTrainingSystemEF.Data.Entities.Trainning", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -261,6 +261,7 @@ namespace SummerTrainingSystem.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("EndAt")
@@ -270,34 +271,15 @@ namespace SummerTrainingSystem.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("DepartmentId");
 
                     b.ToTable("Trainnings");
-                });
-
-            modelBuilder.Entity("SummerTrainingSystem.Data.Entities.Student", b =>
-                {
-                    b.HasBaseType("SummerTrainingSystem.Data.ApplicationUser");
-
-                    b.Property<int>("DepartmentId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Gpa")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Level")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UniversityId")
-                        .HasColumnType("int");
-
-                    b.HasIndex("DepartmentId");
-
-                    b.ToTable("Studets");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -311,7 +293,7 @@ namespace SummerTrainingSystem.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("SummerTrainingSystem.Data.ApplicationUser", null)
+                    b.HasOne("SummerTrainingSystemEF.Data.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -320,7 +302,7 @@ namespace SummerTrainingSystem.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("SummerTrainingSystem.Data.ApplicationUser", null)
+                    b.HasOne("SummerTrainingSystemEF.Data.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -335,7 +317,7 @@ namespace SummerTrainingSystem.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SummerTrainingSystem.Data.ApplicationUser", null)
+                    b.HasOne("SummerTrainingSystemEF.Data.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -344,36 +326,19 @@ namespace SummerTrainingSystem.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("SummerTrainingSystem.Data.ApplicationUser", null)
+                    b.HasOne("SummerTrainingSystemEF.Data.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SummerTrainingSystem.Data.Entities.Trainning", b =>
+            modelBuilder.Entity("SummerTrainingSystemEF.Data.Entities.Trainning", b =>
                 {
-                    b.HasOne("SummerTrainingSystem.Data.Entities.Department", "Department")
+                    b.HasOne("SummerTrainingSystemEF.Data.Entities.Department", "Department")
                         .WithMany()
                         .HasForeignKey("DepartmentId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Department");
-                });
-
-            modelBuilder.Entity("SummerTrainingSystem.Data.Entities.Student", b =>
-                {
-                    b.HasOne("SummerTrainingSystem.Data.Entities.Department", "Department")
-                        .WithMany()
-                        .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SummerTrainingSystem.Data.ApplicationUser", null)
-                        .WithOne()
-                        .HasForeignKey("SummerTrainingSystem.Data.Entities.Student", "Id")
-                        .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
                     b.Navigation("Department");
