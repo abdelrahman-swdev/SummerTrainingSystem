@@ -1,35 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using SummerTrainingSystem.Data;
 using SummerTrainingSystem.Data.Entities;
 using SummerTrainingSystem.Models;
+using SummerTrainingSystemCore.Interfaces;
 
 namespace SummerTrainingSystem.Controllers
 {
     [Route("trainings")]
     public class TrainingsController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IGenericRepository<Trainning> _trainRepo;
         private readonly IMapper _mapper;
 
-        public TrainingsController(ApplicationDbContext context, IMapper mapper)
+        public TrainingsController(IGenericRepository<Trainning> trainRepo, IMapper mapper)
         {
-            _context = context;
+            _trainRepo = trainRepo;
             _mapper = mapper;
         }
 
         // GET: TrainingsController
         [HttpGet("")]
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            var trainings = _context.Trainnings.Include(t => t.Department).ToList();
-            var model = _mapper.Map<IEnumerable<TrainingVM>>(trainings);
+            var trainings = await _trainRepo.ListAllAsync();
+            var model = _mapper.Map<IReadOnlyList<TrainingVM>>(trainings);
             return View(model);
         }
 
@@ -41,10 +38,7 @@ namespace SummerTrainingSystem.Controllers
             {
                 return NotFound();
             }
-            var trainning = await _context.Trainnings
-                .Where(t => t.Id == id)
-                .Include(t => t.Department)
-                .FirstOrDefaultAsync();
+            var trainning = await _trainRepo.GetByIdAsync(id);
 
             if (trainning == null)
             {
@@ -69,8 +63,7 @@ namespace SummerTrainingSystem.Controllers
             if (ModelState.IsValid)
             {
                 Trainning tr = _mapper.Map<Trainning>(model);
-                await _context.Trainnings.AddAsync(tr);
-                await _context.SaveChangesAsync();
+                _trainRepo.Add(tr);
 
                 return RedirectToAction(nameof(Index));
             }

@@ -14,11 +14,9 @@
 
                 <h2>@tr.Title</h2>
                 <span>@tr.Department?.Abbreviation</span>
-
                 <p class="text-primary">
                     @(tr.Description.Length > 60 ? tr.Description[..60] : tr.Description)
                 </p>
-                
                 <a href="/trainings/@tr.Id" class="icon-link">
                     View
                 </a>
