@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using SummerTrainingSystemEF.Data.Entities;
 using SummerTrainingSystem.Models;
 using SummerTrainingSystemCore.Interfaces;
+using System.Linq;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace SummerTrainingSystem.Controllers
 {
@@ -13,11 +15,13 @@ namespace SummerTrainingSystem.Controllers
     public class TrainingsController : Controller
     {
         private readonly IGenericRepository<Trainning> _trainRepo;
+        private readonly IGenericRepository<Department> _depRepo;
         private readonly IMapper _mapper;
 
-        public TrainingsController(IGenericRepository<Trainning> trainRepo, IMapper mapper)
+        public TrainingsController(IGenericRepository<Trainning> trainRepo, IGenericRepository<Department> depRepo, IMapper mapper)
         {
             _trainRepo = trainRepo;
+            _depRepo = depRepo;
             _mapper = mapper;
         }
 
@@ -71,23 +75,31 @@ namespace SummerTrainingSystem.Controllers
         }
 
         // GET: TrainingsController/Edit/5
-        public ActionResult Edit(int id)
+        [HttpGet("edit/{id:int}")]
+        public async Task<ActionResult> Edit(int id)
         {
-            return View();
+            var tr = await _trainRepo.GetByIdAsync(id);
+            if(tr == null)
+            {
+                return NotFound();
+            }
+            return View(_mapper.Map<TrainingVM>(tr));
         }
 
         // POST: TrainingsController/Edit/5
-        [HttpPost]
+        [HttpPost("edit/{id:int}")]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(int id, TrainingVM model)
         {
-            try
+            if (ModelState.IsValid) 
             {
+                if (id != model.Id) return NotFound();
+                _trainRepo.Update(_mapper.Map<Trainning>(model));
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            else
             {
-                return View();
+                return View(model);
             }
         }
 

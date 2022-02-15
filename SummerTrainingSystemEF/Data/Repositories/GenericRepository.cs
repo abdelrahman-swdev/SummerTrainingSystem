@@ -1,10 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SummerTrainingSystemEF.Data;
 using SummerTrainingSystemCore.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace SummerTrainingSystemEF.Repositories
+namespace SummerTrainingSystemEF.Data.Repositories
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using SummerTrainingSystemCore.Interfaces;
-using SummerTrainingSystemEF.Repositories;
+using SummerTrainingSystemEF.Data.Repositories;
 
 namespace SummerTrainingSystem.Extensions
 {

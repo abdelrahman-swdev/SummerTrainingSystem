@@ -5,7 +5,6 @@ using System.Diagnostics;
 
 namespace SummerTrainingSystem.Controllers
 {
-    [Route("")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
