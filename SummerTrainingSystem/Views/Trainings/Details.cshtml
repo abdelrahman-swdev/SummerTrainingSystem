@@ -1,0 +1,28 @@
+﻿@model TrainingVM
+@{
+    ViewData["Title"] = "Details";
+}
+
+<link rel="stylesheet" href="~/css/trainings.css" />
+
+<div class="container px-4 py-5" id="featured-3">
+    <h2 class="pb-2 border-bottom">Columns with icons</h2>
+    <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+        <div class="feature col">
+
+            <h2>@Model.Title</h2>
+            <h2>@Model.Department.Name - @Model.Department.Abbreviation</h2>
+            <h5>Created At : @Model.CreatedAt.ToString("d")</h5> 
+            <h5>Start At : @Model.StartAt.ToString("d")</h5> 
+            <h5>End At : @Model.EndAt.ToString("d")</h5>
+            <p class="text-primary">
+                @Model.Description
+            </p>
+
+            <a href="/trainings" class="icon-link">
+                Back
+            </a>
+
+        </div>
+    </div>
+</div>

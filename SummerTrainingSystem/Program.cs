@@ -1,19 +1,40 @@
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using SummerTrainingSystem.Data;
+using SummerTrainingSystem.Data.SeedData;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace SummerTrainingSystem
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public async static Task Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            var app = CreateHostBuilder(args).Build();
+
+            using var scope = app.Services.CreateScope();
+            var services = scope.ServiceProvider;
+
+            var loggerFactory = services.GetRequiredService<ILoggerFactory>();
+
+            try
+            {
+                var context = services.GetRequiredService<ApplicationDbContext>();
+                await context.Database.MigrateAsync();
+                await Seeding.SeedAsync(context, loggerFactory);
+
+            }
+            catch (Exception ex)
+            {
+                var logger = loggerFactory.CreateLogger<ApplicationDbContext>();
+                logger.LogError(ex.Message);
+            }
+
+            await app.RunAsync();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

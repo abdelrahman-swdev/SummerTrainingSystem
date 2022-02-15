@@ -1,0 +1,66 @@
+﻿@model TrainingVM
+@{
+    ViewData["Title"] = "New";
+}
+
+<div class="container">
+    <div class="row">
+        
+        <div class="col-md-8 mt-4">
+            <div class="separator">
+                <h1 class="display-5">Add New Training</h1>
+                <hr />
+            </div>
+        </div>
+        <div class="col-md-8">
+            <form 
+                method="post"
+                >
+
+                <div class="form-floating mb-2 mt-2">
+                    <input asp-for="Title" class="form-control" placeholder="Training Title" />
+                    <label class="custom-label" asp-for="Title">Title</label>
+                    <span asp-validation-for="Title" style="color: #ff008d;"></span>
+                </div>
+
+                <div class="form-floating mb-2 mt-2">
+                    <input asp-for="Description" class="form-control" placeholder="Training Description" />
+                    <label class="custom-label" asp-for="Description">Description</label>
+                    <span asp-validation-for="Description" style="color: #ff008d;"></span>
+                </div>
+
+                <div class="row">
+                    <div class="col form-floating mb-2 mt-2">
+                        <input asp-for="StartAt" class="form-control" placeholder="Start At" />
+                        <label asp-for="StartAt"></label>
+                        <span asp-validation-for="StartAt" style="color: #ff008d;"></span>
+                    </div>
+                    <div class="col form-floating mb-2 mt-2">
+                        <input asp-for="EndAt" class="form-control" placeholder="End At" />
+                        <label asp-for="EndAt"></label>
+                        <span asp-validation-for="EndAt" style="color: #ff008d;"></span>
+                    </div>
+                </div>
+
+                @*<div class="custom-select mb-2 mt-2 col">
+                    <label asp-for="DepartmentId"></label>
+                    <select asp-for="DepartmentId" class="form-control" 
+                            asp-items="(await _langRepo.GetAllLanguagesAsync())
+                                .Select(l => new SelectListItem() {Text = l.LanguageName, Value = l.Id.ToString() })">
+                        <option value="">..........</option>
+                    </select>
+                    <span asp-validation-for="DepartmentId" style="color: #ff008d;"></span>
+                </div>*@
+
+                <div class="buttons mb-2 mt-4">
+                    <button type="submit" class="btn btn-outline-dark">Save</button>
+                    <a href="/trainings" class="btn btn-outline-secondary">Back</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -9,7 +9,7 @@ namespace SummerTrainingSystem.Data.Entities
         public int Level { get; set; }
         public int UniversityId { get; set; }
 
-        public string DepartmentId { get; set; }
+        public int DepartmentId { get; set; }
         public Department Department { get; set; }
     }
 }

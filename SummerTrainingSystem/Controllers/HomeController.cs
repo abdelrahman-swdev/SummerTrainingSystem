@@ -5,6 +5,7 @@ using System.Diagnostics;
 
 namespace SummerTrainingSystem.Controllers
 {
+    [Route("")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -14,12 +15,8 @@ namespace SummerTrainingSystem.Controllers
             _logger = logger;
         }
 
+        [HttpGet("")]
         public IActionResult Index()
-        {
-            return View();
-        }
-
-        public IActionResult Privacy()
         {
             return View();
         }

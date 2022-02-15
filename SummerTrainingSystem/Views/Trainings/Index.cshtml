@@ -1,14 +1,31 @@
-﻿@model IEnumerable<SummerTrainingSystem.Data.Entities.Trainning>
+﻿@model IEnumerable<TrainingVM>
 @{
     ViewData["Title"] = "Trainings";
 }
 
-<h1>Trainings</h1>
+<link rel="stylesheet" href="~/css/trainings.css" />
+<a href="/trainings/new" class="btn btn-primary">Add New</a>
+<div class="container px-4 py-5" id="featured-3">
+    <h2 class="pb-2 border-bottom">Columns with icons</h2>
+    <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+        @foreach (var tr in Model)
+        {
+            <div class="feature col">
 
-@foreach(var tr in Model)
-{
-    <h2>@tr.Title</h2>
-    <p>@tr.Description</p>
-    <h2>@tr.StartAt</h2>
-    <h2>@tr.EndAt</h2>
-}
+                <h2>@tr.Title</h2>
+                <span>@tr.Department?.Abbreviation</span>
+
+                <p class="text-primary">
+                    @(tr.Description.Length > 60 ? tr.Description[..60] : tr.Description)
+                </p>
+                
+                <a href="/trainings/@tr.Id" class="icon-link">
+                    View
+                </a>
+
+            </div>
+        }
+        
+    </div>
+</div>
+<div class="divider"></div>
