@@ -1,9 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 
 namespace SummerTrainingSystemCore.Entities
 {
-    public class Supervisor : AppUser
+    public class Supervisor : IdentityUser
     {
+        [Required, MaxLength(256)]
+        public string FirstName { get; set; }
+
+        [Required, MaxLength(256)]
+        public string LastName { get; set; }
         [Required]
         public int UniversityID { get; set; }
 

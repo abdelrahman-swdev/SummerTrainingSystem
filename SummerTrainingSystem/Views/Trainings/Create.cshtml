@@ -1,4 +1,4 @@
-﻿@model TrainingVM
+﻿@model SaveTrainingVM
 @inject SummerTrainingSystemCore.Interfaces.IGenericRepository<Department> depRepo
 @{
     ViewData["Title"] = "New";
@@ -21,25 +21,25 @@
                 <div class="form-floating mb-2 mt-2">
                     <input asp-for="Title" class="form-control" placeholder="Training Title" />
                     <label class="custom-label" asp-for="Title">Title</label>
-                    <span asp-validation-for="Title" style="color: #ff008d;"></span>
+                    <span class="text-danger" asp-validation-for="Title"></span>
                 </div>
 
                 <div class="form-floating mb-2 mt-2">
                     <textarea asp-for="Description" class="form-control" placeholder="Training Description"></textarea>
                     <label class="custom-label" asp-for="Description">Description</label>
-                    <span asp-validation-for="Description" style="color: #ff008d;"></span>
+                    <span class="text-danger" asp-validation-for="Description"></span>
                 </div>
 
                 <div class="row">
                     <div class="col form-floating mb-2 mt-2">
                         <input asp-for="StartAt" class="form-control" placeholder="Start At" />
                         <label asp-for="StartAt"></label>
-                        <span asp-validation-for="StartAt" style="color: #ff008d;"></span>
+                        <span class="text-danger" asp-validation-for="StartAt"></span>
                     </div>
                     <div class="col form-floating mb-2 mt-2">
                         <input asp-for="EndAt" class="form-control" placeholder="End At" />
                         <label asp-for="EndAt"></label>
-                        <span asp-validation-for="EndAt" style="color: #ff008d;"></span>
+                        <span class="text-danger" asp-validation-for="EndAt"></span>
                     </div>
                 </div>
 
@@ -52,12 +52,12 @@
                             )">
                         <option value="">..</option>
                     </select>
-                    <span asp-validation-for="DepartmentId" style="color: #ff008d;"></span>
+                    <span class="text-danger" asp-validation-for="DepartmentId"></span>
                 </div>
 
                 <div class="buttons mb-2 mt-4">
-                    <button type="submit" class="btn btn-outline-dark">Save</button>
-                    <a href="/trainings" class="btn btn-outline-secondary">Back</a>
+                    <button type="submit" class="btn btn-success">Save</button>
+                    <a asp-controller="Trainings" asp-action="Index" class="btn btn-outline-dark">Back</a>
                 </div>
             </form>
         </div>

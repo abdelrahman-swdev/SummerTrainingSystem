@@ -5,7 +5,7 @@ using SummerTrainingSystemCore.Entities;
 
 namespace SummerTrainingSystemEF.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<AppUser>
+    public class ApplicationDbContext : IdentityDbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -21,7 +21,7 @@ namespace SummerTrainingSystemEF.Data
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<AppUser>().ToTable("Users");
+            builder.Entity<IdentityUser>().ToTable("Users");
             builder.Entity<Student>().ToTable("Students");
             builder.Entity<Supervisor>().ToTable("Supervisors");
             builder.Entity<IdentityRole>().ToTable("Roles");

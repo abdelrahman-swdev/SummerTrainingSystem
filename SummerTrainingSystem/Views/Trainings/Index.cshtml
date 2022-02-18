@@ -1,10 +1,10 @@
-﻿@model IEnumerable<TrainingVM>
+﻿@model IEnumerable<SaveTrainingVM>
 @{
     ViewData["Title"] = "Trainings";
 }
 
 <link rel="stylesheet" href="~/css/trainings.css" />
-<a href="/trainings/new" class="btn btn-primary">Add New</a>
+<a asp-controller="Trainings" asp-action="Create" class="btn btn-primary">Add New</a>
 <div class="container px-4 py-5" id="featured-3">
     <h2 class="pb-2 border-bottom">Columns with icons</h2>
     <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
@@ -13,17 +13,14 @@
             <div class="feature col">
 
                 <h2>@tr.Title</h2>
-                <span>@tr.Department?.Abbreviation</span>
                 <p class="text-primary">
                     @(tr.Description.Length > 60 ? tr.Description[..60] : tr.Description)
                 </p>
-                <a href="/trainings/@tr.Id" class="icon-link">
+                <a asp-controller="Trainings" asp-action="Details" asp-route-id="@tr.Id" class="icon-link">
                     View
                 </a>
-
             </div>
         }
-        
     </div>
 </div>
 <div class="divider"></div>

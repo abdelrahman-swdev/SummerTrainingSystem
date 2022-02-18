@@ -5,8 +5,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SummerTrainingSystem.Models;
 using SummerTrainingSystemCore.Interfaces;
-using System.Linq;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using SummerTrainingSystemCore.Entities;
 
 namespace SummerTrainingSystem.Controllers
@@ -30,7 +28,7 @@ namespace SummerTrainingSystem.Controllers
         public async Task<ActionResult> Index()
         {
             var trainings = await _trainRepo.ListAllAsync();
-            var model = _mapper.Map<IReadOnlyList<TrainingVM>>(trainings);
+            var model = _mapper.Map<IReadOnlyList<SaveTrainingVM>>(trainings);
             return View(model);
         }
 
@@ -49,7 +47,7 @@ namespace SummerTrainingSystem.Controllers
                 return NotFound();
             }
             
-            return View(_mapper.Map<TrainingVM>(trainning));
+            return View(_mapper.Map<SaveTrainingVM>(trainning));
         }
 
         // GET: TrainingsController/Create
@@ -62,7 +60,7 @@ namespace SummerTrainingSystem.Controllers
         // POST: TrainingsController/Create
         [HttpPost("new")]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(TrainingVM model)
+        public ActionResult Create(SaveTrainingVM model)
         {
             if (ModelState.IsValid)
             {
@@ -83,13 +81,13 @@ namespace SummerTrainingSystem.Controllers
             {
                 return NotFound();
             }
-            return View(_mapper.Map<TrainingVM>(tr));
+            return View(_mapper.Map<SaveTrainingVM>(tr));
         }
 
         // POST: TrainingsController/Edit/5
         [HttpPost("edit/{id:int}")]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, TrainingVM model)
+        public ActionResult Edit(int id, SaveTrainingVM model)
         {
             if (ModelState.IsValid) 
             {

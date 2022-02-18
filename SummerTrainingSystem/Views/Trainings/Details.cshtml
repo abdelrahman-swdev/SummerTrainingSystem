@@ -1,4 +1,4 @@
-﻿@model TrainingVM
+﻿@model SaveTrainingVM
 @{
     ViewData["Title"] = "Details";
 }
@@ -11,7 +11,6 @@
         <div class="feature col">
 
             <h2>@Model.Title</h2>
-            <h2>@Model.Department?.Name - @Model.Department?.Abbreviation</h2>
             <h5>Created At : @Model.CreatedAt.ToString("d")</h5> 
             <h5>Start At : @Model.StartAt.ToString("d")</h5> 
             <h5>End At : @Model.EndAt.ToString("d")</h5>
@@ -19,10 +18,8 @@
                 @Model.Description
             </p>
 
-            <a href="/trainings/edit/@Model.Id" class="btn btn-primary">Edit</a>
-            <a href="/trainings" class="icon-link">
-                Back
-            </a>
+            <a asp-controller="Trainings" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+            <a asp-controller="Trainings" asp-action="Index" class="btn btn-outline-secondary">Back</a>
 
         </div>
     </div>

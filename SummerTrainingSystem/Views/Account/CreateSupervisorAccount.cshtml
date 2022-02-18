@@ -1,0 +1,85 @@
+﻿@model SaveSupervisorAccountVM
+@inject SummerTrainingSystemCore.Interfaces.IGenericRepository<Department> depRepo
+@{
+    ViewData["Title"] = "Create Supervisor";
+}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-8 col">
+            <div class="separator">
+                <h1 class="display-5">Create New Supervisor</h1>
+                <hr />
+            </div>
+            @if (!String.IsNullOrEmpty(ViewBag.SupervisorCreated))
+            {
+                <div class="alert alert-success">
+                    @ViewBag.SupervisorCreated
+                </div>
+            }
+            @if (!String.IsNullOrEmpty(ViewBag.SupervisorNotCreated))
+            {
+                <div class="alert alert-danger">
+                    @ViewBag.SupervisorNotCreated
+                </div>
+            }
+            <form method="post">
+                <div class="row mt-4">
+                    <div class="col-md-6 mt-4">
+                        <input class="form-control" asp-for="FirstName" placeholder="First Name" />
+                        <span class="text-danger" asp-validation-for="FirstName"></span>
+                    </div>
+                    <div class="col-md-6 mt-4">
+                        <input class="form-control" asp-for="LastName" placeholder="Last Name" />
+                        <span class="text-danger" asp-validation-for="LastName"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mt-4">
+                        <input class="form-control" asp-for="PhoneNumber" placeholder="Phone Number" />
+                        <span class="text-danger" asp-validation-for="PhoneNumber"></span>
+                    </div>
+                    <div class="col-md-6 mt-4">
+                        <input class="form-control" asp-for="UniversityID" placeholder="University ID" />
+                        <span class="text-danger" asp-validation-for="UniversityID"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mt-4">
+                        <input class="form-control" asp-for="Email" placeholder="Email" />
+                        <span class="text-danger" asp-validation-for="Email"></span>
+                    </div>
+                    <div class="col-md-6 mt-4">
+                        <select asp-for="DepartmentId" class="form-select" 
+                                asp-items="@(
+                                    depRepo.ListAllAsync().Result
+                                    .Select(l => new SelectListItem() {Text = l.Abbreviation, Value = l.Id.ToString() })
+                                )">
+                            <option value="">Department</option>
+                        </select>
+                        <span class="text-danger" asp-validation-for="DepartmentId"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mt-4">
+                        <input class="form-control" asp-for="Password" placeholder="Password" />
+                        <span class="text-danger" asp-validation-for="Password"></span>
+                    </div>
+                    <div class="col-md-6 mt-4">
+                        <input class="form-control" asp-for="ConfirmPassword" placeholder="Confirm Password" />
+                        <span class="text-danger" asp-validation-for="ConfirmPassword"></span>
+                    </div>
+                </div>
+                <div style="display:flex;justify-content:space-between;" class="mt-4">
+                    <button class="btn btn-success">Save</button>
+                    <a class="btn btn-outline-dark" asp-controller="Home" asp-action="Index">Back</a>
+                </div>
+            </form>
+            <div class="mt-4 text-danger" asp-validation-summary="ModelOnly"></div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
