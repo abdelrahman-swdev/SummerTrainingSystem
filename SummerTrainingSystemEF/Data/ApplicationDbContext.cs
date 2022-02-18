@@ -22,9 +22,16 @@ namespace SummerTrainingSystemEF.Data
             base.OnModelCreating(builder);
 
             builder.Entity<IdentityUser>().ToTable("Users");
+
             builder.Entity<Student>().ToTable("Students");
+
             builder.Entity<Supervisor>().ToTable("Supervisors");
-            builder.Entity<IdentityRole>().ToTable("Roles");
+
+            builder.Entity<IdentityRole>().ToTable("Roles").HasData(
+                new IdentityRole() { Name = "Student", NormalizedName = "STUDENT"},
+                new IdentityRole() { Name = "Supervisor", NormalizedName = "SUPERVISOR" },
+                new IdentityRole() { Name = "Admin", NormalizedName = "ADMIN" });
+
             builder.Entity<IdentityUserRole<string>>().ToTable("UserRoles");
             builder.Entity<IdentityUserClaim<string>>().ToTable("UserClaims");
             builder.Entity<IdentityUserLogin<string>>().ToTable("UserLogins");
