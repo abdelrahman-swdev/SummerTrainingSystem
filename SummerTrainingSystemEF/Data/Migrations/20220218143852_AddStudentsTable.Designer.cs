@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SummerTrainingSystemEF.Data;
 
 namespace SummerTrainingSystemEF.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220218143852_AddStudentsTable")]
+    partial class AddStudentsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -303,21 +305,6 @@ namespace SummerTrainingSystemEF.Data.Migrations
                     b.ToTable("Students");
                 });
 
-            modelBuilder.Entity("SummerTrainingSystemCore.Entities.Supervisor", b =>
-                {
-                    b.HasBaseType("SummerTrainingSystemCore.Entities.AppUser");
-
-                    b.Property<int>("DepartmentId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UniversityID")
-                        .HasColumnType("int");
-
-                    b.HasIndex("DepartmentId");
-
-                    b.ToTable("Supervisors");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -391,23 +378,6 @@ namespace SummerTrainingSystemEF.Data.Migrations
                     b.HasOne("SummerTrainingSystemCore.Entities.AppUser", null)
                         .WithOne()
                         .HasForeignKey("SummerTrainingSystemCore.Entities.Student", "Id")
-                        .OnDelete(DeleteBehavior.ClientCascade)
-                        .IsRequired();
-
-                    b.Navigation("Department");
-                });
-
-            modelBuilder.Entity("SummerTrainingSystemCore.Entities.Supervisor", b =>
-                {
-                    b.HasOne("SummerTrainingSystemCore.Entities.Department", "Department")
-                        .WithMany()
-                        .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SummerTrainingSystemCore.Entities.AppUser", null)
-                        .WithOne()
-                        .HasForeignKey("SummerTrainingSystemCore.Entities.Supervisor", "Id")
                         .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 

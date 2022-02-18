@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace SummerTrainingSystemEF.Data.Entities
+namespace SummerTrainingSystemCore.Entities
 {
     public class Trainning
     {   

@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SummerTrainingSystemEF.Data;
 using SummerTrainingSystem.Extensions;
+using SummerTrainingSystemCore.Entities;
 
 namespace SummerTrainingSystem
 {
@@ -27,7 +28,7 @@ namespace SummerTrainingSystem
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
+            services.AddIdentity<AppUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultUI()
                 .AddDefaultTokenProviders();

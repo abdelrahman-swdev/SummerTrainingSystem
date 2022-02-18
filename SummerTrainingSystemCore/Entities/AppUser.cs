@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 
-namespace SummerTrainingSystemEF.Data
+namespace SummerTrainingSystemCore.Entities
 {
-    public class ApplicationUser : IdentityUser
+    public class AppUser : IdentityUser
     {
         [Required, MaxLength(256)]
         public string FirstName { get; set; }

@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
-using SummerTrainingSystemEF.Data.Entities;
+using SummerTrainingSystemCore.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

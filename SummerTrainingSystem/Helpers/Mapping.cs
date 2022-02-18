@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using SummerTrainingSystemEF.Data.Entities;
+using SummerTrainingSystemCore.Entities;
 using SummerTrainingSystem.Models;
 
 namespace SummerTrainingSystem.Helpers

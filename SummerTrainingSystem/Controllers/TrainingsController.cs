@@ -3,11 +3,11 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SummerTrainingSystemEF.Data.Entities;
 using SummerTrainingSystem.Models;
 using SummerTrainingSystemCore.Interfaces;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using SummerTrainingSystemCore.Entities;
 
 namespace SummerTrainingSystem.Controllers
 {

@@ -1,4 +1,4 @@
-﻿using SummerTrainingSystemEF.Data.Entities;
+﻿using SummerTrainingSystemCore.Entities;
 using System;
 using System.ComponentModel.DataAnnotations;
 
