@@ -10,6 +10,7 @@ namespace SummerTrainingSystemCore.Entities
 
         [Required, MaxLength(256)]
         public string LastName { get; set; }
+
         [Required]
         public int UniversityID { get; set; }
 

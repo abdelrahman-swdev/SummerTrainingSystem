@@ -23,9 +23,15 @@ namespace SummerTrainingSystemEF.Data
 
             builder.Entity<IdentityUser>().ToTable("Users");
 
-            builder.Entity<Student>().ToTable("Students");
+            builder.Entity<Student>()
+                .ToTable("Students")
+                .HasIndex(s => s.UniversityID)
+                .IsUnique();
 
-            builder.Entity<Supervisor>().ToTable("Supervisors");
+            builder.Entity<Supervisor>()
+                .ToTable("Supervisors")
+                .HasIndex(s => s.UniversityID)
+                .IsUnique();
 
             builder.Entity<IdentityRole>().ToTable("Roles").HasData(
                 new IdentityRole() { Name = "Student", NormalizedName = "STUDENT"},

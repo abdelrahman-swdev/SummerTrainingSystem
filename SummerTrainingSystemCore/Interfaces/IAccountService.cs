@@ -6,7 +6,12 @@ namespace SummerTrainingSystemCore.Interfaces
 {
     public interface IAccountService
     {
-        Task<IdentityResult> CreateStudentAccount(Student student, string password);
-        Task<IdentityResult> CreateSupervisorAccount(Supervisor supervisor, string password);
+        Task<IdentityResult> CreateStudentAccountAsync(Student student, string password);
+        Task<IdentityResult> CreateSupervisorAccountAsync(Supervisor supervisor, string password);
+
+        bool CheckIsUniversityIdExists(int universityId);
+
+        Task<SignInResult> LoginAsync(int universityId, string password);
+        Task LogoutAsync();
     }
 }

@@ -35,7 +35,7 @@ namespace SummerTrainingSystem.Controllers
                 return View(model);
             }
             var student = _mapper.Map<Student>(model);
-            var result = await _accountService.CreateStudentAccount(student, model.Password);
+            var result = await _accountService.CreateStudentAccountAsync(student, model.Password);
             if (result.Succeeded)
             {
                 ViewBag.StudentCreated = "Student Created Succefully";
@@ -67,7 +67,7 @@ namespace SummerTrainingSystem.Controllers
                 return View(model);
             }
             var supervisor = _mapper.Map<Supervisor>(model);
-            var result = await _accountService.CreateSupervisorAccount(supervisor, model.Password);
+            var result = await _accountService.CreateSupervisorAccountAsync(supervisor, model.Password);
             if (result.Succeeded)
             {
                 ViewBag.SupervisorCreated = "Supervisor Created Succefully";
@@ -82,6 +82,38 @@ namespace SummerTrainingSystem.Controllers
                 }
                 return View(model);
             }
+        }
+
+        [HttpGet("login")]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(LoginVM model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var result = await _accountService.LoginAsync(model.UniversityId, model.Password);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                ViewBag.LoginFailed = "Error, invalid details";
+                return View(model);
+            }
+        }
+
+        [Route("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            await _accountService.LogoutAsync();
+            return RedirectToAction("Login", "Account");
         }
     }
 }

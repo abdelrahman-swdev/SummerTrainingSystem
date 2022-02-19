@@ -6,10 +6,10 @@
 <div class="container mt-5">
     <div class="row">
         <div class="col-lg-8 col">
-            <div class="separator">
-                <h1 class="display-5">Create New Supervisor</h1>
-                <hr />
-            </div>
+
+            <h1 class="display-5">Create New Supervisor</h1>
+            <hr />
+
             @if (!String.IsNullOrEmpty(ViewBag.SupervisorCreated))
             {
                 <div class="alert alert-success">
@@ -22,8 +22,9 @@
                     @ViewBag.SupervisorNotCreated
                 </div>
             }
+
             <form method="post">
-                <div class="row mt-4">
+                <div class="row">
                     <div class="col-md-6 mt-4">
                         <input class="form-control" asp-for="FirstName" placeholder="First Name" />
                         <span class="text-danger" asp-validation-for="FirstName"></span>
@@ -54,7 +55,7 @@
                                     depRepo.ListAllAsync().Result
                                     .Select(l => new SelectListItem() {Text = l.Abbreviation, Value = l.Id.ToString() })
                                 )">
-                            <option value="">Department</option>
+                            <option value="">Select Department</option>
                         </select>
                         <span class="text-danger" asp-validation-for="DepartmentId"></span>
                     </div>

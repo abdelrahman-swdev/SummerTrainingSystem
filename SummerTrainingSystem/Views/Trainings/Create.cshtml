@@ -4,58 +4,48 @@
     ViewData["Title"] = "New Training";
 }
 
-<div class="container">
+<div class="container mt-5">
     <div class="row">
-        
-        <div class="col-md-8 mt-4">
-            <div class="separator">
-                <h1 class="display-5">Add New Training</h1>
-                <hr />
-            </div>
-        </div>
-        <div class="col-md-8">
-            <form 
-                method="post"
-                >
+        <div class="col-lg-8 col">
+            <h1 class="display-5">Add New Training</h1>
+            <hr />
+            <form method="post">
 
-                <div class="form-floating mb-2 mt-2">
-                    <input asp-for="Title" class="form-control" placeholder="Training Title" />
-                    <label class="custom-label" asp-for="Title">Title</label>
+                <div class="mt-4">
+                    <input asp-for="Title" class="form-control" placeholder="Title" />
                     <span class="text-danger" asp-validation-for="Title"></span>
                 </div>
 
-                <div class="form-floating mb-2 mt-2">
-                    <textarea asp-for="Description" class="form-control" placeholder="Training Description"></textarea>
-                    <label class="custom-label" asp-for="Description">Description</label>
+                <div class="mt-4">
+                    <textarea asp-for="Description" class="form-control" placeholder="Description"></textarea>
                     <span class="text-danger" asp-validation-for="Description"></span>
                 </div>
 
                 <div class="row">
-                    <div class="col form-floating mb-2 mt-2">
-                        <input asp-for="StartAt" class="form-control" placeholder="Start At" />
+                    <div class="col-md-6 mt-2">
                         <label asp-for="StartAt"></label>
+                        <input asp-for="StartAt" class="form-control"/>
                         <span class="text-danger" asp-validation-for="StartAt"></span>
                     </div>
-                    <div class="col form-floating mb-2 mt-2">
-                        <input asp-for="EndAt" class="form-control" placeholder="End At" />
+                    <div class="col-md-6 mt-2">
                         <label asp-for="EndAt"></label>
+                        <input asp-for="EndAt" class="form-control"/>
                         <span class="text-danger" asp-validation-for="EndAt"></span>
                     </div>
                 </div>
 
-                <div class="custom-select mb-2 mt-2 col">
-                    <label asp-for="DepartmentId"></label>
-                    <select asp-for="DepartmentId" class="form-control" 
+                <div class="mt-4">
+                    <select asp-for="DepartmentId" class="form-select" 
                             asp-items="@(
                                 depRepo.ListAllAsync().Result
                                 .Select(l => new SelectListItem() {Text = l.Abbreviation, Value = l.Id.ToString() })
                             )">
-                        <option value="">..</option>
+                        <option value="">Select Department</option>
                     </select>
                     <span class="text-danger" asp-validation-for="DepartmentId"></span>
                 </div>
 
-                <div class="buttons mb-2 mt-4">
+                <div class="mt-4 d-flex justify-content-between">
                     <button type="submit" class="btn btn-success">Save</button>
                     <a asp-controller="Trainings" asp-action="Index" class="btn btn-outline-dark">Back</a>
                 </div>
