@@ -15,7 +15,7 @@ namespace SummerTrainingSystem.Models
 
         [Required(ErrorMessage = "Starting Date is required"), Display(Name ="Starts At")]
         public DateTime StartAt { get; set; }
-        public DateTime CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         [Required(ErrorMessage = "Finish Date is required"), Display(Name = "Ends At")]
         public DateTime EndAt { get; set; }

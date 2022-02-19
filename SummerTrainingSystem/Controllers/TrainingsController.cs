@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using SummerTrainingSystem.Models;
 using SummerTrainingSystemCore.Interfaces;
 using SummerTrainingSystemCore.Entities;
+using System;
 
 namespace SummerTrainingSystem.Controllers
 {
