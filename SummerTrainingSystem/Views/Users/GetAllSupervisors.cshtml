@@ -1,0 +1,35 @@
+﻿@{
+    ViewData["Title"] = "Supervisors";
+}
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css" rel="stylesheet" />
+<link href="https://cdn.datatables.net/1.11.4/css/dataTables.bootstrap5.min.css" rel="stylesheet"/>
+
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center">
+        <h1 class="display-5">Supervisors</h1>
+        <a class="btn btn-outline-primary" asp-controller="Account" asp-action="CreateSupervisorAccount">Create Supervisor</a>
+    </div>
+    <hr />
+    <div class="table-responsive">
+        <table class="table w-100 table-borderless table-striped" id="supervisorsTable" data-page-length="10">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>University Id</th>
+                    <th>Department</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+@section Scripts{
+    <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.4/js/dataTables.bootstrap5.min.js"></script>
+    <script src="~/js/supervisorsDatatables.js"></script>
+}

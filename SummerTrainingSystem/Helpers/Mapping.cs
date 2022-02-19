@@ -11,6 +11,7 @@ namespace SummerTrainingSystem.Helpers
             CreateMap<Trainning, SaveTrainingVM>().ReverseMap();
             CreateMap<Student, SaveStudentAccountVM>().ForMember(m => m.Email, s => s.MapFrom(st => st.UserName)).ReverseMap();
             CreateMap<Supervisor, SaveSupervisorAccountVM>().ForMember(m => m.Email, s => s.MapFrom(su => su.UserName)).ReverseMap();
+            CreateMap<Student, StudentVM>().ReverseMap();
 
         }
     }

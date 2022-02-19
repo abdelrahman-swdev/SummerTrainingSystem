@@ -24,13 +24,13 @@
                             <a class="nav-link" asp-controller="Trainings" asp-action="Index">Trainings</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="Account" asp-action="CreateStudentAccount">Create Student</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Account" asp-action="CreateSupervisorAccount">Create Supervisor</a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link" asp-controller="Account" asp-action="Login">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Users" asp-action="GetAllStudents">Students</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Users" asp-action="GetAllSupervisors">Supervisors</a>
                         </li>
                         @if (User.Identity.IsAuthenticated)
                         {
