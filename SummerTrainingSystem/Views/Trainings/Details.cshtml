@@ -19,8 +19,38 @@
             </p>
 
             <a asp-controller="Trainings" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+            <button class="btn btn-danger" onclick="deleteTraining(@Model.Id)">Delete</button>
+            <div class="spinner-border text-danger spinner-border-sm d-none" role="status" id="deleteSpinner">
+                <span class="visually-hidden">Loading...</span>
+            </div>
             <a asp-controller="Trainings" asp-action="Index" class="btn btn-outline-secondary">Back</a>
 
         </div>
     </div>
 </div>
+
+@section Scripts{ 
+    <script>
+        function deleteTraining(data){
+            $.ajax({
+                url: '/trainings/' + data,
+                method: 'Delete',
+                beforeSend: (xhr) => {
+                    document.getElementById('deleteSpinner').classList.toggle('d-none');
+                },
+                success: (result, status, xhr) => {
+                    document.getElementById('deleteSpinner').classList.toggle('d-none');
+                    window.location.replace('/trainings');
+                },
+                error: (result, status, xhr) => {
+                    document.getElementById('deleteSpinner').classList.toggle('d-none');
+                    Swal.fire(
+                        'Error!',
+                        'Something went wrong.',
+                        'error'
+                    );
+                }
+            });
+        }
+    </script>
+}

@@ -47,7 +47,7 @@ namespace SummerTrainingSystem.Controllers
             {
                 return NotFound();
             }
-            
+
             return View(_mapper.Map<SaveTrainingVM>(trainning));
         }
 
@@ -78,7 +78,7 @@ namespace SummerTrainingSystem.Controllers
         public async Task<ActionResult> Edit(int id)
         {
             var tr = await _trainRepo.GetByIdAsync(id);
-            if(tr == null)
+            if (tr == null)
             {
                 return NotFound();
             }
@@ -90,7 +90,7 @@ namespace SummerTrainingSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, SaveTrainingVM model)
         {
-            if (ModelState.IsValid) 
+            if (ModelState.IsValid)
             {
                 if (id != model.Id) return NotFound();
                 _trainRepo.Update(_mapper.Map<Trainning>(model));
@@ -102,24 +102,17 @@ namespace SummerTrainingSystem.Controllers
             }
         }
 
-        // GET: TrainingsController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: TrainingsController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                _trainRepo.Delete(await _trainRepo.GetByIdAsync(id));
+                return Ok();
             }
             catch
             {
-                return View();
+                return BadRequest();
             }
         }
     }

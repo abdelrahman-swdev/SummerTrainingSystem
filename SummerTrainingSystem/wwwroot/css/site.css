@@ -1,6 +1,11 @@
-﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-for details on configuring this project to bundle and minify static web assets. */
-
+﻿@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Roboto:wght@300;400;500;700;900&display=swap');
+:root {
+    --light-font: 300;
+    --regular-font: 400;
+    --medium-font: 500;
+    --bold-font: 700;
+    --extra-bold-font: 900;
+}
 a.navbar-brand {
     white-space: normal;
     text-align: center;
@@ -63,6 +68,9 @@ html {
 body {
     /* Margin bottom by footer height */
     margin-bottom: 60px;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Roboto", sans-serif !important;
 }
 
 .footer {
@@ -71,4 +79,10 @@ body {
     width: 100%;
     white-space: nowrap;
     line-height: 60px; /* Vertically center the text there */
+}
+
+.logo::after{
+    content: '';
+    position: absolute;
+
 }

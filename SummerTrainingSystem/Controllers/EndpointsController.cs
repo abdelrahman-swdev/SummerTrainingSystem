@@ -1,11 +1,14 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SummerTrainingSystem.Models;
 using SummerTrainingSystemCore.Entities;
 using SummerTrainingSystemCore.Interfaces;
 using SummerTrainingSystemEF.Data;
 using System.Linq;
 using System.Linq.Dynamic.Core;
+using System.Threading.Tasks;
 
 namespace SummerTrainingSystem.Controllers
 {
@@ -16,14 +19,40 @@ namespace SummerTrainingSystem.Controllers
         private readonly IGenericRepository<Student> _studentRepo;
         private readonly IMapper _mapper;
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public EndpointsController(IGenericRepository<Student> studentRepo, IMapper mapper, ApplicationDbContext context)
+        public EndpointsController(IGenericRepository<Student> studentRepo, 
+            IMapper mapper, 
+            ApplicationDbContext context,
+            UserManager<IdentityUser> userManager)
         {
             _studentRepo = studentRepo;
             _mapper = mapper;
             _context = context;
+            _userManager = userManager;
         }
 
+        [HttpDelete("students/{id}")]
+        public async Task<IActionResult> DeleteStudent(string id)
+        {
+            var result = await _userManager.DeleteAsync(await _userManager.FindByIdAsync(id));
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
+            return BadRequest();
+        }
+
+        [HttpDelete("supervisors/{id}")]
+        public async Task<IActionResult> DeleteSupervisor(string id)
+        {
+            var result = await _userManager.DeleteAsync(await _userManager.FindByIdAsync(id));
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
+            return BadRequest();
+        }
 
         [HttpPost("students")]
         public IActionResult GetStudents()
