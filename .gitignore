@@ -1,6 +1,6 @@
 bin
 obj
 SummerTrainingSystem/appsettings.json
-SummerTrainingSystem/wwwroot
+SummerTrainingSystem/wwwroot/lib
 .vs
 .vscode

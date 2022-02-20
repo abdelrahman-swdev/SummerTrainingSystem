@@ -6,10 +6,10 @@
 <div class="container mt-5">
     <div class="row">
         <div class="col-lg-8 col">
-            <div class="separator">
-                <h1 class="display-5">Create New Student</h1>
-                <hr />
-            </div>
+
+            <h1 class="display-5">Create New Student</h1>
+            <hr />
+
             @if (!String.IsNullOrEmpty(ViewBag.StudentCreated))
             {
                 <div class="alert alert-success">
@@ -23,31 +23,23 @@
                 </div>
             }
             <form method="post">
-                <div class="row mt-4">
+                <div class="row">
                     <div class="col-md-6 mt-4">
-                        <div class="">
-                            <input class="form-control" asp-for="FirstName" placeholder="First Name" />
-                        </div>
+                        <input class="form-control" asp-for="FirstName" placeholder="First Name" />
                         <span class="text-danger" asp-validation-for="FirstName"></span>
                     </div>
                     <div class="col-md-6 mt-4">
-                        <div class="">
-                            <input class="form-control" asp-for="LastName" placeholder="Last Name" />
-                        </div>
+                        <input class="form-control" asp-for="LastName" placeholder="Last Name" />
                         <span class="text-danger" asp-validation-for="LastName"></span>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6 mt-4">
-                        <div class="">
-                            <input class="form-control" asp-for="UniversityID" placeholder="University ID" />
-                        </div>
+                        <input class="form-control" asp-for="UniversityID" placeholder="University ID" />
                         <span class="text-danger" asp-validation-for="UniversityID"></span>
                     </div>
                     <div class="col-md-6 mt-4">
-                        <div class="">
-                            <input class="form-control" asp-for="Gpa" placeholder="GPA" />
-                        </div>
+                        <input class="form-control" asp-for="Gpa" placeholder="GPA" />
                         <span class="text-danger" asp-validation-for="Gpa"></span>
                     </div>
                 </div>
@@ -72,7 +64,7 @@
                                     depRepo.ListAllAsync().Result
                                     .Select(l => new SelectListItem() {Text = l.Abbreviation, Value = l.Id.ToString() })
                                 )">
-                            <option value="">Department</option>
+                            <option value="">Select Department</option>
                         </select>
                         <span class="text-danger" asp-validation-for="DepartmentId"></span>
                     </div>
@@ -92,7 +84,7 @@
                         <span class="text-danger" asp-validation-for="ConfirmPassword"></span>
                     </div>
                 </div>
-                <div style="display:flex;justify-content:space-between;" class="mt-4">
+                <div class="mt-4 d-flex justify-content-between">
                     <button class="btn btn-success">Save</button>
                     <a class="btn btn-outline-dark" asp-controller="Home" asp-action="Index">Back</a>
                 </div>

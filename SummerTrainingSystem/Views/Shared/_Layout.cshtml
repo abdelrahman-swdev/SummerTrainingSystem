@@ -24,14 +24,26 @@
                             <a class="nav-link" asp-controller="Trainings" asp-action="Index">Trainings</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="Account" asp-action="CreateStudentAccount">Create Student</a>
+                            <a class="nav-link" asp-controller="Account" asp-action="Login">Login</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="Account" asp-action="CreateSupervisorAccount">Create Supervisor</a>
+                            <a class="nav-link" asp-controller="Users" asp-action="GetAllStudents">Students</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Users" asp-action="GetAllSupervisors">Supervisors</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="Roles" asp-action="ListRoles">Roles</a>
                         </li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item text-primary">
+                                @User.Identity.Name
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Account" asp-action="Logout">Logout</a>
+                            </li>
+                        }
                     </ul>
                     <form class="d-flex">
                         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
