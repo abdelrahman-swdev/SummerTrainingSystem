@@ -52,6 +52,17 @@ namespace SummerTrainingSystem.Controllers
         {
             return View(_roleManager.Roles.ToList());
         }
-       
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteStudent(string id)
+        {
+            var result = await _roleManager.DeleteAsync(await _roleManager.FindByIdAsync(id));
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
+            return BadRequest();
+        }
+
     }
 }

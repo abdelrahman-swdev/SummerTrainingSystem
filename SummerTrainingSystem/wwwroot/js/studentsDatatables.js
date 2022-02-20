@@ -30,11 +30,12 @@ function fillStudentTable () {
             { "data": "department.name", "name": "department.name", "autowidth": true },
             {
                 "render": function (data, type, row) {
-                    return `<button class="btn btn-danger" onclick=deleteStudent('${row.id}')><i class="fa fa-trash"></i></button>
-                            <div class="spinner-border text-danger spinner-border-sm d-none" role="status" id="deleteSpinner">
-                              <span class="visually-hidden">Loading...</span>
-                            </div>
-                            `;
+                    return `<button class="btn btn-danger" onclick=deleteStudent('${row.id}')>
+                                <i class="fa fa-trash"></i>
+                                <div class="spinner-border text-white spinner-border-sm d-none" role="status" id="${row.id}">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </button>`;
                 },
                 "orderable": false
             }
@@ -53,15 +54,14 @@ const deleteStudent = (data) => {
         confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
         if (result.isConfirmed) {
-            console.log(data);
             $.ajax({
                 url: '/api/students/' + data,
                 method: 'Delete',
                 beforeSend: (xhr) => {
-                    document.getElementById('deleteSpinner').classList.toggle('d-none');
+                    document.getElementById(data).classList.toggle('d-none');
                 },
                 success: (result, status, xhr) => {
-                    document.getElementById('deleteSpinner').classList.toggle('d-none');
+                    document.getElementById(data).classList.toggle('d-none');
                     fillStudentTable();
                     Swal.fire(
                         'Deleted!',
@@ -70,12 +70,12 @@ const deleteStudent = (data) => {
                     );
                 },
                 error: (result, status, xhr) => {
-                    document.getElementById('deleteSpinner').classList.toggle('d-none');
+                    document.getElementById(data).classList.toggle('d-none');
                     Swal.fire(
                         'Error!',
                         'Something went wrong.',
                         'error'
-                    )
+                    );
                 }
             });
         }

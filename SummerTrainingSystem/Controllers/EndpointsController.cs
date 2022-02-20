@@ -16,18 +16,13 @@ namespace SummerTrainingSystem.Controllers
     [Route("api")]
     public class EndpointsController : Controller
     {
-        private readonly IGenericRepository<Student> _studentRepo;
-        private readonly IMapper _mapper;
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
 
-        public EndpointsController(IGenericRepository<Student> studentRepo, 
-            IMapper mapper, 
+        public EndpointsController(
             ApplicationDbContext context,
             UserManager<IdentityUser> userManager)
         {
-            _studentRepo = studentRepo;
-            _mapper = mapper;
             _context = context;
             _userManager = userManager;
         }

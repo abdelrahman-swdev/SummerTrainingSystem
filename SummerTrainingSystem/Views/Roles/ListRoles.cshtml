@@ -13,7 +13,6 @@
                 <h1 class="display-5">Roles</h1>
                 <a class="btn btn-outline-primary" asp-controller="Roles" asp-action="CreateRole">Create Role</a>
             </div>
-
             <hr />
 
             @if (Model.Count == 0)
@@ -24,16 +23,62 @@
             }
             else
             {
-
                 foreach (var role in Model)
                 {
                     <div class="d-flex justify-content-between align-items-center border-2 mt-4">
                         <h5 class="card-title">@role.Name</h5>
-                        <button class="btn btn-danger">Delete</button>
+                        <button class="btn btn-danger" onclick=deleteRole('@role.Id')>
+                            <i class="fa fa-trash"></i>
+                            <div class="spinner-border text-white spinner-border-sm d-none" role="status" id="@role.Id">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </button>
                     </div>
                 }
             }
         </div>
     </row>
-
 </div>
+
+@section Scripts{
+<script>
+    function deleteRole(data)
+    {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '/roles/' + data,
+                    method: 'Delete',
+                    beforeSend: (xhr) => {
+                        document.getElementById(data).classList.toggle('d-none');
+                    },
+                    success: (result, status, xhr) => {
+                        document.getElementById(data).classList.toggle('d-none');
+                        Swal.fire(
+                            'Deleted!',
+                            'Role has been deleted.',
+                            'success'
+                        );
+                    },
+                    error: (result, status, xhr) => {
+                        document.getElementById(data).classList.toggle('d-none');
+                        Swal.fire(
+                            'Error!',
+                            'Something went wrong.',
+                            'error'
+                        );
+                    }
+                });
+            }
+        });
+    }
+</script>
+}
