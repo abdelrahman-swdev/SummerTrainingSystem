@@ -9,56 +9,48 @@ using System.Threading.Tasks;
 
 namespace SummerTrainingSystem.Controllers
 {
+    [Route("roles")]
     public class RolesController : Controller
     {
-        private readonly RoleManager<IdentityRole> roleManager;
-        private readonly IMapper mapper;
-        private readonly UserManager<IdentityUser> userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public RolesController(RoleManager<IdentityRole> roleManager,
-            IMapper mapper,
-            UserManager<IdentityUser> userManager)
+        public RolesController(RoleManager<IdentityRole> roleManager)
         {
-            this.roleManager = roleManager;
-            this.mapper = mapper;
-            this.userManager = userManager;
+            _roleManager = roleManager;
         }
        
-        [HttpGet]
-        [Route("CreateRole")]
+        [HttpGet("new")]
         public IActionResult CreateRole()
         {
             return View();
         }
-        [HttpPost]
-        [Route("CreateRole")]
+
+        [HttpPost("new")]
         public async Task<IActionResult> CreateRole(CreateRoleVM model)
         {
             if (ModelState.IsValid)
             {
-                //var role = mapper.Map<IdentityRole>(model);
                 IdentityRole role = new IdentityRole
                 {
                     Name = model.Name
                 };
-                IdentityResult result = await roleManager.CreateAsync(role);
+                var result = await _roleManager.CreateAsync(role);
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("ListRoles", "Roles");
+                    return RedirectToAction(nameof(ListRoles));
                 }
-                foreach(IdentityError error in result.Errors)
+                foreach(var error in result.Errors)
                 {
                     ModelState.AddModelError("", error.Description);
                 }
             }
             return View(model);
         }
-        [HttpGet]
-        [Route("ListRoles")]
+
+        [HttpGet("")]
         public IActionResult ListRoles()
         {
-            var roles = roleManager.Roles;
-            return View(roles);
+            return View(_roleManager.Roles.ToList());
         }
        
     }
