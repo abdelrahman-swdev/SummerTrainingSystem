@@ -1,0 +1,17 @@
+﻿@model IEnumerable<TrainingVM>
+@foreach (var tr in Model)
+{
+    <div class="mb-2">
+        <h5>
+            <a asp-controller="Trainings" asp-action="Details" asp-route-id="@tr.Id">@tr.Title</a>
+        </h5>
+        <p class="text-secondary">
+            @(tr.Description.Length > 70 ? tr.Description[..70] : tr.Description)..
+        </p>
+        <div class="d-flex justify-content-between">
+            <span class="badge bg-primary">@tr.Department.Abbreviation</span>
+            <span class="badge bg-secondary">@tr.CreatedAt.ToShortDateString()</span>
+        </div>
+    </div>
+    <div class="dropdown-divider mb-3"></div>
+}

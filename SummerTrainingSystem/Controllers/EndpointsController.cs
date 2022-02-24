@@ -6,6 +6,7 @@ using SummerTrainingSystem.Models;
 using SummerTrainingSystemCore.Entities;
 using SummerTrainingSystemCore.Interfaces;
 using SummerTrainingSystemEF.Data;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
@@ -18,13 +19,21 @@ namespace SummerTrainingSystem.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly IGenericRepository<Trainning> _trainRepo;
+        private readonly IGenericRepository<Department> _depRepo;
+        private readonly IMapper _mapper;
 
-        public EndpointsController(
+        public EndpointsController(IGenericRepository<Department> depRepo,
+            IGenericRepository<Trainning> trainRepo,
+            IMapper mapper,
             ApplicationDbContext context,
             UserManager<IdentityUser> userManager)
         {
             _context = context;
             _userManager = userManager;
+            _depRepo = depRepo;
+            _trainRepo = trainRepo;
+            _mapper = mapper;
         }
 
         [HttpDelete("students/{id}")]

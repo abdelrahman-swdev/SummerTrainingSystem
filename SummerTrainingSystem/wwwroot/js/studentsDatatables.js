@@ -1,5 +1,7 @@
 ﻿$(document).ready(fillStudentTable());
 
+document.getElementById('studentsTable_length').classList.add('mb-2');
+
 function fillStudentTable () {
     $('#studentsTable').dataTable({
         "responsive": true,
@@ -31,7 +33,7 @@ function fillStudentTable () {
             {
                 "render": function (data, type, row) {
                     return `<button class="btn btn-danger" onclick=deleteStudent('${row.id}')>
-                                <i class="fa fa-trash"></i>
+                                <i class="fas fa-trash"></i>
                                 <div class="spinner-border text-white spinner-border-sm d-none" role="status" id="${row.id}">
                                     <span class="visually-hidden">Loading...</span>
                                 </div>

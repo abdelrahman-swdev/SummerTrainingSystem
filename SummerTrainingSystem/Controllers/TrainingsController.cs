@@ -1,12 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using AutoMapper;
-using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using SummerTrainingSystem.Models;
-using SummerTrainingSystemCore.Interfaces;
 using SummerTrainingSystemCore.Entities;
-using System;
+using SummerTrainingSystemCore.Interfaces;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SummerTrainingSystem.Controllers
 {
@@ -24,16 +22,44 @@ namespace SummerTrainingSystem.Controllers
             _mapper = mapper;
         }
 
-        // GET: TrainingsController
+        // GET: trainings
         [HttpGet("")]
-        public async Task<ActionResult> Index()
+        public ActionResult Index()
         {
-            var trainings = await _trainRepo.ListAllAsync();
-            var model = _mapper.Map<IReadOnlyList<SaveTrainingVM>>(trainings);
-            return View(model);
+            return View();
         }
 
-        // GET: TrainingsController/Details/5
+        // GET: trainings/bydep or trainings/bydep?depid=5 to filter trainings by department
+        [HttpGet("getall")]
+        public async Task<ActionResult> GetTrainings([FromQuery] int depid, [FromQuery] string search)
+        {
+            // if search query is sent and department was selected
+            if(!string.IsNullOrEmpty(search) && depid != 0)
+            {
+                return PartialView(await GetTrainingsByDepIdAndSearch(depid, search));
+            }
+
+            // if search query is sent
+            if(!string.IsNullOrEmpty(search))
+            {
+                return PartialView(await GetTrainingsBySearch(search));
+            }
+
+            // if department id is sent
+            if (depid != 0)
+            {
+                var result = await GetTrainingsByDepId(depid);
+                if (result == null) return NotFound();
+                return PartialView(result);
+            }
+
+            // all trainings (no search query was sent or department was selected)
+            var trainings = await _trainRepo.ListAsync(t => true, new string[] { "Department" });
+            var model = _mapper.Map<IReadOnlyList<TrainingVM>>(trainings);
+            return PartialView(model);
+        }
+
+        // GET: trainings/5
         [HttpGet("{id:int}")]
         public async Task<ActionResult> Details([FromRoute] int id)
         {
@@ -51,14 +77,14 @@ namespace SummerTrainingSystem.Controllers
             return View(_mapper.Map<SaveTrainingVM>(trainning));
         }
 
-        // GET: TrainingsController/Create
+        // GET: trainings/new
         [HttpGet("new")]
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: TrainingsController/Create
+        // POST: trainings/new
         [HttpPost("new")]
         [ValidateAntiForgeryToken]
         public ActionResult Create(SaveTrainingVM model)
@@ -73,7 +99,7 @@ namespace SummerTrainingSystem.Controllers
             return View(model);
         }
 
-        // GET: TrainingsController/Edit/5
+        // GET: trainings/edit/5
         [HttpGet("edit/{id:int}")]
         public async Task<ActionResult> Edit(int id)
         {
@@ -85,7 +111,7 @@ namespace SummerTrainingSystem.Controllers
             return View(_mapper.Map<SaveTrainingVM>(tr));
         }
 
-        // POST: TrainingsController/Edit/5
+        // POST: trainings/edit/5
         [HttpPost("edit/{id:int}")]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, SaveTrainingVM model)
@@ -102,6 +128,7 @@ namespace SummerTrainingSystem.Controllers
             }
         }
 
+        // Delete: trainings/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -114,6 +141,36 @@ namespace SummerTrainingSystem.Controllers
             {
                 return BadRequest();
             }
+        }
+
+
+        // if search query is sent and department was selected
+        private async Task<IReadOnlyList<TrainingVM>> GetTrainingsByDepIdAndSearch(int depid, string search)
+        {
+            var trainningsBySearchAndDep = await _trainRepo.ListAsync(t =>
+                    t.DepartmentId == depid && (t.Title.Contains(search) || t.Description.Contains(search)),
+                    new string[] { "Department" }
+                );
+            return _mapper.Map<IReadOnlyList<TrainingVM>>(trainningsBySearchAndDep);
+        }
+
+        // trainings by specific department
+        private async Task<IReadOnlyList<TrainingVM>> GetTrainingsByDepId(int depid)
+        {
+            var department = await _depRepo.GetByIdAsync(depid);
+            if (department == null) return null;
+            var trainningsByDepartment = await _trainRepo.ListAsync(t =>
+                t.DepartmentId == department.Id, new string[] { "Department" }
+            );
+            return _mapper.Map<IReadOnlyList<TrainingVM>>(trainningsByDepartment);
+        }
+
+        // trainings by search query
+        private async Task<IReadOnlyList<TrainingVM>> GetTrainingsBySearch(string search)
+        {
+            var trainningsBySearch = await _trainRepo.ListAsync(t => t.Title.Contains(search) || t.Description.Contains(search),
+                new string[] { "Department" });
+            return _mapper.Map<IReadOnlyList<TrainingVM>>(trainningsBySearch);
         }
     }
 }

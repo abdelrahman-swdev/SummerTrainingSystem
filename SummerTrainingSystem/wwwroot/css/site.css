@@ -71,6 +71,7 @@ body {
     padding: 0;
     box-sizing: border-box;
     font-family: "Roboto", sans-serif !important;
+    background-color: #f5f6f7 !important;
 }
 
 .footer {
@@ -81,8 +82,20 @@ body {
     line-height: 60px; /* Vertically center the text there */
 }
 
-.logo::after{
-    content: '';
-    position: absolute;
+.list-group-item
+{
+    cursor : pointer;
+}
 
+.custom-spinner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #007bff1a;
+    z-index: 3;
 }

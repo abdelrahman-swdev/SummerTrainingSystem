@@ -30,27 +30,5 @@
 </div>
 
 @section Scripts{ 
-    <script>
-        function deleteTraining(data){
-            $.ajax({
-                url: '/trainings/' + data,
-                method: 'Delete',
-                beforeSend: (xhr) => {
-                    document.getElementById('deleteSpinner').classList.toggle('d-none');
-                },
-                success: (result, status, xhr) => {
-                    document.getElementById('deleteSpinner').classList.toggle('d-none');
-                    window.location.replace('/trainings');
-                },
-                error: (result, status, xhr) => {
-                    document.getElementById('deleteSpinner').classList.toggle('d-none');
-                    Swal.fire(
-                        'Error!',
-                        'Something went wrong.',
-                        'error'
-                    );
-                }
-            });
-        }
-    </script>
+    <script src="~/js/trainingDetails.js"></script>
 }

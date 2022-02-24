@@ -96,35 +96,6 @@
         "scss/_utilities.scss",
         "scss/_variables.scss"
       ]
-    },
-    {
-      "provider": "unpkg",
-      "library": "font-awesome@latest",
-      "destination": "wwwroot/lib/font-awesome/",
-      "files": [
-        "fonts/fontawesome-webfont.eot",
-        "css/font-awesome.css",
-        "css/font-awesome.min.css",
-        "fonts/fontawesome-webfont.svg",
-        "fonts/fontawesome-webfont.ttf",
-        "fonts/fontawesome-webfont.woff",
-        "fonts/fontawesome-webfont.woff2",
-        "fonts/FontAwesome.otf",
-        "less/animated.less",
-        "less/bordered-pulled.less",
-        "less/core.less",
-        "less/fixed-width.less",
-        "less/font-awesome.less",
-        "less/icons.less",
-        "less/larger.less",
-        "less/list.less",
-        "less/mixins.less",
-        "less/path.less",
-        "less/rotated-flipped.less",
-        "less/screen-reader.less",
-        "less/stacked.less",
-        "less/variables.less"
-      ]
     }
   ]
 }

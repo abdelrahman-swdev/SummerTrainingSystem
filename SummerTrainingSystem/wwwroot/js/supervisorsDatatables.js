@@ -1,5 +1,7 @@
 ﻿$(document).ready(fillSupervisorsTable());
 
+document.getElementById('supervisorsTable_length').classList.add('mb-2');
+
 function fillSupervisorsTable() {
     $('#supervisorsTable').dataTable({
         "responsive": true,
@@ -29,7 +31,7 @@ function fillSupervisorsTable() {
             {
                 "render": function (data, type, row) {
                     return `<button class="btn btn-danger" onclick=deleteSupervisor('${row.id}')>
-                                <i class="fa fa-trash"></i>
+                                <i class="fas fa-trash"></i>
                                 <div class="spinner-border text-white spinner-border-sm d-none" role="status" id="${row.id}">
                                     <span class="visually-hidden">Loading...</span>
                                 </div>

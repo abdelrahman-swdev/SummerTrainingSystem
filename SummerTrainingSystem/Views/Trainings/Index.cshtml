@@ -1,26 +1,70 @@
-﻿@model IEnumerable<SaveTrainingVM>
+﻿@inject SummerTrainingSystemCore.Interfaces.IGenericRepository<Department> depRepo
 @{
     ViewData["Title"] = "Trainings";
 }
 
-<link rel="stylesheet" href="~/css/trainings.css" />
-<a asp-controller="Trainings" asp-action="Create" class="btn btn-outline-primary">Add New <i class="fa fa-plus-circle"></i></a>
-<div class="container px-4 py-5" id="featured-3">
-    <h2 class="pb-2 border-bottom">Columns with icons</h2>
-    <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
-        @foreach (var tr in Model)
-        {
-            <div class="feature col">
+<div class="container mt-4">
+    <a class="btn btn-outline-primary mb-3" asp-action="Create">Create Training <i class="fas fa-plus-circle"></i></a>
+    @*@if (User.IsInRole(SummerTrainingSystemCore.Enums.Roles.Admin.ToString()))
+    {
+        <a class="btn btn-outline-primary" asp-action="Create">Create Training</a>
+    }*@
+    <div class="row">
+        <aside class="col-md-3">
+            <p class="fw-bold">Filter By Department</p>
+            <ul class="list-group">
+                <li class="list-group-item list-group-item-action list-group-item-light active" 
+                    id="all"
+                    data-depid="0"
+                    onclick="updateTrainings(0, 'all')">
 
-                <h2>@tr.Title</h2>
-                <p class="text-primary">
-                    @(tr.Description.Length > 60 ? tr.Description[..60] : tr.Description)
-                </p>
-                <a asp-controller="Trainings" asp-action="Details" asp-route-id="@tr.Id" class="icon-link">
-                    View
-                </a>
+                    All
+                </li>
+                @foreach (var dep in await depRepo.ListAllAsync())
+                {
+                    <li class="list-group-item list-group-item-action list-group-item-light" 
+                        id="@dep.Abbreviation"
+                        data-depid="@dep.Id"
+                        onclick="updateTrainings(@dep.Id, '@dep.Abbreviation')">
+
+                        @dep.Name
+                    </li>
+                }
+            </ul>
+        </aside>
+        <div class="col-md-6" style="margin-top: calc(1rem + 24px);">
+            <form class="d-flex mb-4">
+                <input class="form-control me-2 shadow-none" 
+                    name="searchQuery"
+                    id="searchQuery"
+                    type="search" placeholder="Search"
+                    aria-label="Search">
+
+                <button class="btn btn-primary" 
+                    type="submit" 
+                    style="margin-left:-17px !important;"
+                    onclick="onSearch(event)">
+                    Search
+                </button>
+            </form>
+
+            <div class="custom-spinner d-none" id="spinner">
+                <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
             </div>
-        }
+
+            <div class="alert alert-info d-none" id="alertMessage">
+                No trainings to show.
+            </div>
+
+            <div id="trainingsContainer">
+
+            </div>
+        </div>
     </div>
 </div>
-<div class="divider"></div>
+
+@section Scripts{
+    <script src="~/js/trainingsIndex.js"></script>
+}
