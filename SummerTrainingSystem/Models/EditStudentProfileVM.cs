@@ -1,24 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace SummerTrainingSystem.Models
 {
     public class EditStudentProfileVM 
     {
         public string Id { get; set; }
+
         [Required(ErrorMessage = "First Name is required")]
         [Display(Name = "First Name")]
         [MaxLength(256)]
         public string FirstName { get; set; }
+
         [Required(ErrorMessage = "Last Name is required")]
         [Display(Name = "Last Name")]
         [MaxLength(256)]
         public string LastName { get; set; }
 
         public int Level { get; set; }
+
         [Required(ErrorMessage = "Phone Number is required")]
         [Display(Name = "Phone Number")]
         [MaxLength(256)]

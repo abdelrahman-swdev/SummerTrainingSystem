@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace SummerTrainingSystem.Models
 {
     public class EditSupervisorProfileVM
     {
         public string Id { get; set; }
+
         [Required(ErrorMessage = "First Name is required")]
         [Display(Name = "First Name")]
         [MaxLength(256)]
@@ -30,7 +27,7 @@ namespace SummerTrainingSystem.Models
         [EmailAddress(ErrorMessage = "Email is not valid")]
         [MaxLength(256)]
         public string Email { get; set; }
-        public int? UniversityID { get; set; }
+        public int UniversityID { get; set; }
         public int DepartmentId { get; set; }
     }
 }

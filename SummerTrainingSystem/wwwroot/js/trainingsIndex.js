@@ -38,14 +38,8 @@ $(document).ready(function () {
 function updateTrainings(depid, abbreviation) {
     
     const linkClicked = document.getElementById(abbreviation);
-    const allListItems = document.querySelectorAll('.list-group-item');
-
-    for (let i = 0; i < allListItems.length; i++) {
-        if (allListItems[i].classList.contains('active')) {
-            allListItems[i].classList.toggle('active');
-        }
-    }
-
+    const selectedListItem = document.querySelector('.list-group-item.active');
+    selectedListItem.classList.toggle('active');
     linkClicked.classList.toggle('active');
 
     let url = `/trainings/getall?depid=${depid}`;

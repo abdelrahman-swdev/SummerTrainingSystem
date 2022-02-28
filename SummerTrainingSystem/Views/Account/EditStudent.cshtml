@@ -11,10 +11,10 @@
             <h1 class="display-5">Edit Profile</h1>
             <hr />
 
-            @if (!String.IsNullOrEmpty(ViewBag.StudentEdited))
+            @if (!String.IsNullOrEmpty(ViewBag.AccountUpdated))
             {
                 <div class="alert alert-success">
-                    @ViewBag.StudentEdited
+                    @ViewBag.AccountUpdated
                 </div>
             }
             @if (!String.IsNullOrEmpty(ViewBag.StudentNotEdited))
@@ -25,6 +25,8 @@
             }
             <form method="post">
                 <input asp-for="Id" type="hidden" />
+                <input asp-for="DepartmentId" type="hidden" />
+
                 <div class="row">
                     <div class="col-md-6 mt-4">
                         <input class="form-control" asp-for="FirstName" placeholder="First Name" />
@@ -35,30 +37,33 @@
                         <span class="text-danger" asp-validation-for="LastName"></span>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-6 mt-4">
-                        <input class="form-control" readonly asp-for="Gpa" placeholder="GPA" min="1" max="4" />
-                        <span class="text-danger" asp-validation-for="Gpa"></span>
-                    </div>
-                    <div class="col-md-6 mt-4">
-                        <input class="form-control" readonly asp-for="UniversityID" placeholder="GPA" min="1" max="4" />
-                        <span class="text-danger" asp-validation-for="UniversityID"></span>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6 mt-4">
-                        <input class="form-control" asp-for="PhoneNumber" placeholder="Phone Number" />
-                        <span class="text-danger" asp-validation-for="PhoneNumber"></span>
-                    </div>
-                    <div class="col-md-6 mt-4">
-                        <input class="form-control" readonly asp-for="Level" placeholder="Level" min="1" max="4" />
-                        <span class="text-danger" asp-validation-for="Level"></span>
-                    </div>
-                </div>
+                
                 <div class="row">
                     <div class="col-md-6 mt-4">
                         <input class="form-control" asp-for="Email" placeholder="Email" />
                         <span class="text-danger" asp-validation-for="Email"></span>
+                    </div>
+                    <div class="col-md-6 mt-4">
+                        <input class="form-control" asp-for="PhoneNumber" placeholder="Phone Number" />
+                        <span class="text-danger" asp-validation-for="PhoneNumber"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mt-4">
+                        <input class="form-control" readonly asp-for="UniversityID" placeholder="University ID" />
+                        <span class="text-danger" asp-validation-for="UniversityID"></span>
+                    </div>
+                    <div class="col-md-6 mt-4">
+                        <input class="form-control" readonly asp-for="Gpa" placeholder="GPA" min="1" max="4"/>
+                        <span class="text-danger" asp-validation-for="Gpa"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mt-4">
+                        <input class="form-control" readonly asp-for="Level" placeholder="Level" min="1" max="4" />
+                        <span class="text-danger" asp-validation-for="Level"></span>
                     </div>
                     <div class="col-md-6 mt-4">
                         <select disabled asp-for="DepartmentId" class="form-select"
@@ -72,11 +77,11 @@
                     </div>
                 </div>
 
-
-                <div class="mt-4 d-flex justify-content-between">
+                <div class="mt-4 mb-2 d-flex justify-content-between">
                     <button class="btn btn-success">Save</button>
                     <a class="btn btn-outline-dark" asp-controller="Home" asp-action="Index">Back</a>
                 </div>
+                <a asp-controller="Account" asp-action="ResetPassword">Reset Password</a>
             </form>
             <div class="mt-4 text-danger" asp-validation-summary="ModelOnly"></div>
         </div>

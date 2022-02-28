@@ -9,22 +9,22 @@ namespace SummerTrainingSystem.Models
     public class ResetPasswordVM
     {
 
-        [Required(ErrorMessage = "CurrentPassword is required")]
+        [Required(ErrorMessage = "Current Password is required")]
         [DataType(DataType.Password, ErrorMessage = "Password must be strong")]
         [MinLength(8, ErrorMessage = "Password should at least have 8 characters")]
         [Display(Name ="Current Password")]
         public string CurrentPassword { get; set; }
 
-        [Required(ErrorMessage = "NewPassword is required")]
+        [Required(ErrorMessage = "New Password is required")]
         [DataType(DataType.Password, ErrorMessage = "Password must be strong")]
         [MinLength(8, ErrorMessage = "Password should at least have 8 characters")]
         [Display(Name = "New password")]
         public string NewPassword { get; set; }
 
-        [Required(ErrorMessage = "ConfirmPassword is required")]
+        [Required(ErrorMessage = "Confirm New Password is required")]
         [DataType(DataType.Password, ErrorMessage = "Password doesn't match")]
         [Compare("NewPassword", ErrorMessage = "Password doesn't match")]
-        [Display(Name = "Confirm your password")]
+        [Display(Name = "Confirm New password")]
         public string ConfirmPassword { get; set; }
     }
 }

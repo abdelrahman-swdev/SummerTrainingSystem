@@ -96,6 +96,5 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #007bff1a;
     z-index: 3;
 }

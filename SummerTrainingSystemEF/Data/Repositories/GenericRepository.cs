@@ -45,12 +45,6 @@ namespace SummerTrainingSystemEF.Data.Repositories
         {
             return await _context.Set<T>().FindAsync(id);
         }
-       
-
-        public async Task<T> GetByStringIdAsync(string id)
-        {
-            return await _context.Set<T>().FindAsync(id);
-        }
 
         public async Task<IReadOnlyList<T>> ListAllAsync()
         {

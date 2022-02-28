@@ -6,7 +6,6 @@ using SummerTrainingSystemCore.Entities;
 using SummerTrainingSystemCore.Interfaces;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Linq;
 
 namespace SummerTrainingSystem.Controllers
 {
@@ -130,11 +129,12 @@ namespace SummerTrainingSystem.Controllers
             await _accountService.LogoutAsync();
             return RedirectToAction("Login", "Account");
         }
+
         [HttpGet("student/edit")]
         public async Task<ActionResult> EditStudent()
         {
-            var logedInUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var logedInStudent = await _userManager.FindByIdAsync(logedInUserId);
+            var logedInStudentId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var logedInStudent = await _userManager.FindByIdAsync(logedInStudentId);
             if (logedInStudent == null) NotFound();
             return View(_mapper.Map<EditStudentProfileVM>(logedInStudent));
         }
@@ -144,60 +144,76 @@ namespace SummerTrainingSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                var student = await _stuRepo.GetByStringIdAsync(model.Id);
-                student.FirstName = model.FirstName;
-                student.LastName = model.LastName;
-                student.Email = model.Email;
-                student.PhoneNumber = model.PhoneNumber;
-                _stuRepo.Update(student);
-                return RedirectToAction("EditStudentProfile");
+                var result = await UpdateStudentFromModelAsync(model);
+                if (result.Succeeded)
+                {
+                    ViewBag.AccountUpdated = "Account Updated Succefully";
+                    return View();
+                }
+                else
+                {
+                    ViewBag.AccountNotUpdated = "Error, Account Did Not Updated";
+                    return View();
+                }
             }
             else
             {
                 return View(model);
             }
         }
+
         [HttpGet("supervisor/edit")]
         public async Task<ActionResult> EditSupervisor()
         {
-            var logedInUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var logedInSupervisor = await _userManager.FindByIdAsync(logedInUserId);
+            var logedInSupervisorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var logedInSupervisor = await _userManager.FindByIdAsync(logedInSupervisorId);
             if (logedInSupervisor == null) NotFound();
-            return View(_mapper.Map<EditSupervisorProfileVM>(logedInSupervisor));
+            var model = _mapper.Map<EditSupervisorProfileVM>(logedInSupervisor);
+            return View(model);
         }
+
         [HttpPost("supervisor/edit")]
         public async Task<ActionResult> EditSupervisor(EditSupervisorProfileVM model)
         {
             if (ModelState.IsValid)
             {
-                var supervisor = await _supRepo.GetByStringIdAsync(model.Id);
-                supervisor.FirstName = model.FirstName;
-                supervisor.LastName = model.LastName;
-                supervisor.Email = model.Email;
-                supervisor.PhoneNumber = model.PhoneNumber;
-                _supRepo.Update(supervisor);
-                return RedirectToAction("EditSupervisorProfile");
+
+                var result = await UpdateSupervisorFromModelAsync(model);
+                if (result.Succeeded)
+                {
+                    ViewBag.AccountUpdated = "Account Updated Succefully";
+                    return View();
+                }
+                else
+                {
+                    ViewBag.AccountNotUpdated = "Error, Account Did Not Updated";
+                    return View();
+                }
             }
             else
             {
                 return View(model);
             }
         }
-        [HttpGet("resetPassword")]
+
+        [HttpGet("reset-password")]
         public ActionResult ResetPassword()
         {
             return View();
         }
-        [HttpPost("resetPassword")]
+
+        [HttpPost("reset-password")]
         public async Task<ActionResult> ResetPassword(ResetPasswordVM model)
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return RedirectToAction("Login");
+                return RedirectToAction(nameof(Login));
             }
+
             var result = await _userManager.ChangePasswordAsync(user,
                 model.CurrentPassword, model.NewPassword);
+
             if (result.Succeeded)
             {
                 await _signInManager.RefreshSignInAsync(user);
@@ -213,6 +229,30 @@ namespace SummerTrainingSystem.Controllers
                 }
                 return View(model);
             }
+        }
+
+        private async Task<IdentityResult> UpdateStudentFromModelAsync(EditStudentProfileVM model)
+        {
+            var student = (Student)await _userManager.FindByIdAsync(model.Id);
+
+            student.FirstName = model.FirstName;
+            student.LastName = model.LastName;
+            student.Email = model.Email;
+            student.PhoneNumber = model.PhoneNumber;
+
+            return await _userManager.UpdateAsync(student);
+        }
+
+        private async Task<IdentityResult> UpdateSupervisorFromModelAsync(EditSupervisorProfileVM model)
+        {
+            var supervisor = (Supervisor)await _userManager.FindByIdAsync(model.Id);
+
+            supervisor.FirstName = model.FirstName;
+            supervisor.LastName = model.LastName;
+            supervisor.Email = model.Email;
+            supervisor.PhoneNumber = model.PhoneNumber;
+
+            return await _userManager.UpdateAsync(supervisor);
         }
     }
 }
