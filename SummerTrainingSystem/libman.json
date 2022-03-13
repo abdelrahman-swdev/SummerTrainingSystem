@@ -13,18 +13,32 @@
         "jquery.min.js",
         "jquery.js"
       ]
+    },
+    {
+      "provider": "jsdelivr",
+      "library": "jquery-validation@1.19.3",
+      "destination": "wwwroot/lib/jquery-validation/",
+      "files": [
+        "dist/jquery.validate.min.js",
+        "dist/jquery.validate.js",
+        "dist/additional-methods.min.js",
+        "dist/additional-methods.js"
+      ]
+    },
+    {
+      "library": "bootswatch@5.1.3",
+      "destination": "wwwroot/lib/bootswatch/"
+    },
+    {
+      "library": "bootstrap@5.1.3",
+      "destination": "wwwroot/lib/bootstrap/",
+      "files": [
+        "js/bootstrap.min.js",
+        "css/bootstrap.css",
+        "css/bootstrap.min.css",
+        "js/bootstrap.bundle.js",
+        "js/bootstrap.bundle.min.js"
+      ]
     }
-  ,
-{
-  "provider": "jsdelivr",
-  "library": "jquery-validation@1.19.3",
-  "destination": "wwwroot/lib/jquery-validation/",
-  "files": [
-    "dist/jquery.validate.min.js",
-    "dist/jquery.validate.js",
-    "dist/additional-methods.min.js",
-    "dist/additional-methods.js"
   ]
-}
-]
 }

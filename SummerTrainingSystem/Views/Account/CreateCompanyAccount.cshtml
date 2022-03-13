@@ -1,0 +1,119 @@
+﻿@model SaveCompanyAccountVM
+@inject SummerTrainingSystemCore.Interfaces.IGenericRepository<CompanySize> sizesRepo
+@{
+    ViewData["Title"] = "Create Company";
+}
+<div class="container my-5">
+    <div class="row">
+        <div class="col-lg-10 col">
+
+            <h1 class="display-5">Create New Company</h1>
+            <hr />
+
+            @if (!String.IsNullOrEmpty(ViewBag.ComapnyCreated))
+            {
+                <div class="alert alert-success">
+                    @ViewBag.ComapnyCreated
+                </div>
+            }
+            @if (!String.IsNullOrEmpty(ViewBag.ComapnyNotCreated))
+            {
+                <div class="alert alert-danger">
+                    @ViewBag.ComapnyNotCreated
+                </div>
+            }
+
+            <form method="post">
+                <div class="row">
+                    <div class="col-md-6 mt-4">
+                        <input class="form-control" asp-for="Name" placeholder="Company Name" />
+                        <span class="text-danger" asp-validation-for="Name"></span>
+                    </div>
+                    <div class="col-md-6 mt-4">
+                        <input class="form-control" asp-for="PhoneNumber" placeholder="Phone Number" />
+                        <span class="text-danger" asp-validation-for="PhoneNumber"></span>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6 mt-4">
+                        <input class="form-control" asp-for="Country" placeholder="Country" />
+                        <span class="text-danger" asp-validation-for="Country"></span>
+                    </div>
+                    <div class="col-md-6 mt-4">
+                        <input class="form-control" asp-for="City" placeholder="City"/>
+                        <span class="text-danger" asp-validation-for="City"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mt-4">
+                        <input class="form-control" asp-for="Industry" placeholder="Industry (Computer Software, Finance ...)" />
+                        <span class="text-danger" asp-validation-for="Industry"></span>
+                    </div>
+                    <div class="col-md-6 mt-4">
+                        <input class="form-control" asp-for="Specialities" placeholder="Specialities (IT Services, Consulting Services ...)"/>
+                        <span class="text-danger" asp-validation-for="Specialities"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mt-4">
+                        <input class="form-control" asp-for="CompanyWebsite" placeholder="Company Website (optional)" style="margin-top:25px;"/>
+                        <span class="text-danger" asp-validation-for="CompanyWebsite"></span>
+                    </div>
+                    <div class="col-md-6 mt-4">
+                        <label asp-for="FoundedAt"></label>
+                        <input class="form-control" asp-for="FoundedAt" />
+                        <span class="text-danger" asp-validation-for="FoundedAt"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mt-4">
+                        <input class="form-control" asp-for="Email" placeholder="Email" />
+                        <span class="text-danger" asp-validation-for="Email"></span>
+                    </div>
+                    <div class="col-md-6 mt-4">
+                        <select asp-for="CompanySizeId" class="form-select" 
+                                asp-items="@(
+                                    sizesRepo.ListAllAsync().Result
+                                    .Select(l => new SelectListItem() {Text = l.SizeName + " - " + l.SizeRange, Value = l.Id.ToString() })
+                                )">
+                            <option value="">Company Size</option>
+                        </select>
+                        <span class="text-danger" asp-validation-for="CompanySizeId"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col mt-4">
+                        <textarea class="form-control" asp-for="AboutCompany" placeholder="About Company"></textarea>
+                        <span class="text-danger" asp-validation-for="AboutCompany"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mt-4">
+                        <div class="">
+                            <input class="form-control" asp-for="Password" placeholder="Password" />
+                        </div>
+                        <span class="text-danger" asp-validation-for="Password"></span>
+                    </div>
+                    <div class="col-md-6 mt-4">
+                        <div class="">
+                            <input class="form-control" asp-for="ConfirmPassword" placeholder="Confirm Password" />
+                        </div>
+                        <span class="text-danger" asp-validation-for="ConfirmPassword"></span>
+                    </div>
+                </div>
+                <div class="mt-4 d-flex justify-content-between">
+                    <button class="btn btn-success">Save</button>
+                    <a class="btn btn-outline-dark" asp-controller="Users" asp-action="GetAllCompanies">Back</a>
+                </div>
+            </form>
+            <div class="mt-4 text-danger" asp-validation-summary="ModelOnly"></div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

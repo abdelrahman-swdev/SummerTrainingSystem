@@ -16,5 +16,11 @@ namespace SummerTrainingSystem.Controllers
         {
             return View();
         }
+
+        [HttpGet("companies")]
+        public ActionResult GetAllCompanies()
+        {
+            return View();
+        }
     }
 }

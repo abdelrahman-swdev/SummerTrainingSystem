@@ -1,5 +1,7 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using SummerTrainingSystemCore.Entities;
+using SummerTrainingSystemCore.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +24,31 @@ namespace SummerTrainingSystemEF.Data.SeedData
                         new Department{Name = "Information Technology", Abbreviation = "IT"}
                     };
                     await context.Departments.AddRangeAsync(deps);
+                    await context.SaveChangesAsync();
+                }
+
+                if (!context.Roles.Any())
+                {
+                    IEnumerable<IdentityRole> roles = new List<IdentityRole>()
+                    {
+                        new IdentityRole{Name = Roles.Admin.ToString(), NormalizedName = Roles.Admin.ToString().ToUpper()},
+                        new IdentityRole{Name = Roles.Student.ToString(), NormalizedName = Roles.Student.ToString().ToUpper()},
+                        new IdentityRole{Name = Roles.Supervisor.ToString(), NormalizedName = Roles.Supervisor.ToString().ToUpper()},
+                        new IdentityRole{Name = Roles.Company.ToString(), NormalizedName = Roles.Company.ToString().ToUpper()},
+                    };
+                    await context.Roles.AddRangeAsync(roles);
+                    await context.SaveChangesAsync();
+                }
+
+                if (!context.CompanySizes.Any())
+                {
+                    IEnumerable<CompanySize> sizes = new List<CompanySize>()
+                    {
+                        new CompanySize{SizeName="Small", SizeRange="10 to 49 employees"},
+                        new CompanySize{SizeName="Medium", SizeRange="50 to 249 employees"},
+                        new CompanySize{SizeName="Large", SizeRange="250 employees or more"}
+                    };
+                    await context.CompanySizes.AddRangeAsync(sizes);
                     await context.SaveChangesAsync();
                 }
 

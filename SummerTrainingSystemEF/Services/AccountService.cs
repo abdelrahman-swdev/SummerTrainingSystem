@@ -11,18 +11,16 @@ namespace SummerTrainingSystemEF.Services
     public class AccountService : IAccountService
     {
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly ApplicationDbContext _context;
         private readonly SignInManager<IdentityUser> _signInManager;
 
-        public AccountService(UserManager<IdentityUser> userManager, 
-            RoleManager<IdentityRole> roleManager,
+        public AccountService(
+            UserManager<IdentityUser> userManager,
             ApplicationDbContext context,
             SignInManager<IdentityUser> signInManager
             )
         {
             _userManager = userManager;
-            _roleManager = roleManager;
             _context = context;
             _signInManager = signInManager;
         }
@@ -68,6 +66,16 @@ namespace SummerTrainingSystemEF.Services
             return result;
         }
 
+        public async Task<IdentityResult> CreateCompanyAccountAsync(HrCompany company, string password)
+        {
+            var result = await _userManager.CreateAsync(company, password);
+            if (result.Succeeded)
+            {
+                await _userManager.AddToRoleAsync(company, Roles.Company.ToString());
+            }
+            return result;
+        }
+
         public async Task<SignInResult> LoginAsync(int universityId, string password)
         {
             var student = _context.Students.FirstOrDefault(c => c.UniversityID == universityId);
@@ -97,6 +105,17 @@ namespace SummerTrainingSystemEF.Services
         public async Task LogoutAsync()
         {
             await _signInManager.SignOutAsync();
+        }
+
+        public async Task<SignInResult> LoginAsCompanyAsync(string email, string password)
+        {
+            var company = await _userManager.FindByEmailAsync(email);
+            if (company != null)
+            {
+                return await _signInManager.PasswordSignInAsync(company, password, false, false);
+            }
+
+            return SignInResult.Failed;
         }
     }
 }

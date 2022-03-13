@@ -1,12 +1,12 @@
-﻿@model LoginVM
+﻿@model LoginAsCompanyVM
 @{
-    ViewData["Title"] = "Login";
+    ViewData["Title"] = "Login As Company";
 }
 <div class="container my-5">
     <div class="row">
         <div class="col-lg-8 col">
 
-            <h1 class="display-5">Login</h1>
+            <h1 class="display-5">Login As Company</h1>
             <hr />
             @if (!String.IsNullOrEmpty(ViewBag.LoginFailed))
             {
@@ -16,8 +16,8 @@
             }
             <form method="post">
                 <div class="mt-4">
-                    <input class="form-control" asp-for="UniversityId" placeholder="University Id" />
-                    <span class="text-danger" asp-validation-for="UniversityId"></span>
+                    <input class="form-control" asp-for="Email" placeholder="Email Address" />
+                    <span class="text-danger" asp-validation-for="Email"></span>
                 </div>
                 <div class="mt-4">
                     <input class="form-control" asp-for="Password" placeholder="Password" />

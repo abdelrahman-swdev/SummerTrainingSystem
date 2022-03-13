@@ -1,4 +1,6 @@
-﻿<ul class="navbar-nav ml-auto">
+﻿@using SummerTrainingSystemCore.Enums
+
+<ul class="navbar-nav ml-auto text-center login-ul">
     @if (User.Identity.IsAuthenticated)
     {
 
@@ -7,15 +9,21 @@
                 Hello @User.Identity.Name
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                @if (User.IsInRole("Student"))
+                @if (User.IsInRole(Roles.Student.ToString()))
                 {
                     <a class="dropdown-item" asp-controller="Account" asp-action="EditStudent">
                         Edit Profile
                     </a>
                 }
-                @if (User.IsInRole("Supervisor"))
+                @if (User.IsInRole(Roles.Supervisor.ToString()))
                 {
                     <a class="dropdown-item" asp-controller="Account" asp-action="EditSupervisor">
+                        Edit Profile
+                    </a>
+                }
+                @if (User.IsInRole(Roles.Company.ToString()))
+                {
+                    <a class="dropdown-item" asp-controller="Account" asp-action="EditCompany">
                         Edit Profile
                     </a>
                 }
@@ -26,8 +34,11 @@
     }
     else
     {
+        <li class="nav-item me-1">
+            <a class="nav-link bg-primary text-white" asp-controller="Account" asp-action="Login">Login</a>
+        </li>
         <li class="nav-item">
-            <a class="nav-link" asp-controller="Account" asp-action="Login">Login</a>
+            <a class="nav-link bg-success text-white" asp-controller="Account" asp-action="LoginAsCompany">Company?</a>
         </li>
     }
 </ul>

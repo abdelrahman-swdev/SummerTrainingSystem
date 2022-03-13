@@ -98,6 +98,31 @@ namespace SummerTrainingSystem.Controllers
             }
         }
 
+        [HttpGet("loginascompany")]
+        public IActionResult LoginAsCompany()
+        {
+            return View();
+        }
+
+        [HttpPost("loginascompany")]
+        public async Task<IActionResult> LoginAsCompany(LoginAsCompanyVM model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var result = await _accountService.LoginAsCompanyAsync(model.Email, model.Password);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                ViewBag.LoginFailed = "Error, invalid details";
+                return View(model);
+            }
+        }
+
         [HttpGet("login")]
         public IActionResult Login()
         {
@@ -231,6 +256,38 @@ namespace SummerTrainingSystem.Controllers
             }
         }
 
+        [HttpGet("company/new")]
+        public IActionResult CreateCompanyAccount()
+        {
+            return View();
+        }
+
+        [HttpPost("company/new")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateCompanyAccount(SaveCompanyAccountVM model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var company = _mapper.Map<HrCompany>(model);
+            var result = await _accountService.CreateCompanyAccountAsync(company, model.Password);
+            if (result.Succeeded)
+            {
+                ViewBag.ComapnyCreated = "Company Created Succefully";
+                return View();
+            }
+            else
+            {
+                ViewBag.ComapnyNotCreated = "Error, Company Did Not Created";
+                foreach (var er in result.Errors)
+                {
+                    ModelState.AddModelError("", er.Description);
+                }
+                return View(model);
+            }
+        }
+
         private async Task<IdentityResult> UpdateStudentFromModelAsync(EditStudentProfileVM model)
         {
             var student = (Student)await _userManager.FindByIdAsync(model.Id);
@@ -254,5 +311,8 @@ namespace SummerTrainingSystem.Controllers
 
             return await _userManager.UpdateAsync(supervisor);
         }
+
+
+
     }
 }

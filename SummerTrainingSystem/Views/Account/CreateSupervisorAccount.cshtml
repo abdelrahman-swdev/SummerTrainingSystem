@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Create Supervisor";
 }
-<div class="container mt-5">
+<div class="container my-5">
     <div class="row">
         <div class="col-lg-8 col">
 
@@ -55,7 +55,7 @@
                                     depRepo.ListAllAsync().Result
                                     .Select(l => new SelectListItem() {Text = l.Abbreviation, Value = l.Id.ToString() })
                                 )">
-                            <option value="">Select Department</option>
+                            <option value="">Department</option>
                         </select>
                         <span class="text-danger" asp-validation-for="DepartmentId"></span>
                     </div>
@@ -73,7 +73,7 @@
                 </div>
                 <div style="display:flex;justify-content:space-between;" class="mt-4">
                     <button class="btn btn-success">Save</button>
-                    <a class="btn btn-outline-dark" asp-controller="Home" asp-action="Index">Back</a>
+                    <a class="btn btn-outline-dark" asp-controller="Users" asp-action="GetAllSupervisors">Back</a>
                 </div>
             </form>
             <div class="mt-4 text-danger" asp-validation-summary="ModelOnly"></div>

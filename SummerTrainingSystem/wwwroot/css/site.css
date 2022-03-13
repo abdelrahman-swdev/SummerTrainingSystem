@@ -1,4 +1,5 @@
 ﻿@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Roboto:wght@300;400;500;700;900&display=swap');
+
 :root {
     --light-font: 300;
     --regular-font: 400;
@@ -6,6 +7,7 @@
     --bold-font: 700;
     --extra-bold-font: 900;
 }
+
 a.navbar-brand {
     white-space: normal;
     text-align: center;
@@ -66,30 +68,20 @@ html {
 }
 
 body {
-    /* Margin bottom by footer height */
-    margin-bottom: 60px;
+    margin:0;
     padding: 0;
     box-sizing: border-box;
     font-family: "Roboto", sans-serif !important;
     background-color: #f5f6f7 !important;
 }
 
-.footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    white-space: nowrap;
-    line-height: 60px; /* Vertically center the text there */
-}
-
-.list-group-item
-{
-    cursor : pointer;
+.list-group-item {
+    cursor: pointer;
 }
 
 .custom-spinner {
     position: absolute;
-    top: 0;
+    top: -300px;
     left: 0;
     height: 100%;
     width: 100%;
@@ -98,3 +90,53 @@ body {
     align-items: center;
     z-index: 3;
 }
+
+/************************************************************************/
+@media(max-width: 992px)
+{
+    .navbar
+    {
+        padding: 3rem 0 !important;
+    }
+    .navbar-collapse 
+    {
+        padding-top: 15px;
+    }
+
+    .login-ul 
+    {
+        margin-top: 30px;
+        border-top: 3px solid #fff;
+    }
+
+    .login-ul .nav-item 
+    {
+        margin: 10px 0 !important;
+    }
+    .custom-spinner {
+        top: -300px;
+    }
+}
+@media(min-width: 991px) {
+    .custom-spinner {
+        top: 0;
+    }
+}
+@media(max-width: 600px) {
+    .custom-spinner {
+        top: 150px;
+    }
+}
+
+
+.navbar-dark .navbar-nav .nav-link.active, .navbar-dark .navbar-nav .show > .nav-link {
+    background-color: black;
+}
+.nav-link {
+    transition: all 0.3s ease-in-out;
+}
+.nav-link:hover 
+{
+    transform: translateY(-2px);
+}
+/************************************************************************/

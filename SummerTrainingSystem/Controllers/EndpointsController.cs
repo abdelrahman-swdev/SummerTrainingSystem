@@ -19,21 +19,13 @@ namespace SummerTrainingSystem.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly IGenericRepository<Trainning> _trainRepo;
-        private readonly IGenericRepository<Department> _depRepo;
-        private readonly IMapper _mapper;
 
-        public EndpointsController(IGenericRepository<Department> depRepo,
-            IGenericRepository<Trainning> trainRepo,
-            IMapper mapper,
+        public EndpointsController(
             ApplicationDbContext context,
             UserManager<IdentityUser> userManager)
         {
             _context = context;
             _userManager = userManager;
-            _depRepo = depRepo;
-            _trainRepo = trainRepo;
-            _mapper = mapper;
         }
 
         [HttpDelete("students/{id}")]
@@ -80,9 +72,8 @@ namespace SummerTrainingSystem.Controllers
             var columnName = Request.Form["columns[" + columnIndex + "][name]"];
 
             // apply filtering with search term if it has value
-            IQueryable<Student> students = _context.Students.Where(m => string.IsNullOrEmpty(searchTerm)
-                ? true
-                : m.FirstName.Contains(searchTerm) ||
+            IQueryable<Student> students = _context.Students.Where(m => string.IsNullOrEmpty(searchTerm) || 
+                m.FirstName.Contains(searchTerm) ||
                 m.LastName.Contains(searchTerm) ||
                 m.Email.Contains(searchTerm) ||
                 m.UniversityID.ToString().Contains(searchTerm) ||
@@ -135,9 +126,8 @@ namespace SummerTrainingSystem.Controllers
             var columnName = Request.Form["columns[" + columnIndex + "][name]"];
 
             // apply filtering with search term if it has value
-            IQueryable<Supervisor> supervisors = _context.Supervisors.Where(m => string.IsNullOrEmpty(searchTerm)
-                ? true
-                : m.FirstName.Contains(searchTerm) ||
+            IQueryable<Supervisor> supervisors = _context.Supervisors.Where(m => string.IsNullOrEmpty(searchTerm) || 
+                m.FirstName.Contains(searchTerm) ||
                 m.LastName.Contains(searchTerm) ||
                 m.Email.Contains(searchTerm) ||
                 m.UniversityID.ToString().Contains(searchTerm) ||
@@ -166,6 +156,71 @@ namespace SummerTrainingSystem.Controllers
             };
 
             return Ok(jsonData);
+        }
+
+
+        [HttpPost("companies")]
+        public IActionResult GetCompanies()
+        {
+            // get records per page
+            var pageSize = int.Parse(Request.Form["length"]);
+
+            // get skiped records
+            var skip = int.Parse(Request.Form["start"]);
+
+            // get search term
+            var searchTerm = Request.Form["search[value]"];
+
+            // get order direction
+            var orderDirection = Request.Form["order[0][dir]"];
+
+            // get clicked column index to order
+            var columnIndex = Request.Form["order[0][column]"];
+
+            // get clicked column name to order
+            var columnName = Request.Form["columns[" + columnIndex + "][name]"];
+
+            // apply filtering with search term if it has value
+            IQueryable<HrCompany> companies = _context.HrCompanies.Where(m => string.IsNullOrEmpty(searchTerm) || 
+                m.Name.Contains(searchTerm) ||
+                m.FoundedAt.ToString("yyyy").Contains(searchTerm) ||
+                m.City.Contains(searchTerm) ||
+                m.CompanySize.SizeRange.Contains(searchTerm)
+                ).Include(s => s.CompanySize);
+
+
+            // apply ordering
+            if (!(string.IsNullOrEmpty(orderDirection) && string.IsNullOrEmpty(columnIndex) && string.IsNullOrEmpty(columnName)))
+            {
+                companies = companies.OrderBy($"{columnName} {orderDirection}");
+            }
+
+            // get total records count
+            var recordsTotal = companies.Count();
+
+            // implements pagination
+            var data = companies.Skip(skip).Take(pageSize).ToList();
+
+            // return json object as a result
+            var jsonData = new
+            {
+                recordsFiltered = recordsTotal,
+                recordsTotal,
+                data
+            };
+
+            return Ok(jsonData);
+        }
+
+        [HttpDelete("companies/{id}")]
+        public async Task<IActionResult> DeleteCompany(string id)
+        {
+            var result = await _userManager.DeleteAsync(await _userManager.FindByIdAsync(id));
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
+            return BadRequest();
         }
     }
 }

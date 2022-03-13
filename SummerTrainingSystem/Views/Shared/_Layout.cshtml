@@ -5,45 +5,60 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Tradent</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" 
-        rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" 
-        crossorigin="anonymous">
+    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css" />
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" 
-        integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" 
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+          integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <link rel="stylesheet" href="~/css/site.css" />
 
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg  navbar-dark bg-dark py-4">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-4">
             <div class="container">
-                <a class="navbar-brand" asp-controller="Home" asp-action="Index">
+                <a class="navbar-brand" style="border: 2px solid gray;padding: 0 5px;" 
+                asp-controller="Home" 
+                asp-action="Index">
                     <i class="fas fa-user-graduate"></i> | TRADENT
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" 
-                    aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#siteNav" aria-controls="siteNav"
+                        aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <div class="collapse navbar-collapse" style="font-size:18px;padding-bottom: 3px;" id="siteNav">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 text-center">
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="Trainings" asp-action="Index">Trainings</a>
+                            <a class="nav-link
+                            @Html.ActiveClass("Trainings", "Index")"
+                               asp-controller="Trainings"
+                               asp-action="Index">Trainings</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="Users" asp-action="GetAllStudents">Students</a>
+                            <a class="nav-link 
+                                @Html.ActiveClass("Users", "GetAllStudents")"
+                               asp-controller="Users"
+                               asp-action="GetAllStudents">Students</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="Users" asp-action="GetAllSupervisors">Supervisors</a>
+                            <a class="nav-link 
+                            @Html.ActiveClass("Users", "GetAllSupervisors")" 
+                            asp-controller="Users" 
+                            asp-action="GetAllSupervisors">Supervisors</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="Roles" asp-action="ListRoles">Roles</a>
+                            <a class="nav-link 
+                            @Html.ActiveClass("Users", "GetAllCompanies")" 
+                            asp-controller="Users" 
+                            asp-action="GetAllCompanies">Companies</a>
                         </li>
-                        
+                        <li class="nav-item">
+                            <a class="nav-link @Html.ActiveClass("Roles", "ListRoles")"  asp-controller="Roles" asp-action="ListRoles">Roles</a>
+                        </li>
+
                     </ul>
 
                     <partial name="_LoginPartial" />
@@ -52,23 +67,13 @@
         </nav>
     </header>
 
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2022 - Tradent
-        </div>
-    </footer>
+    <main>
+        @RenderBody()
+    </main>
 
     <script src="~/lib/jquery/jquery.min.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" 
-        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" 
-        crossorigin="anonymous"></script>
+    <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
