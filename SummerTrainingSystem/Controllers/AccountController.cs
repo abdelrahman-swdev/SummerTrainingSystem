@@ -287,6 +287,37 @@ namespace SummerTrainingSystem.Controllers
                 return View(model);
             }
         }
+        [HttpGet("company/edit")]
+        public async Task<ActionResult> EditCompany()
+        {
+            var logedInHrCompanyId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var logedInHrCompany = await _userManager.FindByIdAsync(logedInHrCompanyId);
+            if (logedInHrCompany == null) NotFound();
+            var model = _mapper.Map<EditHrCompanyVM>(logedInHrCompany);
+            return View(model);
+        }
+        [HttpPost("company/edit")]
+        public async Task<ActionResult> EditCompany(EditHrCompanyVM model)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await UpdateCompanyFromModelAsync(model);
+                if (result.Succeeded)
+                {
+                    ViewBag.AccountUpdated = "Account Updated Succefully";
+                    return View();
+                }
+                else
+                {
+                    ViewBag.AccountNotUpdated = "Error, Account Did Not Updated";
+                    return View();
+                }
+            }
+            else
+            {
+                return View(model);
+            }
+        }
 
         private async Task<IdentityResult> UpdateStudentFromModelAsync(EditStudentProfileVM model)
         {
@@ -310,6 +341,20 @@ namespace SummerTrainingSystem.Controllers
             supervisor.PhoneNumber = model.PhoneNumber;
 
             return await _userManager.UpdateAsync(supervisor);
+        }
+        private async Task<IdentityResult> UpdateCompanyFromModelAsync(EditHrCompanyVM model)
+        {
+            var hrCompany = (HrCompany)await _userManager.FindByIdAsync(model.Id);
+
+            hrCompany.Name = model.Name;
+            hrCompany.City = model.City;
+            hrCompany.Email = model.Email;
+            hrCompany.PhoneNumber = model.PhoneNumber;
+            hrCompany.Country = model.Country;
+            hrCompany.CompanySize = model.CompanySize;
+
+
+            return await _userManager.UpdateAsync(hrCompany);
         }
 
 
