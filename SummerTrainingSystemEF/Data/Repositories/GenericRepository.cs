@@ -16,18 +16,19 @@ namespace SummerTrainingSystemEF.Data.Repositories
         {
             _context = context;
         }
-        public void Add(T entity)
+        public int Add(T entity)
         {
             _context.Set<T>().Add(entity);
-            _context.SaveChanges();
+            return _context.SaveChanges();
         }
 
-        public void Delete(T entity)
+        public int Delete(T entity)
         {
             _context.Set<T>().Remove(entity);
-            _context.SaveChanges();
+            return _context.SaveChanges();
         }
 
+        // return one entity with related data
         public async Task<T> GetAsync(Expression<Func<T, bool>> criteria, string[] includes)
         {
             var query = _context.Set<T>().AsQueryable<T>();
@@ -46,11 +47,13 @@ namespace SummerTrainingSystemEF.Data.Repositories
             return await _context.Set<T>().FindAsync(id);
         }
 
+        // return all entities without related data
         public async Task<IReadOnlyList<T>> ListAllAsync()
         {
             return await _context.Set<T>().ToListAsync();
         }
 
+        // return entities with related data
         public async Task<IReadOnlyList<T>> ListAsync(Expression<Func<T, bool>> criteria, string[] includes)
         {
             var query = _context.Set<T>().AsQueryable<T>();
@@ -65,10 +68,10 @@ namespace SummerTrainingSystemEF.Data.Repositories
             return await query.ToListAsync();
         }
 
-        public void Update(T entity)
+        public int Update(T entity)
         {
             _context.Set<T>().Update(entity);
-             _context.SaveChanges();
+            return _context.SaveChanges();
         }
     }
 }

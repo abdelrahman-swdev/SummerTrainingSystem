@@ -17,5 +17,9 @@ namespace SummerTrainingSystemCore.Entities
         public DateTime CreatedAt { get; set; }
         public int DepartmentId { get; set; }
         public Department Department { get; set; }
+        public int TrainingTypeId { get; set; }
+        public TrainingType TrainingType { get; set; }
+        public string CompanyId { get; set; }
+        public HrCompany Company { get; set; }
     }
 }

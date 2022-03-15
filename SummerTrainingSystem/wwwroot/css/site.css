@@ -130,7 +130,7 @@ body {
 
 
 .navbar-dark .navbar-nav .nav-link.active, .navbar-dark .navbar-nav .show > .nav-link {
-    background-color: black;
+    border-bottom: 1px solid #fff;
 }
 .nav-link {
     transition: all 0.3s ease-in-out;
@@ -140,3 +140,11 @@ body {
     transform: translateY(-2px);
 }
 /************************************************************************/
+.tr-type-badge {
+    color: #f8f9fa;
+    background-color: #198754;
+    font-style:italic;
+    font-size:10px;
+    font-weight:500;
+    padding:2px;
+}

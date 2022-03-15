@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SummerTrainingSystemEF.Data;
 
 namespace SummerTrainingSystemEF.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220315171506_LinkTrainingsWithTheirCompanies")]
+    partial class LinkTrainingsWithTheirCompanies
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -257,23 +259,6 @@ namespace SummerTrainingSystemEF.Data.Migrations
                     b.ToTable("Departments");
                 });
 
-            modelBuilder.Entity("SummerTrainingSystemCore.Entities.TrainingType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("TypeName")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TrainingTypes");
-                });
-
             modelBuilder.Entity("SummerTrainingSystemCore.Entities.Trainning", b =>
                 {
                     b.Property<int>("Id")
@@ -305,16 +290,11 @@ namespace SummerTrainingSystemEF.Data.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<int>("TrainingTypeId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CompanyId");
 
                     b.HasIndex("DepartmentId");
-
-                    b.HasIndex("TrainingTypeId");
 
                     b.ToTable("Trainnings");
                 });
@@ -492,17 +472,9 @@ namespace SummerTrainingSystemEF.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SummerTrainingSystemCore.Entities.TrainingType", "TrainingType")
-                        .WithMany()
-                        .HasForeignKey("TrainingTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Company");
 
                     b.Navigation("Department");
-
-                    b.Navigation("TrainingType");
                 });
 
             modelBuilder.Entity("SummerTrainingSystemCore.Entities.HrCompany", b =>

@@ -17,5 +17,10 @@ namespace SummerTrainingSystem.Models
 
         public int DepartmentId { get; set; }
         public DepartmentVM Department { get; set; }
+
+        public int TrainingTypeId { get; set; }
+        public TrainingTypeVM TrainingType { get; set; }
+        public string CompanyId { get; set; }
+        public CompanyVM Company { get; set; }
     }
 }

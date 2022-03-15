@@ -23,6 +23,9 @@
                 }
                 @if (User.IsInRole(Roles.Company.ToString()))
                 {
+                    <a class="dropdown-item" asp-controller="Account" asp-action="GetTrainingsForCompany">
+                        My Trainings
+                    </a>
                     <a class="dropdown-item" asp-controller="Account" asp-action="EditCompany">
                         Edit Profile
                     </a>

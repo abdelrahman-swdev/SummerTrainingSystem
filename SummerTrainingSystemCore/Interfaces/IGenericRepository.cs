@@ -18,9 +18,9 @@ namespace SummerTrainingSystemCore.Interfaces
 
         // get all entities with criteria with related entities
         Task<IReadOnlyList<T>> ListAsync(Expression<Func<T, bool>> criteria, string[] includes);
-        void Add(T entity);
-        void Update(T entity);
-        void Delete(T entity);
+        int Add(T entity);
+        int Update(T entity);
+        int Delete(T entity);
 
     }
 }

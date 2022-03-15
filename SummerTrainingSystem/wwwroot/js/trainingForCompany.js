@@ -1,4 +1,6 @@
 ﻿function deleteTraining(data) {
+    const spinner = document.getElementById(data);
+    const parent = spinner.parentElement.parentElement.parentElement.parentElement;
     Swal.fire({
         title: 'Are you sure?',
         text: "You won't be able to revert this!",
@@ -13,14 +15,19 @@
                 url: '/trainings/' + data,
                 method: 'Delete',
                 beforeSend: (xhr) => {
-                    document.getElementById('deleteSpinner').classList.toggle('d-none');
+                    spinner.classList.toggle('d-none');
                 },
                 success: (result, status, xhr) => {
-                    document.getElementById('deleteSpinner').classList.toggle('d-none');
-                    window.location.replace('/trainings');
+                    spinner.classList.toggle('d-none');
+                    parent.className = "d-none";
+                    Swal.fire(
+                        'Deleted!',
+                        'Training deleted successfully.',
+                        'success'
+                    );
                 },
                 error: (result, status, xhr) => {
-                    document.getElementById('deleteSpinner').classList.toggle('d-none');
+                    spinner.classList.toggle('d-none');
                     Swal.fire(
                         'Error!',
                         'Something went wrong.',

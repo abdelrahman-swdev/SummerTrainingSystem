@@ -1,5 +1,6 @@
 ﻿@model SaveTrainingVM
 @inject SummerTrainingSystemCore.Interfaces.IGenericRepository<Department> depRepo
+@inject SummerTrainingSystemCore.Interfaces.IGenericRepository<TrainingType> typesRepo
 @{
     ViewData["Title"] = Model.Title;
 }
@@ -11,6 +12,7 @@
                 <hr />
             <form method="post">
                 <input asp-for="Id" type="hidden" />
+                <input asp-for="CompanyId" type="hidden" />
 
                 <div class="mt-4">
                     <input asp-for="Title" class="form-control" placeholder="Title" />
@@ -23,33 +25,43 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-md-6 mt-2">
+                    <div class="col-md-6 mt-3">
                         <label asp-for="StartAt"></label>
                         <input asp-for="StartAt" class="form-control"/>
                         <span asp-validation-for="StartAt" style="color: #ff008d;"></span>
                     </div>
-                    <div class="col-md-6 mt-2">
+                    <div class="col-md-6 mt-3">
                         <label asp-for="EndAt"></label>
                         <input asp-for="EndAt" class="form-control"/>
                         <span asp-validation-for="EndAt" style="color: #ff008d;"></span>
                     </div>
                 </div>
 
-                <div class="mt-4">
-                    <label asp-for="DepartmentId"></label>
-                    <select asp-for="DepartmentId" class="form-select" 
-                            asp-items="@(
-                                depRepo.ListAllAsync().Result
-                                .Select(l => new SelectListItem() {Text = l.Abbreviation, Value = l.Id.ToString() })
-                            )">
-                        <option value="">..</option>
-                    </select>
-                    <span asp-validation-for="DepartmentId" style="color: #ff008d;"></span>
+                <div class="row">
+                    <div class="col-md-6 mt-4">
+                        <select asp-for="DepartmentId" class="form-select" 
+                                asp-items="@(
+                                    depRepo.ListAllAsync().Result
+                                    .Select(l => new SelectListItem() {Text = l.Abbreviation, Value = l.Id.ToString() })
+                                )">
+                            <option value="">Department</option>
+                        </select>
+                        <span class="text-danger" asp-validation-for="DepartmentId"></span>
+                    </div>
+                    <div class="col-md-6 mt-4">
+                        <select asp-for="TrainingTypeId" class="form-select" 
+                                asp-items="@(
+                                    typesRepo.ListAllAsync().Result
+                                    .Select(l => new SelectListItem() {Text = l.TypeName, Value = l.Id.ToString() })
+                                )">
+                            <option value="">Training Type</option>
+                        </select>
+                        <span class="text-danger" asp-validation-for="TrainingTypeId"></span>
+                    </div>
                 </div>
-
-                <div class="buttons mb-2 mt-4">
-                    <button type="submit" class="btn btn-outline-dark">Save</button>
-                    <a href="/trainings" class="btn btn-outline-secondary">Back</a>
+                <div class="mt-4 d-flex justify-content-between">
+                    <button type="submit" class="btn btn-success">Save</button>
+                    <a asp-controller="Trainings" asp-action="Index" class="btn btn-outline-dark">Back</a>
                 </div>
             </form>
         </div>

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SummerTrainingSystemEF.Data;
 
 namespace SummerTrainingSystemEF.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220315183824_addTrainingTypesTable")]
+    partial class addTrainingTypesTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -305,16 +307,11 @@ namespace SummerTrainingSystemEF.Data.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<int>("TrainingTypeId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CompanyId");
 
                     b.HasIndex("DepartmentId");
-
-                    b.HasIndex("TrainingTypeId");
 
                     b.ToTable("Trainnings");
                 });
@@ -492,17 +489,9 @@ namespace SummerTrainingSystemEF.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SummerTrainingSystemCore.Entities.TrainingType", "TrainingType")
-                        .WithMany()
-                        .HasForeignKey("TrainingTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Company");
 
                     b.Navigation("Department");
-
-                    b.Navigation("TrainingType");
                 });
 
             modelBuilder.Entity("SummerTrainingSystemCore.Entities.HrCompany", b =>

@@ -27,6 +27,17 @@ namespace SummerTrainingSystemEF.Data.SeedData
                     await context.SaveChangesAsync();
                 }
 
+                if (!context.TrainingTypes.Any())
+                {
+                    IEnumerable<TrainingType> types = new List<TrainingType>()
+                    {
+                        new TrainingType{TypeName="Full Time"},
+                        new TrainingType{TypeName="Remote"},
+                    };
+                    await context.TrainingTypes.AddRangeAsync(types);
+                    await context.SaveChangesAsync();
+                }
+
                 if (!context.Roles.Any())
                 {
                     IEnumerable<IdentityRole> roles = new List<IdentityRole>()
@@ -66,6 +77,8 @@ namespace SummerTrainingSystemEF.Data.SeedData
                             CreatedAt = DateTime.UtcNow,
                             StartAt = DateTime.UtcNow,
                             EndAt = DateTime.UtcNow.AddDays(90),
+                            CompanyId="26fd4d66-3953-46c6-8eef-f139c6a3d4fe",
+                            TrainingTypeId=1,
                         },
 
                         new Trainning{
@@ -77,6 +90,8 @@ namespace SummerTrainingSystemEF.Data.SeedData
                             CreatedAt = DateTime.UtcNow,
                             StartAt = DateTime.UtcNow,
                             EndAt = DateTime.UtcNow.AddDays(60),
+                            CompanyId="26fd4d66-3953-46c6-8eef-f139c6a3d4fe",
+                            TrainingTypeId=2,
                         },
 
                         new Trainning{
@@ -89,6 +104,8 @@ namespace SummerTrainingSystemEF.Data.SeedData
                             CreatedAt = DateTime.UtcNow,
                             StartAt = DateTime.UtcNow,
                             EndAt = DateTime.UtcNow.AddDays(45),
+                            CompanyId="26fd4d66-3953-46c6-8eef-f139c6a3d4fe",
+                            TrainingTypeId=1,
                         }
                     };
 

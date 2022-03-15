@@ -1,12 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace SummerTrainingSystemCore.Entities
+namespace SummerTrainingSystem.Models
 {
-    public class HrCompany : IdentityUser
-    { 
-    
+    public class CompanyVM
+    {
         [Required, MaxLength(256)]
         public string Name { get; set; }
         [Required, MaxLength(256)]
@@ -22,6 +20,5 @@ namespace SummerTrainingSystemCore.Entities
         public string AboutCompany { get; set; }
         public DateTime FoundedAt { get; set; }
         public int CompanySizeId { get; set; }
-        public CompanySize CompanySize { get; set; }
     }
 }

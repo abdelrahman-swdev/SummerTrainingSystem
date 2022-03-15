@@ -1,48 +1,60 @@
 ﻿@model SaveTrainingVM
 @inject SummerTrainingSystemCore.Interfaces.IGenericRepository<Department> depRepo
+@inject SummerTrainingSystemCore.Interfaces.IGenericRepository<TrainingType> typesRepo
 @{
     ViewData["Title"] = "New Training";
 }
 
 <div class="container my-5">
     <div class="row">
-        <div class="col-lg-8 col">
+        <div class="col-lg-8">
             <h1 class="display-5">Add New Training</h1>
             <hr />
             <form method="post">
-
                 <div class="mt-4">
                     <input asp-for="Title" class="form-control" placeholder="Title" />
                     <span class="text-danger" asp-validation-for="Title"></span>
                 </div>
 
                 <div class="mt-4">
-                    <textarea asp-for="Description" class="form-control" placeholder="Description"></textarea>
+                    <textarea spellcheck="true" asp-for="Description" class="form-control" placeholder="Description"></textarea>
                     <span class="text-danger" asp-validation-for="Description"></span>
                 </div>
 
                 <div class="row">
-                    <div class="col-md-6 mt-2">
+                    <div class="col-md-6 mt-4">
                         <label asp-for="StartAt"></label>
                         <input asp-for="StartAt" class="form-control"/>
                         <span class="text-danger" asp-validation-for="StartAt"></span>
                     </div>
-                    <div class="col-md-6 mt-2">
+                    <div class="col-md-6 mt-4">
                         <label asp-for="EndAt"></label>
                         <input asp-for="EndAt" class="form-control"/>
                         <span class="text-danger" asp-validation-for="EndAt"></span>
                     </div>
                 </div>
 
-                <div class="mt-4">
-                    <select asp-for="DepartmentId" class="form-select" 
-                            asp-items="@(
-                                depRepo.ListAllAsync().Result
-                                .Select(l => new SelectListItem() {Text = l.Abbreviation, Value = l.Id.ToString() })
-                            )">
-                        <option value="">Select Department</option>
-                    </select>
-                    <span class="text-danger" asp-validation-for="DepartmentId"></span>
+                <div class="row">
+                    <div class="col-md-6 mt-4">
+                        <select asp-for="DepartmentId" class="form-select" 
+                                asp-items="@(
+                                    depRepo.ListAllAsync().Result
+                                    .Select(l => new SelectListItem() {Text = l.Abbreviation, Value = l.Id.ToString() })
+                                )">
+                            <option value="">Department</option>
+                        </select>
+                        <span class="text-danger" asp-validation-for="DepartmentId"></span>
+                    </div>
+                    <div class="col-md-6 mt-4">
+                        <select asp-for="TrainingTypeId" class="form-select" 
+                                asp-items="@(
+                                    typesRepo.ListAllAsync().Result
+                                    .Select(l => new SelectListItem() {Text = l.TypeName, Value = l.Id.ToString() })
+                                )">
+                            <option value="">Training Type</option>
+                        </select>
+                        <span class="text-danger" asp-validation-for="TrainingTypeId"></span>
+                    </div>
                 </div>
 
                 <div class="mt-4 d-flex justify-content-between">

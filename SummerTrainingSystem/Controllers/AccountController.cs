@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using SummerTrainingSystem.Models;
 using SummerTrainingSystemCore.Entities;
 using SummerTrainingSystemCore.Interfaces;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -17,6 +18,7 @@ namespace SummerTrainingSystem.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IGenericRepository<Student> _stuRepo;
         private readonly IGenericRepository<Supervisor> _supRepo;
+        private readonly IGenericRepository<Trainning> _trainRepo;
         private readonly SignInManager<IdentityUser> _signInManager;
 
         public AccountController(IAccountService accountService,
@@ -24,7 +26,8 @@ namespace SummerTrainingSystem.Controllers
             UserManager<IdentityUser> userManager,
             IGenericRepository<Student> stuRepo,
             IGenericRepository<Supervisor> supRepo,
-            SignInManager<IdentityUser> signInManager)
+            SignInManager<IdentityUser> signInManager,
+            IGenericRepository<Trainning> trainRepo)
         {
             _userManager = userManager;
             _accountService = accountService;
@@ -32,6 +35,7 @@ namespace SummerTrainingSystem.Controllers
             _stuRepo = stuRepo;
             _supRepo = supRepo;
             _signInManager = signInManager;
+            _trainRepo = trainRepo;
         }
 
         [HttpGet("student/new")]
@@ -286,6 +290,16 @@ namespace SummerTrainingSystem.Controllers
                 }
                 return View(model);
             }
+        }
+
+        [HttpGet("my-trainings")]
+        public async Task<IActionResult> GetTrainingsForCompany()
+        {
+            var loggedInCompanyId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var trainings = await _trainRepo.ListAsync(t => t.CompanyId == loggedInCompanyId, 
+                new string[] { "Department", "Company", "TrainingType" });
+            var model = _mapper.Map<List<TrainingVM>>(trainings);
+            return View(model);
         }
 
         private async Task<IdentityResult> UpdateStudentFromModelAsync(EditStudentProfileVM model)

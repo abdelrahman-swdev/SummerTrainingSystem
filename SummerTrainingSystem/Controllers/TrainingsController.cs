@@ -4,6 +4,7 @@ using SummerTrainingSystem.Models;
 using SummerTrainingSystemCore.Entities;
 using SummerTrainingSystemCore.Interfaces;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace SummerTrainingSystem.Controllers
@@ -54,7 +55,7 @@ namespace SummerTrainingSystem.Controllers
             }
 
             // all trainings (no search query was sent or department was selected)
-            var trainings = await _trainRepo.ListAsync(t => true, new string[] { "Department" });
+            var trainings = await _trainRepo.ListAsync(t => true, new string[] { "Department", "Company", "TrainingType" });
             var model = _mapper.Map<IReadOnlyList<TrainingVM>>(trainings);
             return PartialView(model);
         }
@@ -67,14 +68,14 @@ namespace SummerTrainingSystem.Controllers
             {
                 return NotFound();
             }
-            var trainning = await _trainRepo.GetByIdAsync(id);
+            var trainning = await _trainRepo.GetAsync(t => t.Id == id, new string[] { "Department", "Company", "TrainingType" });
 
             if (trainning == null)
             {
                 return NotFound();
             }
 
-            return View(_mapper.Map<SaveTrainingVM>(trainning));
+            return View(_mapper.Map<TrainingVM>(trainning));
         }
 
         // GET: trainings/new
@@ -91,10 +92,9 @@ namespace SummerTrainingSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                Trainning tr = _mapper.Map<Trainning>(model);
-                _trainRepo.Add(tr);
-
-                return RedirectToAction(nameof(Index));
+                model.CompanyId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                return _trainRepo.Add(_mapper.Map<Trainning>(model)) == 0 ? 
+                    View(model) : RedirectToAction("GetTrainingsForCompany", "Account");
             }
             return View(model);
         }
@@ -119,8 +119,8 @@ namespace SummerTrainingSystem.Controllers
             if (ModelState.IsValid)
             {
                 if (id != model.Id) return NotFound();
-                _trainRepo.Update(_mapper.Map<Trainning>(model));
-                return RedirectToAction(nameof(Index));
+                return _trainRepo.Update(_mapper.Map<Trainning>(model)) == 0 ? 
+                    View(model) : RedirectToAction("GetTrainingsForCompany", "Account");
             }
             else
             {
@@ -134,8 +134,7 @@ namespace SummerTrainingSystem.Controllers
         {
             try
             {
-                _trainRepo.Delete(await _trainRepo.GetByIdAsync(id));
-                return Ok();
+                return _trainRepo.Delete(await _trainRepo.GetByIdAsync(id)) == 0 ? BadRequest() : Ok();
             }
             catch
             {
@@ -149,7 +148,7 @@ namespace SummerTrainingSystem.Controllers
         {
             var trainningsBySearchAndDep = await _trainRepo.ListAsync(t =>
                     t.DepartmentId == depid && (t.Title.Contains(search) || t.Description.Contains(search)),
-                    new string[] { "Department" }
+                    new string[] { "Department", "Company", "TrainingType" }
                 );
             return _mapper.Map<IReadOnlyList<TrainingVM>>(trainningsBySearchAndDep);
         }
@@ -160,7 +159,7 @@ namespace SummerTrainingSystem.Controllers
             var department = await _depRepo.GetByIdAsync(depid);
             if (department == null) return null;
             var trainningsByDepartment = await _trainRepo.ListAsync(t =>
-                t.DepartmentId == department.Id, new string[] { "Department" }
+                t.DepartmentId == department.Id, new string[] { "Department", "Company", "TrainingType" }
             );
             return _mapper.Map<IReadOnlyList<TrainingVM>>(trainningsByDepartment);
         }
@@ -169,7 +168,7 @@ namespace SummerTrainingSystem.Controllers
         private async Task<IReadOnlyList<TrainingVM>> GetTrainingsBySearch(string search)
         {
             var trainningsBySearch = await _trainRepo.ListAsync(t => t.Title.Contains(search) || t.Description.Contains(search),
-                new string[] { "Department" });
+                new string[] { "Department", "Company", "TrainingType" });
             return _mapper.Map<IReadOnlyList<TrainingVM>>(trainningsBySearch);
         }
     }
