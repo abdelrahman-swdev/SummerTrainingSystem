@@ -27,7 +27,15 @@ function fillSupervisorsTable() {
             { "data": "lastName", "name": "LastName", "autowidth": true },
             { "data": "email", "name": "Email", "autowidth": true },
             { "data": "universityID", "name": "UniversityID", "autowidth": true },
-            { "data": "department.name", "name": "department.name", "autowidth": true },
+            {
+                "name": "Department.Name",
+                "render": function (data, type, row) {
+                    return `<td>
+                                ${row.department === null ? 'Not Assigned' : row.department.name}
+                            </td>`;
+                },
+                "autowidth": true
+            },
             {
                 "render": function (data, type, row) {
                     return `<button class="btn btn-danger" onclick=deleteSupervisor('${row.id}')>

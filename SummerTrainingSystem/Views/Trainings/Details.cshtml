@@ -11,7 +11,7 @@
         <div class="feature col">
 
             <h2>@Model.Title</h2>
-            <h5>@Model.Department.Abbreviation</h5> 
+            <h5>@Model.Department?.Abbreviation</h5> 
             <h5>@Model.Company.Name</h5> 
             <h5>Created At : @Model.CreatedAt.ToString("d")</h5> 
             <h5>Start At : @Model.StartAt.ToString("d")</h5> 

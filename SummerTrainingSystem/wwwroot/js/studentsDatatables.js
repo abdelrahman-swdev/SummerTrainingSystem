@@ -34,7 +34,6 @@ function fillStudentTable () {
                                 ${row.department === null ? 'Not Assigned' : row.department.name}
                             </td>`;
                 },
-                "orderable": false,
                 "autowidth": true
             },
             {
