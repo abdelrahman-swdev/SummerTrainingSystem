@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -24,8 +25,9 @@ namespace SummerTrainingSystem
             try
             {
                 var context = services.GetRequiredService<ApplicationDbContext>();
+                var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
                 await context.Database.MigrateAsync();
-                await Seeding.SeedAsync(context, loggerFactory);
+                await Seeding.SeedAsync(userManager, context, loggerFactory);
 
             }
             catch (Exception ex)

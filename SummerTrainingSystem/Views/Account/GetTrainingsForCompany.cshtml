@@ -6,34 +6,43 @@
 <div class="container mt-4">
     <a class="btn btn-outline-primary mb-3" asp-controller="Trainings" asp-action="Create">Create Training <i class="fas fa-plus-circle"></i></a>
         <div class="row">
-        @foreach (var tr in Model)
+        @if(Model.Count() == 0)
         {
-            <div class="col-lg-8 mb-4 bg-white p-3">
-                <div class="mb-2">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <a class="fs-4 fw-bold" asp-controller="Trainings" asp-action="Details" asp-route-id="@tr.Id">@tr.Title</a>
-                        <span class="tr-type-badge" >@tr.TrainingType.TypeName</span>
-                    </div>
-                    <div class="mb-2 text-muted">
-                        <span >@tr.Company.Name</span>
-                        <span >@tr.Company.City, </span>
-                        <span >@tr.Company.Country</span>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center mb-5">
-                        <span class="badge bg-primary">@tr.Department.Abbreviation</span>
-                        <span class="badge bg-secondary">@tr.CreatedAt.ToShortDateString()</span>
-                    </div>
-                    <div class="d-flex align-items-center">
-                        <a asp-controller="Trainings" asp-action="Edit" asp-route-id="@tr.Id" class="btn btn-secondary me-2">Edit</a>
-                        <button class="btn btn-danger" onclick="deleteTraining(@tr.Id)">
-                            Delete
-                            <div class="spinner-border spinner-border-sm d-none" role="status" id="@tr.Id">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
-                        </button>
+            <div class="alert alert-info">
+                You have not added trainings yet, <a asp-controller="Trainings" asp-action="Create">add now</a>
+            </div>
+        }
+        else
+        {
+            @foreach (var tr in Model)
+            {
+                <div class="col-lg-8 mb-4 bg-white p-3">
+                    <div class="mb-2">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a class="fs-4 fw-bold" asp-controller="Trainings" asp-action="Details" asp-route-id="@tr.Id">@tr.Title</a>
+                            <span class="tr-type-badge" >@tr.TrainingType.TypeName</span>
+                        </div>
+                        <div class="mb-2 text-muted">
+                            <span >@tr.Company.Name</span>
+                            <span >@tr.Company.City, </span>
+                            <span >@tr.Company.Country</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mb-5">
+                            <span class="badge bg-primary">@tr.Department.Abbreviation</span>
+                            <span class="badge bg-secondary">@tr.CreatedAt.ToShortDateString()</span>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <a asp-controller="Trainings" asp-action="Edit" asp-route-id="@tr.Id" class="btn btn-secondary me-2">Edit</a>
+                            <button class="btn btn-danger" onclick="deleteTraining(@tr.Id)">
+                                Delete
+                                <div class="spinner-border spinner-border-sm d-none" role="status" id="@tr.Id">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
+            }
         }
         </div>
 </div>

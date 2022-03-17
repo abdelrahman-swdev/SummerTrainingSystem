@@ -10,12 +10,6 @@
         <div class="col-lg-8">
             <h1 class="display-5">Edit Training</h1>
             <hr />
-            @if (!String.IsNullOrEmpty(ViewBag.TrainingUpdated))
-            {
-                <div class="alert alert-success">
-                    @ViewBag.TrainingUpdated
-                </div>
-            }
             @if (!String.IsNullOrEmpty(ViewBag.TrainingNotUpdated))
             {
                 <div class="alert alert-danger">
@@ -73,7 +67,7 @@
                 </div>
                 <div class="mt-4 d-flex justify-content-between">
                     <button type="submit" class="btn btn-success">Save</button>
-                    <a asp-controller="Trainings" asp-action="Index" class="btn btn-outline-dark">Back</a>
+                    <a asp-controller="Account" asp-action="GetTrainingsForCompany" class="btn btn-outline-dark">Back</a>
                 </div>
             </form>
         </div>

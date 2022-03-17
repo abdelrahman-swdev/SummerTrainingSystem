@@ -11,7 +11,7 @@ namespace SummerTrainingSystemEF.Data.SeedData
 {
     public static class Seeding
     {
-        public static async Task SeedAsync(ApplicationDbContext context, ILoggerFactory loggerFactory)
+        public static async Task SeedAsync(UserManager<IdentityUser> userManager, ApplicationDbContext context, ILoggerFactory loggerFactory)
         {
             try
             {
@@ -19,9 +19,9 @@ namespace SummerTrainingSystemEF.Data.SeedData
                 {
                     IEnumerable<Department> deps = new List<Department>()
                     {
-                        new Department{Name = "Information Systems", Abbreviation = "IS"},
-                        new Department{Name = "Computer Science", Abbreviation = "CS"},
-                        new Department{Name = "Information Technology", Abbreviation = "IT"}
+                        new Department{Id=1, Name = "Information Systems", Abbreviation = "IS"},
+                        new Department{Id=2, Name = "Computer Science", Abbreviation = "CS"},
+                        new Department{Id=3, Name = "Information Technology", Abbreviation = "IT"}
                     };
                     await context.Departments.AddRangeAsync(deps);
                     await context.SaveChangesAsync();
@@ -55,64 +55,56 @@ namespace SummerTrainingSystemEF.Data.SeedData
                 {
                     IEnumerable<CompanySize> sizes = new List<CompanySize>()
                     {
-                        new CompanySize{SizeName="Small", SizeRange="10 to 49 employees"},
-                        new CompanySize{SizeName="Medium", SizeRange="50 to 249 employees"},
-                        new CompanySize{SizeName="Large", SizeRange="250 employees or more"}
+                        new CompanySize{Id=1, SizeName="Small", SizeRange="10 to 49 employees"},
+                        new CompanySize{Id=2, SizeName="Medium", SizeRange="50 to 249 employees"},
+                        new CompanySize{Id=3, SizeName="Large", SizeRange="250 employees or more"}
                     };
                     await context.CompanySizes.AddRangeAsync(sizes);
                     await context.SaveChangesAsync();
                 }
 
-                if (!context.Trainnings.Any())
+                if (!context.Users.Any())
                 {
-                    IEnumerable<Trainning> trainnings = new List<Trainning>()
+                    var student = new Student()
                     {
-                        new Trainning{
-                            Title ="Junior.Net Web Developer",
-                            Description = @"Work with team in building web services and web-based applications using .NET technologies.
-                                    Define, design, and implement multi-tiered object-oriented distributed software applications.
-                                    Produce clean, efficient code based on client specifications.
-                                    Integrate software components and third-party programs to meet specifications.",
-                            DepartmentId = 1,
-                            CreatedAt = DateTime.UtcNow,
-                            StartAt = DateTime.UtcNow,
-                            EndAt = DateTime.UtcNow.AddDays(90),
-                            CompanyId="26fd4d66-3953-46c6-8eef-f139c6a3d4fe",
-                            TrainingTypeId=1,
-                        },
-
-                        new Trainning{
-                            Title ="System Analyst",
-                            Description = @"Provide documentation of all processes and training as needed.
-                                Liaising with users to track additional requirements and features.
-                                Examining and evaluating current systems.",
-                            DepartmentId = 2,
-                            CreatedAt = DateTime.UtcNow,
-                            StartAt = DateTime.UtcNow,
-                            EndAt = DateTime.UtcNow.AddDays(60),
-                            CompanyId="26fd4d66-3953-46c6-8eef-f139c6a3d4fe",
-                            TrainingTypeId=2,
-                        },
-
-                        new Trainning{
-                            Title ="IT Cyber Security Engineer",
-                            Description = @"Optimization of cybersecurity solutions.
-                                Troubleshooting security and network/systems problems.
-                                Responding to all system and/or network/System security breaches.
-                                Participating in the change management process.",
-                            DepartmentId = 3,
-                            CreatedAt = DateTime.UtcNow,
-                            StartAt = DateTime.UtcNow,
-                            EndAt = DateTime.UtcNow.AddDays(45),
-                            CompanyId="26fd4d66-3953-46c6-8eef-f139c6a3d4fe",
-                            TrainingTypeId=1,
-                        }
+                        FirstName = "student",
+                        LastName = "student",
+                        Email = "student@stu.com",
+                        UserName = "student@stu.com",
+                        UniversityID = 10,
+                        Gpa = 3,
+                        Level = 1,
+                        PhoneNumber = "0123",
+                        DepartmentId = 1
+                    };
+                    var supervisor = new Supervisor()
+                    {
+                        FirstName = "super",
+                        LastName = "visor",
+                        Email = "visor@sup.com",
+                        UserName = "visor@sup.com",
+                        UniversityID = 20,
+                        PhoneNumber = "0123",
+                        DepartmentId = 1
+                    };
+                    var admin = new IdentityUser()
+                    {
+                        Email = "admin@admin.com",
+                        UserName = "admin@admin.com",
+                        PhoneNumber = "0123"
                     };
 
-                    await context.Trainnings.AddRangeAsync(trainnings);
-                    await context.SaveChangesAsync();
-                }
+                    var password = "Pa$$w0rd";
 
+                    var stResult = await userManager.CreateAsync(student, password);
+                    if(stResult.Succeeded) await userManager.AddToRoleAsync(student, Roles.Student.ToString());
+
+                    var supResult = await userManager.CreateAsync(supervisor, password);
+                    if (supResult.Succeeded) await userManager.AddToRoleAsync(supervisor, Roles.Supervisor.ToString());
+
+                    var adminResult = await userManager.CreateAsync(admin, password);
+                    if (adminResult.Succeeded) await userManager.AddToRoleAsync(admin, Roles.Admin.ToString());
+                }
             }
             catch (Exception e)
             {

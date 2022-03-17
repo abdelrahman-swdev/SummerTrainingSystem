@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using SummerTrainingSystem.Models;
 using SummerTrainingSystemCore.Entities;
@@ -16,12 +17,18 @@ namespace SummerTrainingSystem.Controllers
         private readonly IGenericRepository<Trainning> _trainRepo;
         private readonly IGenericRepository<Department> _depRepo;
         private readonly IMapper _mapper;
+        private readonly INotyfService _notyfService;
 
-        public TrainingsController(IGenericRepository<Trainning> trainRepo, IGenericRepository<Department> depRepo, IMapper mapper)
+        public TrainingsController(
+            IGenericRepository<Trainning> trainRepo, 
+            IGenericRepository<Department> depRepo, 
+            IMapper mapper,
+            INotyfService notyfService)
         {
             _trainRepo = trainRepo;
             _depRepo = depRepo;
             _mapper = mapper;
+            _notyfService = notyfService;
         }
 
         // GET: trainings
@@ -98,8 +105,12 @@ namespace SummerTrainingSystem.Controllers
             if (ModelState.IsValid)
             {
                 model.CompanyId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                return _trainRepo.Add(_mapper.Map<Trainning>(model)) == 0 ? 
-                    View(model) : RedirectToAction("GetTrainingsForCompany", "Account");
+                var result = _trainRepo.Add(_mapper.Map<Trainning>(model));
+                if(result > 0)
+                {
+                    _notyfService.Success("Training created successfully");
+                    return RedirectToAction("GetTrainingsForCompany", "Account");
+                }
             }
             return View(model);
         }
@@ -127,7 +138,7 @@ namespace SummerTrainingSystem.Controllers
                 var result = _trainRepo.Update(_mapper.Map<Trainning>(model));
                 if (result != 0)
                 {
-                    ViewBag.TrainingUpdated = "Training Updated Succefully";
+                    _notyfService.Success("Training updated successfully");
                     return View(model);
                 }
                 else

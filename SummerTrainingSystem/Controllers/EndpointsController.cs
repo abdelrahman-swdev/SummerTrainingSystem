@@ -18,32 +18,26 @@ namespace SummerTrainingSystem.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
 
         public EndpointsController(
             ApplicationDbContext context,
-            UserManager<IdentityUser> userManager)
+            UserManager<IdentityUser> userManager,
+            SignInManager<IdentityUser> signInManager)
         {
             _context = context;
             _userManager = userManager;
+            _signInManager = signInManager;
         }
 
-        [HttpDelete("students/{id}")]
-        public async Task<IActionResult> DeleteStudent(string id)
+        [HttpDelete("delete-account/{id}")]
+        public async Task<IActionResult> DeleteAccount(string id)
         {
-            var result = await _userManager.DeleteAsync(await _userManager.FindByIdAsync(id));
+            var user = await _userManager.FindByIdAsync(id);
+            var result = await _userManager.DeleteAsync(user);
             if (result.Succeeded)
             {
-                return Ok();
-            }
-            return BadRequest();
-        }
-
-        [HttpDelete("supervisors/{id}")]
-        public async Task<IActionResult> DeleteSupervisor(string id)
-        {
-            var result = await _userManager.DeleteAsync(await _userManager.FindByIdAsync(id));
-            if (result.Succeeded)
-            {
+                await _signInManager.RefreshSignInAsync(user);
                 return Ok();
             }
             return BadRequest();
@@ -209,17 +203,6 @@ namespace SummerTrainingSystem.Controllers
             };
 
             return Ok(jsonData);
-        }
-
-        [HttpDelete("companies/{id}")]
-        public async Task<IActionResult> DeleteCompany(string id)
-        {
-            var result = await _userManager.DeleteAsync(await _userManager.FindByIdAsync(id));
-            if (result.Succeeded)
-            {
-                return Ok();
-            }
-            return BadRequest();
         }
     }
 }

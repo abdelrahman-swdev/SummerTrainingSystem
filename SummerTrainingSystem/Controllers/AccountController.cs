@@ -386,7 +386,7 @@ namespace SummerTrainingSystem.Controllers
             return await _userManager.UpdateAsync(hrCompany);
         }
 
-        private string ReturnEmailInsteadOfUsername(string text)
+        private static string ReturnEmailInsteadOfUsername(string text)
         {
             return text.Contains("Username") ? text.Replace("Username", "Email") : text;
         }

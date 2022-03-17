@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SummerTrainingSystemCore.Entities;
+using System.Reflection;
 
 namespace SummerTrainingSystemEF.Data
 {
@@ -24,6 +25,8 @@ namespace SummerTrainingSystemEF.Data
         {
             base.OnModelCreating(builder);
 
+            builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
             builder.Entity<IdentityUser>().ToTable("Users");
             builder.Entity<IdentityRole>().ToTable("Roles");
             builder.Entity<IdentityUserRole<string>>().ToTable("UserRoles");
@@ -31,21 +34,6 @@ namespace SummerTrainingSystemEF.Data
             builder.Entity<IdentityUserLogin<string>>().ToTable("UserLogins");
             builder.Entity<IdentityRoleClaim<string>>().ToTable("RoleClaims");
             builder.Entity<IdentityUserToken<string>>().ToTable("UserTokens");
-
-            builder.Entity<Student>()
-                .ToTable("Students")
-                .HasIndex(s => s.UniversityID)
-                .IsUnique();
-
-            builder.Entity<Supervisor>()
-                .ToTable("Supervisors")
-                .HasIndex(s => s.UniversityID)
-                .IsUnique();
-
-            builder.Entity<HrCompany>()
-                .ToTable("HrCompanies");
-
-
         }
     }
 }

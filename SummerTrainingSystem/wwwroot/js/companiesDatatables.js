@@ -51,7 +51,7 @@ function fillCompaniesTable() {
 const deleteCompany = (data) => {
     Swal.fire({
         title: 'Are you sure?',
-        text: "You won't be able to revert this and all related data to this company will be deleted also!",
+        text: "You won't be able to revert this and all related data to this company (trainings,..) will be deleted also!",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -60,7 +60,7 @@ const deleteCompany = (data) => {
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: '/api/companies/' + data,
+                url: '/api/delete-account/' + data,
                 method: 'Delete',
                 beforeSend: (xhr) => {
                     document.getElementById(data).classList.toggle('d-none');
