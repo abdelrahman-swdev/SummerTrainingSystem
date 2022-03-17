@@ -19,9 +19,9 @@ namespace SummerTrainingSystemEF.Data.SeedData
                 {
                     IEnumerable<Department> deps = new List<Department>()
                     {
-                        new Department{Id=1, Name = "Information Systems", Abbreviation = "IS"},
-                        new Department{Id=2, Name = "Computer Science", Abbreviation = "CS"},
-                        new Department{Id=3, Name = "Information Technology", Abbreviation = "IT"}
+                        new Department{Name = "Information Systems", Abbreviation = "IS"},
+                        new Department{Name = "Computer Science", Abbreviation = "CS"},
+                        new Department{Name = "Information Technology", Abbreviation = "IT"}
                     };
                     await context.Departments.AddRangeAsync(deps);
                     await context.SaveChangesAsync();
@@ -55,9 +55,9 @@ namespace SummerTrainingSystemEF.Data.SeedData
                 {
                     IEnumerable<CompanySize> sizes = new List<CompanySize>()
                     {
-                        new CompanySize{Id=1, SizeName="Small", SizeRange="10 to 49 employees"},
-                        new CompanySize{Id=2, SizeName="Medium", SizeRange="50 to 249 employees"},
-                        new CompanySize{Id=3, SizeName="Large", SizeRange="250 employees or more"}
+                        new CompanySize{SizeName="Small", SizeRange="10 to 49 employees"},
+                        new CompanySize{SizeName="Medium", SizeRange="50 to 249 employees"},
+                        new CompanySize{SizeName="Large", SizeRange="250 employees or more"}
                     };
                     await context.CompanySizes.AddRangeAsync(sizes);
                     await context.SaveChangesAsync();

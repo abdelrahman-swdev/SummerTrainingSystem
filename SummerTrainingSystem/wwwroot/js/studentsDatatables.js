@@ -27,7 +27,16 @@ function fillStudentTable () {
             { "data": "email", "name": "Email", "autowidth": true },
             { "data": "level", "name": "Level", "autowidth": true },
             { "data": "universityID", "name": "UniversityID", "autowidth": true },
-            { "data": "department.name", "name": "department.name", "autowidth": true },
+            {
+                "name": "Department.Name",
+                "render": function (data, type, row) {
+                    return `<td>
+                                ${row.department === null ? 'Not Assigned' : row.department.name}
+                            </td>`;
+                },
+                "orderable": false,
+                "autowidth": true
+            },
             {
                 "render": function (data, type, row) {
                     return `<button class="btn btn-danger" onclick=deleteStudent('${row.id}')>

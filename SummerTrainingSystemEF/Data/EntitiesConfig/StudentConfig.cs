@@ -10,10 +10,10 @@ namespace SummerTrainingSystemEF.Data.EntitiesConfig
         {
             builder.ToTable("Students");
 
-            //builder.HasOne(s => s.Department)
-            //    .WithMany()
-            //    .HasForeignKey(s => s.DepartmentId)
-            //    .OnDelete(DeleteBehavior.SetNull);
+            builder.HasOne(s => s.Department)
+                .WithMany()
+                .HasForeignKey(s => s.DepartmentId)
+                .OnDelete(DeleteBehavior.SetNull);
 
             builder
                 .HasIndex(s => s.UniversityID)

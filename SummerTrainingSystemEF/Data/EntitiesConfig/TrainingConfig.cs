@@ -14,10 +14,10 @@ namespace SummerTrainingSystemEF.Data.EntitiesConfig
                 .HasForeignKey(t => t.CompanyId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            //builder.HasOne(s => s.Department)
-            //    .WithMany()
-            //    .HasForeignKey(s => s.DepartmentId)
-            //    .OnDelete(DeleteBehavior.SetNull);
+            builder.HasOne(s => s.Department)
+                .WithMany()
+                .HasForeignKey(s => s.DepartmentId)
+                .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

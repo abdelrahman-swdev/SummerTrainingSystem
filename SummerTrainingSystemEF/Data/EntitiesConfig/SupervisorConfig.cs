@@ -13,10 +13,10 @@ namespace SummerTrainingSystemEF.Data.EntitiesConfig
                     .HasIndex(s => s.UniversityID)
                     .IsUnique();
 
-            //builder.HasOne(s => s.Department)
-            //    .WithMany()
-            //    .HasForeignKey(s => s.DepartmentId)
-            //    .OnDelete(DeleteBehavior.SetNull);
+            builder.HasOne(s => s.Department)
+                .WithMany()
+                .HasForeignKey(s => s.DepartmentId)
+                .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }
