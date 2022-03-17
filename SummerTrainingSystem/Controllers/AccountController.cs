@@ -1,8 +1,10 @@
-﻿using AutoMapper;
+﻿using AspNetCoreHero.ToastNotification.Abstractions;
+using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SummerTrainingSystem.Models;
 using SummerTrainingSystemCore.Entities;
+using SummerTrainingSystemCore.Enums;
 using SummerTrainingSystemCore.Interfaces;
 using System.Collections.Generic;
 using System.Security.Claims;
@@ -19,6 +21,7 @@ namespace SummerTrainingSystem.Controllers
         private readonly IGenericRepository<Student> _stuRepo;
         private readonly IGenericRepository<Supervisor> _supRepo;
         private readonly IGenericRepository<Trainning> _trainRepo;
+        private readonly INotyfService _notyfService;
         private readonly SignInManager<IdentityUser> _signInManager;
 
         public AccountController(IAccountService accountService,
@@ -27,7 +30,8 @@ namespace SummerTrainingSystem.Controllers
             IGenericRepository<Student> stuRepo,
             IGenericRepository<Supervisor> supRepo,
             SignInManager<IdentityUser> signInManager,
-            IGenericRepository<Trainning> trainRepo)
+            IGenericRepository<Trainning> trainRepo,
+            INotyfService notyfService)
         {
             _userManager = userManager;
             _accountService = accountService;
@@ -36,6 +40,7 @@ namespace SummerTrainingSystem.Controllers
             _supRepo = supRepo;
             _signInManager = signInManager;
             _trainRepo = trainRepo;
+            _notyfService = notyfService;
         }
 
         [HttpGet("student/new")]
@@ -56,15 +61,14 @@ namespace SummerTrainingSystem.Controllers
             var result = await _accountService.CreateStudentAccountAsync(student, model.Password);
             if (result.Succeeded)
             {
-                ViewBag.StudentCreated = "Student Created Succefully";
+                _notyfService.Success("Student created successfully");
                 return View();
             }
             else
             {
-                ViewBag.StudentNotCreated = "Error, Student Did Not Created";
                 foreach (var er in result.Errors)
                 {
-                    ModelState.AddModelError("", er.Description);
+                    ModelState.AddModelError("", ReturnEmailInsteadOfUsername(er.Description));
                 }
                 return View(model);
             }
@@ -88,15 +92,14 @@ namespace SummerTrainingSystem.Controllers
             var result = await _accountService.CreateSupervisorAccountAsync(supervisor, model.Password);
             if (result.Succeeded)
             {
-                ViewBag.SupervisorCreated = "Supervisor Created Succefully";
+                _notyfService.Success("Supervisor created successfully");
                 return View();
             }
             else
             {
-                ViewBag.SupervisorNotCreated = "Error, Supervisor Did Not Created";
                 foreach (var er in result.Errors)
                 {
-                    ModelState.AddModelError("", er.Description);
+                    ModelState.AddModelError("", ReturnEmailInsteadOfUsername(er.Description));
                 }
                 return View(model);
             }
@@ -122,7 +125,7 @@ namespace SummerTrainingSystem.Controllers
             }
             else
             {
-                ViewBag.LoginFailed = "Error, invalid details";
+                ViewBag.LoginFailed = "Invalid details";
                 return View(model);
             }
         }
@@ -147,7 +150,7 @@ namespace SummerTrainingSystem.Controllers
             }
             else
             {
-                ViewBag.LoginFailed = "Error, invalid details";
+                ViewBag.LoginFailed = "Invalid details";
                 return View(model);
             }
         }
@@ -156,7 +159,7 @@ namespace SummerTrainingSystem.Controllers
         public async Task<IActionResult> Logout()
         {
             await _accountService.LogoutAsync();
-            return RedirectToAction("Login", "Account");
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet("student/edit")]
@@ -176,12 +179,15 @@ namespace SummerTrainingSystem.Controllers
                 var result = await UpdateStudentFromModelAsync(model);
                 if (result.Succeeded)
                 {
-                    ViewBag.AccountUpdated = "Account Updated Succefully";
+                    _notyfService.Success("Account updated successfully");
                     return View();
                 }
                 else
                 {
-                    ViewBag.AccountNotUpdated = "Error, Account Did Not Updated";
+                    foreach(var er in result.Errors)
+                    {
+                        ModelState.AddModelError("", ReturnEmailInsteadOfUsername(er.Description));
+                    }
                     return View();
                 }
             }
@@ -210,12 +216,15 @@ namespace SummerTrainingSystem.Controllers
                 var result = await UpdateSupervisorFromModelAsync(model);
                 if (result.Succeeded)
                 {
-                    ViewBag.AccountUpdated = "Account Updated Succefully";
+                    _notyfService.Success("Account updated successfully");
                     return View();
                 }
                 else
                 {
-                    ViewBag.AccountNotUpdated = "Error, Account Did Not Updated";
+                    foreach (var er in result.Errors)
+                    {
+                        ModelState.AddModelError("", ReturnEmailInsteadOfUsername(er.Description));
+                    }
                     return View();
                 }
             }
@@ -246,15 +255,14 @@ namespace SummerTrainingSystem.Controllers
             if (result.Succeeded)
             {
                 await _signInManager.RefreshSignInAsync(user);
-                ViewBag.PasswordChanged = "Password Changed Succefully";
+                _notyfService.Success("Password changed successfully");
                 return View();
             }
             else
             {
-                ViewBag.PasswordNotChanged = "Error, Password Did Not Changed";
                 foreach (var error in result.Errors)
                 {
-                    ModelState.AddModelError(string.Empty, error.Description);
+                    ModelState.AddModelError("", error.Description);
                 }
                 return View(model);
             }
@@ -278,19 +286,21 @@ namespace SummerTrainingSystem.Controllers
             var result = await _accountService.CreateCompanyAccountAsync(company, model.Password);
             if (result.Succeeded)
             {
-                ViewBag.ComapnyCreated = "Company Created Succefully";
+                _notyfService.Success("Company created successfully");
                 return View();
             }
             else
             {
-                ViewBag.ComapnyNotCreated = "Error, Company Did Not Created";
                 foreach (var er in result.Errors)
                 {
-                    ModelState.AddModelError("", er.Description);
+                    ModelState.AddModelError("", ReturnEmailInsteadOfUsername(er.Description));
                 }
                 return View(model);
             }
         }
+
+        
+
         [HttpGet("company/edit")]
         public async Task<ActionResult> EditCompany()
         {
@@ -300,6 +310,7 @@ namespace SummerTrainingSystem.Controllers
             var model = _mapper.Map<EditHrCompanyVM>(logedInHrCompany);
             return View(model);
         }
+
         [HttpPost("company/edit")]
         public async Task<ActionResult> EditCompany(EditHrCompanyVM model)
         {
@@ -308,13 +319,16 @@ namespace SummerTrainingSystem.Controllers
                 var result = await UpdateCompanyFromModelAsync(model);
                 if (result.Succeeded)
                 {
-                    ViewBag.AccountUpdated = "Account Updated Succefully";
+                    _notyfService.Success("Account updated successfully");
                     return View();
                 }
                 else
                 {
-                    ViewBag.AccountNotUpdated = "Error, Account Did Not Updated";
-                    return View();
+                    foreach (var er in result.Errors)
+                    {
+                        ModelState.AddModelError("", ReturnEmailInsteadOfUsername(er.Description));
+                    }
+                    return View(model);
                 }
             }
             else
@@ -328,7 +342,7 @@ namespace SummerTrainingSystem.Controllers
         {
             var loggedInCompanyId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var trainings = await _trainRepo.ListAsync(t => t.CompanyId == loggedInCompanyId, 
-                new string[] { "Department", "Company", "TrainingType" });
+                new string[] { Includes.Department.ToString(), Includes.Company.ToString(), Includes.TrainingType.ToString() });
             var model = _mapper.Map<List<TrainingVM>>(trainings);
             return View(model);
         }
@@ -340,8 +354,8 @@ namespace SummerTrainingSystem.Controllers
             student.FirstName = model.FirstName;
             student.LastName = model.LastName;
             student.Email = model.Email;
+            student.UserName = model.Email;
             student.PhoneNumber = model.PhoneNumber;
-
             return await _userManager.UpdateAsync(student);
         }
 
@@ -352,6 +366,7 @@ namespace SummerTrainingSystem.Controllers
             supervisor.FirstName = model.FirstName;
             supervisor.LastName = model.LastName;
             supervisor.Email = model.Email;
+            supervisor.UserName = model.Email;
             supervisor.PhoneNumber = model.PhoneNumber;
 
             return await _userManager.UpdateAsync(supervisor);
@@ -363,15 +378,18 @@ namespace SummerTrainingSystem.Controllers
             hrCompany.Name = model.Name;
             hrCompany.City = model.City;
             hrCompany.Email = model.Email;
+            hrCompany.UserName = model.Email;
             hrCompany.PhoneNumber = model.PhoneNumber;
             hrCompany.Country = model.Country;
-            hrCompany.CompanySize = model.CompanySize;
-
+            hrCompany.CompanySizeId = model.CompanySizeId;
 
             return await _userManager.UpdateAsync(hrCompany);
         }
 
-
+        private string ReturnEmailInsteadOfUsername(string text)
+        {
+            return text.Contains("Username") ? text.Replace("Username", "Email") : text;
+        }
 
     }
 }

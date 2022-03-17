@@ -70,6 +70,7 @@ html {
 body {
     margin:0;
     padding: 0;
+    min-height: 100vh;
     box-sizing: border-box;
     font-family: "Roboto", sans-serif !important;
     background-color: #f5f6f7 !important;
@@ -81,7 +82,7 @@ body {
 
 .custom-spinner {
     position: absolute;
-    top: -300px;
+    top: 0;
     left: 0;
     height: 100%;
     width: 100%;
@@ -89,6 +90,7 @@ body {
     justify-content: center;
     align-items: center;
     z-index: 3;
+    background-color: #656aae36;
 }
 
 /************************************************************************/
@@ -113,11 +115,11 @@ body {
     {
         margin: 10px 0 !important;
     }
-    .custom-spinner {
+    /*.custom-spinner {
         top: -300px;
-    }
+    }*/
 }
-@media(min-width: 991px) {
+/*@media(min-width: 991px) {
     .custom-spinner {
         top: 0;
     }
@@ -126,7 +128,7 @@ body {
     .custom-spinner {
         top: 150px;
     }
-}
+}*/
 
 
 .navbar-dark .navbar-nav .nav-link.active, .navbar-dark .navbar-nav .show > .nav-link {

@@ -72,11 +72,11 @@
                     </div>
                 </div>
                 <div style="display:flex;justify-content:space-between;" class="mt-4">
-                    <button class="btn btn-success">Save</button>
+                    <button type="submit" class="btn btn-success">Save</button>
                     <a class="btn btn-outline-dark" asp-controller="Users" asp-action="GetAllSupervisors">Back</a>
                 </div>
             </form>
-            <div class="mt-4 text-danger" asp-validation-summary="ModelOnly"></div>
+            <div class="mt-4 bg-danger p-2 text-white" asp-validation-summary="ModelOnly"></div>
         </div>
     </div>
 </div>

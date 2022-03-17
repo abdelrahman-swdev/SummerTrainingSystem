@@ -7,9 +7,21 @@
 
 <div class="container mt-5">
     <div class="row">
-        <div class="col-lg-8 col">
-                <h1 class="display-5">Edit Training</h1>
-                <hr />
+        <div class="col-lg-8">
+            <h1 class="display-5">Edit Training</h1>
+            <hr />
+            @if (!String.IsNullOrEmpty(ViewBag.TrainingUpdated))
+            {
+                <div class="alert alert-success">
+                    @ViewBag.TrainingUpdated
+                </div>
+            }
+            @if (!String.IsNullOrEmpty(ViewBag.TrainingNotUpdated))
+            {
+                <div class="alert alert-danger">
+                    @ViewBag.TrainingNotUpdated
+                </div>
+            }
             <form method="post">
                 <input asp-for="Id" type="hidden" />
                 <input asp-for="CompanyId" type="hidden" />

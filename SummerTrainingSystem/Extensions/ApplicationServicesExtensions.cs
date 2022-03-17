@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using AspNetCoreHero.ToastNotification;
+using Microsoft.Extensions.DependencyInjection;
 using SummerTrainingSystemCore.Interfaces;
 using SummerTrainingSystemEF.Data.Repositories;
 using SummerTrainingSystemEF.Services;
@@ -14,6 +15,14 @@ namespace SummerTrainingSystem.Extensions
 
             // add auto mapper
             services.AddAutoMapper(typeof(Startup));
+
+            // add toast notificatios
+            services.AddNotyf(options =>
+            {
+                options.DurationInSeconds = 5;
+                options.IsDismissable = true;
+                options.Position = NotyfPosition.TopRight;
+            });
 
             // add account service
             services.AddScoped<IAccountService, AccountService>();

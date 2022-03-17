@@ -18,7 +18,7 @@
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-4">
             <div class="container">
-                <a class="navbar-brand me-3" style="border: 2px solid gray;padding: 0 5px;" 
+                <a class="navbar-brand me-3" style="border: 2px solid #7c61ff;padding: 0 5px; color:#7c61ff;" 
                 asp-controller="Home" 
                 asp-action="Index">
                     <i class="fas fa-user-graduate"></i> | TRADENT
@@ -78,6 +78,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+    @await Component.InvokeAsync("Notyf") 
 
 </body>
 </html>

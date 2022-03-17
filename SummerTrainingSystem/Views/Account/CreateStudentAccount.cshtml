@@ -9,19 +9,6 @@
 
             <h1 class="display-5">Create New Student</h1>
             <hr />
-
-            @if (!String.IsNullOrEmpty(ViewBag.StudentCreated))
-            {
-                <div class="alert alert-success">
-                    @ViewBag.StudentCreated
-                </div>
-            }
-            @if (!String.IsNullOrEmpty(ViewBag.StudentNotCreated))
-            {
-                <div class="alert alert-danger">
-                    @ViewBag.StudentNotCreated
-                </div>
-            }
             <form method="post">
                 <div class="row">
                     <div class="col-md-6 mt-4">
@@ -85,11 +72,11 @@
                     </div>
                 </div>
                 <div class="mt-4 d-flex justify-content-between">
-                    <button class="btn btn-success">Save</button>
+                    <button type="submit" class="btn btn-success">Save</button>
                     <a class="btn btn-outline-dark" asp-controller="Users" asp-action="GetAllStudents">Back</a>
                 </div>
             </form>
-            <div class="mt-4 text-danger" asp-validation-summary="ModelOnly"></div>
+            <div class="mt-4 bg-danger p-2 text-white" asp-validation-summary="ModelOnly"></div>
         </div>
     </div>
 </div>

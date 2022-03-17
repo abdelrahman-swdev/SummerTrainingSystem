@@ -13,7 +13,6 @@ using System.Threading.Tasks;
 
 namespace SummerTrainingSystem.Controllers
 {
-    //[ApiController]
     [Route("api")]
     public class EndpointsController : Controller
     {
