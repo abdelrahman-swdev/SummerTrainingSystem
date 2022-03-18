@@ -18,7 +18,9 @@ namespace SummerTrainingSystem.Models
         public string CompanyWebsite { get; set; }
         [Required]
         public string AboutCompany { get; set; }
+        [DataType(dataType:DataType.Date)]
         public DateTime FoundedAt { get; set; }
         public int CompanySizeId { get; set; }
+        public CompanySizeVM CompanySize{ get; set; }
     }
 }

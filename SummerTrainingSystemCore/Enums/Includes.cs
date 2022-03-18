@@ -4,6 +4,7 @@
     {
         Department,
         Company,
-        TrainingType
+        TrainingType,
+        
     }
 }

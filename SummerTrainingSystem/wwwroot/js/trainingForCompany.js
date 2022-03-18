@@ -38,3 +38,11 @@
         }
     });
 }
+
+function display(m) {
+    const ds = new Date();
+    const as = document.getElementById("date");
+    const allSeconds = (ds - m) / 1000;
+    const days = allSeconds / 3600 / 24;
+    as.innerHTML = days;
+}

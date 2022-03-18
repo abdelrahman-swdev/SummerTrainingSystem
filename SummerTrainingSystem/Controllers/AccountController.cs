@@ -21,6 +21,7 @@ namespace SummerTrainingSystem.Controllers
         private readonly IGenericRepository<Student> _stuRepo;
         private readonly IGenericRepository<Supervisor> _supRepo;
         private readonly IGenericRepository<Trainning> _trainRepo;
+        private readonly IGenericRepository<HrCompany> _comRepo;
         private readonly INotyfService _notyfService;
         private readonly SignInManager<IdentityUser> _signInManager;
 
@@ -31,7 +32,8 @@ namespace SummerTrainingSystem.Controllers
             IGenericRepository<Supervisor> supRepo,
             SignInManager<IdentityUser> signInManager,
             IGenericRepository<Trainning> trainRepo,
-            INotyfService notyfService)
+            INotyfService notyfService,
+            IGenericRepository<HrCompany> comRepo)
         {
             _userManager = userManager;
             _accountService = accountService;
@@ -41,6 +43,7 @@ namespace SummerTrainingSystem.Controllers
             _signInManager = signInManager;
             _trainRepo = trainRepo;
             _notyfService = notyfService;
+            _comRepo = comRepo;
         }
 
         [HttpGet("student/new")]
@@ -346,7 +349,15 @@ namespace SummerTrainingSystem.Controllers
             var model = _mapper.Map<List<TrainingVM>>(trainings);
             return View(model);
         }
-
+        [HttpGet("{id}")]
+        public async Task<IActionResult> ViewProfile(string id)
+        {
+            var company = await _comRepo.GetAsync(c => c.Id == id,new string[] {
+                
+            });
+            if (company == null) return NotFound();
+            return View(_mapper.Map<CompanyVM>(company));
+        }
         private async Task<IdentityResult> UpdateStudentFromModelAsync(EditStudentProfileVM model)
         {
             var student = (Student)await _userManager.FindByIdAsync(model.Id);

@@ -15,6 +15,7 @@ namespace SummerTrainingSystem.Models
 
         [Required(ErrorMessage = "Starting Date is required"), Display(Name ="Starts At"), DataType(DataType.Date)]
         public DateTime StartAt { get; set; }
+        [DataType(dataType:DataType.Date)]
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
         [Required(ErrorMessage = "Finish Date is required"), Display(Name = "Ends At"), DataType(DataType.Date)]
