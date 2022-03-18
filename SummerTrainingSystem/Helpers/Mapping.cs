@@ -12,6 +12,7 @@ namespace SummerTrainingSystem.Helpers
             CreateMap<Trainning, SaveTrainingVM>().ReverseMap();
             CreateMap<Trainning, TrainingVM>().ReverseMap();
             CreateMap<HrCompany, CompanyVM>().ReverseMap();
+            CreateMap<CompanySize, CompanySizeVM>().ReverseMap();
             CreateMap<TrainingType, TrainingTypeVM>().ReverseMap();
             CreateMap<Department, DepartmentVM>().ReverseMap();
             CreateMap<Student, StudentVM>().ReverseMap();

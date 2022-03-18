@@ -5,6 +5,6 @@
         Department,
         Company,
         TrainingType,
-        
+        CompanySize
     }
 }

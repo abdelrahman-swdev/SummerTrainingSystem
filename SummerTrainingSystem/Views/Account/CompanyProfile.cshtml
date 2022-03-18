@@ -1,0 +1,62 @@
+﻿@model CompanyVM
+@{
+    ViewData["title"] = "Company";
+}
+
+<link href="~/css/trainings.css" rel="stylesheet" />
+
+<div class="container mt-5">
+    <div class="row bg-white">
+         <div class="col-lg-8 mb-4 bg-white p-3">
+            <div class="d-flex">
+                    <div>
+                        <img src="~/images/logo.png" />
+                    </div>
+                    <div class="p-4">
+                        <h4 class="fw-bold">@Model.Name</h4>
+                        <span class="text-secondary d-block">@Model.Industry</span>
+                        <span class="text-secondary">@Model.City @Model.Country @Model.CompanySize.SizeRange</span>
+                        <br />
+                        <a href="@Model.CompanyWebsite">@Model.CompanyWebsite</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row bg-white mt-3">
+
+            <div class="col-lg-8 mb-4 bg-white p-3">
+                <div class="mb-2">
+                    <h4>Company Profile</h4>
+                    <div class="row">
+                        <div class="col-md-6 mt-4">
+                            <span>Location:@Model.City&nbsp;-&nbsp;@Model.Country</span>
+                        </div>
+                        <div class="col-md-6 mt-4">
+                            <span>Founded:@Model.FoundedAt.ToString("d")</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mt-4">
+                            <span>Industry: @Model.Industry</span>
+                        </div>
+                        <div class="col-md-6 mt-4">
+                            <span>Specialities: @Model.Specialities</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mt-4">
+                            <span>
+                                Company Size: @Model.CompanySize.SizeRange
+                            </span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md mt-4">
+                            <h3>About</h3>
+                            <p>@Model.AboutCompany</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>

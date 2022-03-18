@@ -9,20 +9,19 @@
     <div class="col-lg-8 mb-4 bg-white p-3">
         <div class="mb-2">
             <h2>@Model.Title</h2>
-            <div class="pb-2 name">
-                <a class="" href="#">
-                    <span class="badge bg-success">&nbsp;@Model.TrainingType.TypeName</span>
-                </a>
+            <span class="tr-type-badge mb-3">@Model.TrainingType.TypeName</span>
+
+            <div class="pb-1 mt-2">
+                <a asp-controller="Account" asp-action="CompanyProfile" asp-route-id="@Model.CompanyId">
+                    @Model.Company.Name
+                </a> 
+                @(Model.Company.City), @(Model.Company.Country)
             </div>
-
-            <div class="pb-1 ">
-                <a asp-controller="Account" asp-action="ViewProfile" asp-route-id="@Model.CompanyId">&nbsp;@Model.Company.Name</a> -
-                @(Model.Company.City).@(Model.Company.Country)
-            </div>
-
-            
-            <span class="text-secondary">&nbsp;Posted 1 hour</span>
-
+            <span class="text-secondary">
+                @(
+                    (DateTime.Now - new DateTime(2022, 3, 8)).Days == 0 ? "Today" : $"Posted {(DateTime.Now - new DateTime(2022, 3, 8)).Days} ago"
+                )
+            </span>
             <div>
                 <span class="applicationNumber text-secondary">250</span>
                 <span class="applicationPostion text-secondary text-opacity-75">
@@ -44,7 +43,8 @@
                     <span class="visually-hidden">Loading...</span>
                 </div>
                 <a asp-controller="Trainings" asp-action="Index" class="btn btn-outline-secondary">&nbsp;Back</a>
-            }@if (User.IsInRole(Roles.Student.ToString()))
+            }
+            @if (User.IsInRole(Roles.Student.ToString()))
             {
                 <div class="sww">
                     <button class="btn btn-primary btn-lg">Apply To Intership</button>
@@ -58,9 +58,9 @@
 <div class="container mt-4">
     <div class="col-lg-8 mb-4 bg-white p-3">
         <div class="mb-2">
-            <h4>Internship Description</h4>
+            <h4>Description</h4>
             <p class="">
-                &nbsp;@Model.Description
+                @Model.Description
             </p>
         </div>
     </div>

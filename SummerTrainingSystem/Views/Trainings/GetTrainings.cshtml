@@ -7,7 +7,9 @@
             <span class="tr-type-badge" >@tr.TrainingType.TypeName</span>
         </div>
         <div class="mb-2 text-muted">
-            <span >@tr.Company.Name</span>
+            <a asp-controller="Account" asp-action="CompanyProfile" asp-route-id="@tr.CompanyId">
+                @tr.Company.Name
+            </a>
             <span >@tr.Company.City, </span>
             <span >@tr.Company.Country</span>
         </div>

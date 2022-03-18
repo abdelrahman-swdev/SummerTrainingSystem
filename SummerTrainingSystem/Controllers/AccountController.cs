@@ -349,15 +349,15 @@ namespace SummerTrainingSystem.Controllers
             var model = _mapper.Map<List<TrainingVM>>(trainings);
             return View(model);
         }
-        [HttpGet("{id}")]
-        public async Task<IActionResult> ViewProfile(string id)
+
+        [HttpGet("company/{id}")]
+        public async Task<IActionResult> CompanyProfile(string id)
         {
-            var company = await _comRepo.GetAsync(c => c.Id == id,new string[] {
-                
-            });
+            var company = await _comRepo.GetAsync(c => c.Id == id, new string[] { Includes.CompanySize.ToString() });
             if (company == null) return NotFound();
             return View(_mapper.Map<CompanyVM>(company));
         }
+
         private async Task<IdentityResult> UpdateStudentFromModelAsync(EditStudentProfileVM model)
         {
             var student = (Student)await _userManager.FindByIdAsync(model.Id);
