@@ -15,3 +15,23 @@
     display: inline-flex;
     align-items: center;
 }
+a{
+    text-decoration:none;
+}
+.sww{
+    left:500px;
+}
+.sw{
+    top:50px;
+    width:250px;
+    min-height:auto;
+    min-width:auto;
+    height:45px;
+}
+.applicationNumber{
+    font-size:36px;
+}
+.applicationPostion{
+    max-width:5px;
+}
+
