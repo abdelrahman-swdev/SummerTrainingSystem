@@ -4,14 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 using SummerTrainingSystem.Models;
 using SummerTrainingSystemCore.Entities;
 using SummerTrainingSystemCore.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace SummerTrainingSystem.Controllers
 {
-    [Route("department")]
+    [Route("departments")]
     public class DepartmentsController : Controller
     {
         private readonly IGenericRepository<Department> _depRepo;
@@ -26,17 +23,20 @@ namespace SummerTrainingSystem.Controllers
             _mapper = mapper;
             _notyfService = notyfService;
         }
+
         [HttpGet]
         public async Task<IActionResult> GetDepartments()
         {
             var departments = await _depRepo.ListAllAsync();
             return View(departments);
         }
+
         [HttpGet("new")]
         public IActionResult CreateDepartment()
         {
             return View();
         }
+
         [HttpPost("new")]
         public IActionResult CreateDepartment(CreateDepartmentVM model)
         {
@@ -45,12 +45,13 @@ namespace SummerTrainingSystem.Controllers
                 var result = _depRepo.Add(_mapper.Map<Department>(model));
                 if (result > 0)
                 {
-                    _notyfService.Success("Training created successfully");
+                    _notyfService.Success("Department created successfully");
                     return RedirectToAction("GetDepartments");
                 }
             }
             return View(model);
         }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteDepartment(int id)
         {
