@@ -2,11 +2,11 @@
 @foreach (var tr in Model)
 {
     <div class="mb-2">
-        <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex justify-content-between align-items-center mb-2">
             <a class="fs-5 fw-bold" asp-controller="Trainings" asp-action="Details" asp-route-id="@tr.Id">@tr.Title</a>
             <span class="tr-type-badge" >@tr.TrainingType.TypeName</span>
         </div>
-        <div class="mb-2 text-muted">
+        <div class="mb-3 text-muted">
             <a asp-controller="Account" asp-action="CompanyProfile" asp-route-id="@tr.CompanyId">
                 @tr.Company.Name
             </a>

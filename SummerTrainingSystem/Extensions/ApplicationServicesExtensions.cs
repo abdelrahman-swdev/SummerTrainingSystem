@@ -12,6 +12,9 @@ namespace SummerTrainingSystem.Extensions
         {
             // add Generic Repository service to container
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            
+            // add training Repository service to container
+            services.AddScoped<ITrainingRepository, TrainingRepository>();
 
             // add auto mapper
             services.AddAutoMapper(typeof(Startup));

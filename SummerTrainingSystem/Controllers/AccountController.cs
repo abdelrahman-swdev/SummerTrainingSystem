@@ -345,17 +345,23 @@ namespace SummerTrainingSystem.Controllers
         {
             var loggedInCompanyId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var trainings = await _trainRepo.ListAsync(t => t.CompanyId == loggedInCompanyId, 
-                new string[] { Includes.Department.ToString(), Includes.Company.ToString(), Includes.TrainingType.ToString() });
+                new string[] { 
+                    Includes.Department.ToString(),
+                    Includes.TrainingType.ToString()
+                });
             var model = _mapper.Map<List<TrainingVM>>(trainings);
             return View(model);
         }
 
-        [HttpGet("company/{id}")]
-        public async Task<IActionResult> CompanyProfile(string id)
+        [HttpGet("company-profile")]
+        public async Task<IActionResult> CompanyProfile([FromQuery]string id)
         {
+            if(string.IsNullOrEmpty(id)) id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            
             var company = await _comRepo.GetAsync(c => c.Id == id, new string[] { Includes.CompanySize.ToString() });
             if (company == null) return NotFound();
             return View(_mapper.Map<CompanyVM>(company));
+            
         }
 
         private async Task<IdentityResult> UpdateStudentFromModelAsync(EditStudentProfileVM model)
@@ -387,12 +393,17 @@ namespace SummerTrainingSystem.Controllers
             var hrCompany = (HrCompany)await _userManager.FindByIdAsync(model.Id);
 
             hrCompany.Name = model.Name;
+            hrCompany.PhoneNumber = model.PhoneNumber;
             hrCompany.City = model.City;
+            hrCompany.Country = model.Country;
+            hrCompany.Industry = model.Industry;
+            hrCompany.Specialities = model.Specialities;
             hrCompany.Email = model.Email;
             hrCompany.UserName = model.Email;
-            hrCompany.PhoneNumber = model.PhoneNumber;
-            hrCompany.Country = model.Country;
+            hrCompany.FoundedAt = model.FoundedAt;
+            hrCompany.CompanyWebsite = model.CompanyWebsite;
             hrCompany.CompanySizeId = model.CompanySizeId;
+            hrCompany.AboutCompany = model.AboutCompany;
 
             return await _userManager.UpdateAsync(hrCompany);
         }

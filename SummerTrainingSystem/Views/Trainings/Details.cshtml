@@ -1,4 +1,5 @@
 ﻿@using SummerTrainingSystemCore.Enums
+@inject SummerTrainingSystemCore.Interfaces.ITrainingRepository trRepo
 @model TrainingVM
 @{
     ViewData["Title"] = Model.Title;
@@ -19,38 +20,35 @@
             </div>
             <span class="text-secondary">
                 @(
-                    (DateTime.Now - new DateTime(2022, 3, 8)).Days == 0 ? "Today" : $"Posted {(DateTime.Now - new DateTime(2022, 3, 8)).Days} ago"
+                    (DateTime.Now - Model.CreatedAt).Days == 0 ? "Today" : $"Posted {(DateTime.Now - Model.CreatedAt).Days} ago"
                 )
             </span>
-            <div>
-                <span class="applicationNumber text-secondary">250</span>
-                <span class="applicationPostion text-secondary text-opacity-75">
-                    Applicants for 5 open positions
-                </span>
+            <div class="d-flex justify-content-start text-secondary mt-3">
+                <div class="d-flex justify-content-center align-items-center me-3 fw-bolder fs-5">
+                    @Model.ApplicantsCount
+                </div>
+                <div>
+                    <span class="d-block">
+                        Applicants for
+                    </span>
+                    <span class="d-block">
+                        @Model.OpenPositions Open Position
+                    </span>
+                </div>
             </div>
             <hr />
-
-            @if (User.IsInRole(Roles.Company.ToString()))
+            @if(User.IsInRole(Roles.Student.ToString()))
             {
-                <a asp-controller="Trainings" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">&nbsp;Edit</a>
-                <button class="btn btn-danger" onclick="deleteTraining(@Model.Id)">
-                    Delete
-                    <div class="spinner-border spinner-border-sm d-none" role="status" id="@Model.Id">
-                        <span class="visually-hidden">Loading...</span>
-                    </div>
-                </button>
-                <div class="spinner-border text-danger spinner-border-sm d-none" role="status" id="deleteSpinner">
-                    <span class="visually-hidden">Loading...</span>
-                </div>
-                <a asp-controller="Trainings" asp-action="Index" class="btn btn-outline-secondary">&nbsp;Back</a>
-            }
-            @if (User.IsInRole(Roles.Student.ToString()))
-            {
-                <div class="sww">
-                    <button class="btn btn-primary btn-lg">Apply To Intership</button>
-                    <button class="btn btn-light btn-lg"><i class="far fa-bookmark"></i></button>
-                    <button class="btn btn-light btn-lg"><i class="fas fa-share"></i></button>
-                </div>
+                @if(await trRepo.CheckIfStudentApplied(User.Identity.Name, Model.Id))
+                {
+                    <span class="btn btn-secondary btn-lg">Applied</span>
+                }
+                else
+                {
+                    <a class="btn btn-primary btn-lg" asp-controller="Trainings" asp-action="ApplyForTraining" asp-route-trid="@Model.Id">
+                        Apply
+                    </a>
+                }
             }
         </div>
     </div>
@@ -58,8 +56,8 @@
 <div class="container mt-4">
     <div class="col-lg-8 mb-4 bg-white p-3">
         <div class="mb-2">
-            <h4>Description</h4>
-            <p class="">
+            <h4>Training Description</h4>
+            <p class="text-secondary" style="word-break:break-word;">
                 @Model.Description
             </p>
         </div>

@@ -1,12 +1,8 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using SummerTrainingSystem.Models;
 using SummerTrainingSystemCore.Entities;
-using SummerTrainingSystemCore.Interfaces;
 using SummerTrainingSystemEF.Data;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
@@ -18,16 +14,13 @@ namespace SummerTrainingSystem.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
 
         public EndpointsController(
             ApplicationDbContext context,
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager)
+            UserManager<IdentityUser> userManager)
         {
             _context = context;
             _userManager = userManager;
-            _signInManager = signInManager;
         }
 
         [HttpDelete("delete-account/{id}")]
@@ -35,11 +28,7 @@ namespace SummerTrainingSystem.Controllers
         {
             var user = await _userManager.FindByIdAsync(id);
             var result = await _userManager.DeleteAsync(user);
-            if (result.Succeeded)
-            {
-                await _signInManager.RefreshSignInAsync(user);
-                return Ok();
-            }
+            if (result.Succeeded) return Ok();
             return BadRequest();
         }
 

@@ -11,14 +11,18 @@
             <h1 class="display-5">Add New Training</h1>
             <hr />
             <form method="post">
-                <div class="mt-4">
-                    <input asp-for="Title" class="form-control" placeholder="Title" />
-                    <span class="text-danger" asp-validation-for="Title"></span>
-                </div>
-
-                <div class="mt-4">
-                    <textarea spellcheck="true" asp-for="Description" class="form-control" placeholder="Description"></textarea>
-                    <span class="text-danger" asp-validation-for="Description"></span>
+                
+                <div class="row">
+                    <div class="col-md-6 mt-4">
+                        <label asp-for="Title"></label>
+                        <input asp-for="Title" class="form-control" />
+                        <span class="text-danger" asp-validation-for="Title"></span>
+                    </div>
+                    <div class="col-md-6 mt-4">
+                        <label asp-for="OpenPositions"></label>
+                        <input asp-for="OpenPositions" class="form-control"/>
+                        <span class="text-danger" asp-validation-for="OpenPositions"></span>
+                    </div>
                 </div>
 
                 <div class="row">
@@ -55,6 +59,12 @@
                         </select>
                         <span class="text-danger" asp-validation-for="TrainingTypeId"></span>
                     </div>
+                </div>
+
+                <div class="mt-4">
+                    <label asp-for="Description"></label>
+                    <textarea spellcheck="true" asp-for="Description" class="form-control"></textarea>
+                    <span class="text-danger" asp-validation-for="Description"></span>
                 </div>
 
                 <div class="mt-4 d-flex justify-content-between">

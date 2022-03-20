@@ -51,7 +51,7 @@ namespace SummerTrainingSystem.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteStudent(string id)
+        public async Task<IActionResult> DeleteRole(string id)
         {
             var result = await _roleManager.DeleteAsync(await _roleManager.FindByIdAsync(id));
             if (result.Succeeded)

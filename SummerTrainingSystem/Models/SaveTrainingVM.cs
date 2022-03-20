@@ -10,6 +10,9 @@ namespace SummerTrainingSystem.Models
         [Required(ErrorMessage = "Title is required"), MaxLength(256)]
         public string Title { get; set; }
 
+        [Required,Display(Name ="Number of open positions")]
+        public int OpenPositions { get; set; }
+
         [Required(ErrorMessage = "Description is required")]
         public string Description { get; set; }
 

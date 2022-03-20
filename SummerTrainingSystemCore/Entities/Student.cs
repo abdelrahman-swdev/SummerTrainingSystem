@@ -1,10 +1,18 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace SummerTrainingSystemCore.Entities
 {
     public class Student : IdentityUser
     {
+        public Student()
+        {
+            Trainnings = new List<Trainning>();
+        }
+
+        public List<Trainning> Trainnings { get; set; }
+
         [Required, MaxLength(256)]
         public string FirstName { get; set; }
 

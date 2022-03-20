@@ -5,6 +5,7 @@
         Department,
         Company,
         TrainingType,
-        CompanySize
+        CompanySize,
+        Students
     }
 }
