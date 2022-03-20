@@ -38,25 +38,31 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link 
+                            <a class="nav-link
                                 @Html.ActiveClass("Users", "GetAllStudents")"
                                asp-controller="Users"
                                asp-action="GetAllStudents">Students</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link 
-                            @Html.ActiveClass("Users", "GetAllSupervisors")" 
-                            asp-controller="Users" 
-                            asp-action="GetAllSupervisors">Supervisors</a>
+                            <a class="nav-link
+                            @Html.ActiveClass("Users", "GetAllSupervisors")"
+                               asp-controller="Users"
+                               asp-action="GetAllSupervisors">Supervisors</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link 
-                            @Html.ActiveClass("Users", "GetAllCompanies")" 
-                            asp-controller="Users" 
-                            asp-action="GetAllCompanies">Companies</a>
+                            <a class="nav-link
+                            @Html.ActiveClass("Users", "GetAllCompanies")"
+                               asp-controller="Users"
+                               asp-action="GetAllCompanies">Companies</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link @Html.ActiveClass("Roles", "ListRoles")"  asp-controller="Roles" asp-action="ListRoles">Roles</a>
+                            <a class="nav-link
+                            @Html.ActiveClass("Departments", "GetDepartments")"
+                               asp-controller="Departments"
+                               asp-action="GetDepartments">Departments</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @Html.ActiveClass("Roles", "ListRoles")" asp-controller="Roles" asp-action="ListRoles">Roles</a>
                         </li>
 
                     </ul>

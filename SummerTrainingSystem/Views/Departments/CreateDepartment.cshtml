@@ -1,0 +1,37 @@
+﻿@model CreateDepartmentVM
+@inject SummerTrainingSystemCore.Interfaces.IGenericRepository<Department> depRepo
+@{
+    ViewData["Title"] = "Create Department";
+}
+<div class="container my-5">
+    <div class="row">
+        <div class="col-lg-10 col">
+
+            <h1 class="display-5">Create New Company</h1>
+            <hr />
+            <form method="post">
+                <div class="row">
+                    <div class="col-md-6 mt-4">
+                        <input class="form-control" asp-for="Name" placeholder="Department Name" />
+                        <span class="text-danger" asp-validation-for="Name"></span>
+                    </div>
+                    <div class="col-md-6 mt-4">
+                        <input class="form-control" asp-for="Abbreviation" placeholder="Abbreviation" />
+                        <span class="text-danger" asp-validation-for="Abbreviation"></span>
+                    </div>
+                </div>
+
+
+                <div class="mt-4 d-flex justify-content-between">
+                    <button type="submit" class="btn btn-success">Save</button>
+                    <a class="btn btn-outline-dark" asp-controller="Departments" asp-action="GetDepartments">Back</a>
+                </div>
+            </form>
+            <div class="mt-4 bg-danger p-2 text-white" asp-validation-summary="ModelOnly"></div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
