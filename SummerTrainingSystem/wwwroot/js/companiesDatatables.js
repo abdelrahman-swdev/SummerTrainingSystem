@@ -23,7 +23,14 @@ function fillCompaniesTable() {
         ],
         "columns": [
             { "data": "id", "name": "Id", "autowidth": true },
-            { "data": "name", "name": "Name", "autowidth": true },
+            {
+                "data": "name", "name": "Name", "autowidth": true,
+                "render": function (data, type, row) {
+                    return `<a href="/account/company-profile?id=${row.id}">
+                                ${data}
+                            </a>`
+                }
+            },
             { "data": "city", "name": "City", "autowidth": true },
             { "data": "industry", "name": "Industry", "autowidth": true },
             {

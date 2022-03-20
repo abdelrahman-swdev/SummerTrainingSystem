@@ -2,6 +2,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using SummerTrainingSystem.Extensions;
 using SummerTrainingSystem.Models;
 using SummerTrainingSystemCore.Entities;
 using SummerTrainingSystemCore.Enums;
@@ -168,8 +169,7 @@ namespace SummerTrainingSystem.Controllers
         [HttpGet("student/edit")]
         public async Task<ActionResult> EditStudent()
         {
-            var logedInStudentId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var logedInStudent = await _userManager.FindByIdAsync(logedInStudentId);
+            var logedInStudent = (Student)await _userManager.GetUserAsync(User);
             if (logedInStudent == null) NotFound();
             return View(_mapper.Map<EditStudentProfileVM>(logedInStudent));
         }
@@ -203,8 +203,7 @@ namespace SummerTrainingSystem.Controllers
         [HttpGet("supervisor/edit")]
         public async Task<ActionResult> EditSupervisor()
         {
-            var logedInSupervisorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var logedInSupervisor = await _userManager.FindByIdAsync(logedInSupervisorId);
+            var logedInSupervisor = await _userManager.GetUserAsync(User);
             if (logedInSupervisor == null) NotFound();
             var model = _mapper.Map<EditSupervisorProfileVM>(logedInSupervisor);
             return View(model);
@@ -247,10 +246,7 @@ namespace SummerTrainingSystem.Controllers
         public async Task<ActionResult> ResetPassword(ResetPasswordVM model)
         {
             var user = await _userManager.GetUserAsync(User);
-            if (user == null)
-            {
-                return RedirectToAction(nameof(Login));
-            }
+            if (user == null) return RedirectToAction(nameof(Login));
 
             var result = await _userManager.ChangePasswordAsync(user,
                 model.CurrentPassword, model.NewPassword);
@@ -307,8 +303,7 @@ namespace SummerTrainingSystem.Controllers
         [HttpGet("company/edit")]
         public async Task<ActionResult> EditCompany()
         {
-            var logedInHrCompanyId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var logedInHrCompany = await _userManager.FindByIdAsync(logedInHrCompanyId);
+            var logedInHrCompany = await _userManager.GetUserAsync(User);
             if (logedInHrCompany == null) NotFound();
             var model = _mapper.Map<EditHrCompanyVM>(logedInHrCompany);
             return View(model);

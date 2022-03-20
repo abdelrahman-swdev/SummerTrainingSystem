@@ -6,6 +6,7 @@
         Company,
         TrainingType,
         CompanySize,
-        Students
+        Students,
+        Trainnings
     }
 }

@@ -80,7 +80,10 @@ namespace SummerTrainingSystem.Controllers
         public async Task<ActionResult> Details([FromRoute] int id)
         {
             var trainning = await _trainRepo.GetAsync(t => t.Id == id, new string[] { 
-                Includes.Department.ToString(), Includes.Company.ToString(), Includes.TrainingType.ToString()
+                Includes.Department.ToString(), 
+                Includes.Company.ToString(), 
+                Includes.TrainingType.ToString(), 
+                Includes.Students.ToString()
             });
             if (trainning == null) return NotFound();
             return View(_mapper.Map<TrainingVM>(trainning));
@@ -168,7 +171,7 @@ namespace SummerTrainingSystem.Controllers
         public async Task<IActionResult> ApplyForTraining(int trid)
         {
             var training = await _trainRepo.GetAsync(t =>t.Id == trid, new string[] {Includes.Students.ToString()});
-            var loggedInStudent = (Student)await _userManager.GetLoggedInUser(User);
+            var loggedInStudent = (Student)await _userManager.GetUserAsync(User);
             int result = await _trainRepo.ApplyForTraining(loggedInStudent, training);
             if(result > 0)
             {
