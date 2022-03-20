@@ -23,6 +23,7 @@ namespace SummerTrainingSystem.Helpers
             CreateMap<Supervisor, SaveSupervisorAccountVM>().ForMember(m => m.Email, s => s.MapFrom(su => su.UserName)).ReverseMap();
             CreateMap<Student, EditStudentProfileVM>().ForMember(m => m.Email, s => s.MapFrom(st => st.UserName)).ReverseMap();
             CreateMap<Supervisor, EditSupervisorProfileVM>().ForMember(m => m.Email, s => s.MapFrom(st => st.UserName)).ReverseMap();
+            CreateMap<Department, CreateDepartmentVM>().ReverseMap();
         }
     }
 }
