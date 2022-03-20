@@ -358,6 +358,17 @@ namespace SummerTrainingSystem.Controllers
             return View(_mapper.Map<CompanyVM>(company));
             
         }
+        [HttpGet("student-profile")]
+        public async Task<IActionResult> StudentProfile(string id)
+        {
+            if(string.IsNullOrEmpty(id))
+            {
+                id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            }
+            var student = await _stuRepo.GetAsync(s => s.Id == id, new string[] { Includes.Department.ToString() });
+            if (student == null) return NotFound();
+            return View(_mapper.Map<StudentVM>(student));
+        }
 
         private async Task<IdentityResult> UpdateStudentFromModelAsync(EditStudentProfileVM model)
         {

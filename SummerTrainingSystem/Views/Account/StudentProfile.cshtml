@@ -1,0 +1,56 @@
+﻿@model StudentVM
+@{
+    ViewData["title"] = "Student";
+}
+<link href="~/css/StudentProfile.css" rel="stylesheet" />
+<div class="student-profile py-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-transparent text-center">
+                        <img class="profile_img" src="~/images/logo.svg" alt="">
+                        <h3>@Model.FirstName @Model.LastName</h3>
+                    </div>
+                    <div class="card-body">
+                        <p class="mb-0"><strong class="pr-1">Student ID:</strong>@Model.UniversityID</p>
+                        <p class="mb-0"><strong class="pr-1">Email:</strong>@Model.Email</p>
+                        <p class="mb-0"><strong class="pr-1">Phone Number:</strong>@Model.PhoneNumber</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-transparent border-0">
+                        <h3 class="mb-0"><i class="far fa-clone pr-1"></i> Information</h3>
+                    </div>
+                    <div class="card-body pt-0">
+                        <table class="table table-bordered">
+                            <tr>
+                                <th width="30%">Gender</th>
+                                <td width="2%">:</td>
+                                <td>Male</td>
+                            </tr>
+                            <tr>
+                                <th width="30%">Level	</th>
+                                <td width="2%">:</td>
+                                <td>@Model.Level</td>
+                            </tr>
+                            <tr>
+                                <th width="30%">Gpa</th>
+                                <td width="2%">:</td>
+                                <td>@Model.Gpa</td>
+                            </tr>
+                            <tr>
+                                <th width="30%">Department</th>
+                                <td width="2%">:</td>
+                                <td>@Model.Department.Abbreviation</td>
+                            </tr>
+                        </table>
+                        <button class="buttonbtn">My Trainings</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
