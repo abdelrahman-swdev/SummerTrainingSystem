@@ -1,0 +1,44 @@
+﻿@model Student
+    @{
+        ViewData["Title"] = "My Trainings";
+    }
+
+    <div class="container mt-4">
+        <div class="row">
+            @if (Model.Trainnings.Count() == 0)
+            {
+                <div class="alert alert-info">
+                    You have not added trainings yet
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-light">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Created At</th>
+                                <th>Type</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var s in @Model.Trainnings)
+                            {
+                                <tr>
+                                    <td>@s.Title</td>
+                                    <td>@s.CreatedAt.ToString("d")</td>
+                                    <td>@s.TrainingType.TypeName</td>
+                                    <td>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+    @section Scripts{
+        <script src="~/js/trainingForCompany.js"></script>
+    }
