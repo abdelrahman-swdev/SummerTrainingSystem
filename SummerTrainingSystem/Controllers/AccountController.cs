@@ -2,11 +2,13 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SummerTrainingSystem.Extensions;
 using SummerTrainingSystem.Models;
 using SummerTrainingSystemCore.Entities;
 using SummerTrainingSystemCore.Enums;
 using SummerTrainingSystemCore.Interfaces;
+using SummerTrainingSystemEF.Data;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -25,6 +27,7 @@ namespace SummerTrainingSystem.Controllers
         private readonly IGenericRepository<HrCompany> _comRepo;
         private readonly INotyfService _notyfService;
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly ApplicationDbContext _context;
 
         public AccountController(IAccountService accountService,
             IMapper mapper,
@@ -34,7 +37,8 @@ namespace SummerTrainingSystem.Controllers
             SignInManager<IdentityUser> signInManager,
             IGenericRepository<Trainning> trainRepo,
             INotyfService notyfService,
-            IGenericRepository<HrCompany> comRepo)
+            IGenericRepository<HrCompany> comRepo,
+            ApplicationDbContext context)
         {
             _userManager = userManager;
             _accountService = accountService;
@@ -45,6 +49,7 @@ namespace SummerTrainingSystem.Controllers
             _trainRepo = trainRepo;
             _notyfService = notyfService;
             _comRepo = comRepo;
+            _context = context;
         }
 
         [HttpGet("student/new")]
@@ -368,6 +373,15 @@ namespace SummerTrainingSystem.Controllers
             var student = await _stuRepo.GetAsync(s => s.Id == id, new string[] { Includes.Department.ToString() });
             if (student == null) return NotFound();
             return View(_mapper.Map<StudentVM>(student));
+        }
+        [HttpGet("student/my-training")]
+        public async Task<IActionResult> GetTrainningForStudent()
+        {
+            var logedInStudent = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var students = await _context.Students.Include(s => s.Trainnings).ThenInclude(t => t.TrainingType).FirstOrDefaultAsync(w => w.Id == logedInStudent);
+
+            return View(students);
+
         }
 
         private async Task<IdentityResult> UpdateStudentFromModelAsync(EditStudentProfileVM model)
