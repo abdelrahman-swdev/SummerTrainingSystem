@@ -64,7 +64,7 @@ const deleteSupervisor = (data) => {
         if (result.isConfirmed) {
             console.log(data);
             $.ajax({
-                url: '/api/delete-account/' + data,
+                url: '/account/delete/' + data,
                 method: 'Delete',
                 beforeSend: (xhr) => {
                     document.getElementById(data).classList.toggle('d-none');

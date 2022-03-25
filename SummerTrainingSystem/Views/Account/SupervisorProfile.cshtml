@@ -1,4 +1,4 @@
-﻿@model StudentVM
+﻿@model SupervisorVM
 @{
     ViewData["title"] = "Profile";
 }
@@ -15,7 +15,7 @@
                         </label>
                         <input id="ProfilePictureFile" type="file" onchange="loadFile(event)"/>
                         <img src="~/@(string.IsNullOrEmpty(Model.ProfilePictureUrl) ? "images/avatar.svg" : 
-                                        "uploads/" + Model.ProfilePictureUrl)" id="ProfilePicture" width="200" alt="profile"/>
+                                        "uploads/" + Model.ProfilePictureUrl)" id="ProfilePicture" width="200" />
                     </div>
                     <div class="spinner-border text-secondary spinner-border-sm d-none" role="status" id="profilePicSpinner">
                         <span class="visually-hidden">Loading...</span>
@@ -23,8 +23,8 @@
                     <h4 class="mt-3 text-secondary text-uppercase">@Model.FirstName @Model.LastName</h4>
                 </div>
             </div>
-          </div>
-          <div class="row">
+        </div>
+        <div class="row">
             <div class="col-lg-6 offset-lg-3">
                 <div class="card shadow-sm">
                     <div class="card-header bg-transparent border-0">
@@ -46,16 +46,6 @@
                                 <th width="30%">Phone</th>
                                 <td width="2%">:</td>
                                 <td>@Model.PhoneNumber</td>
-                            </tr>
-                            <tr>
-                                <th width="30%">Level</th>
-                                <td width="2%">:</td>
-                                <td>@Model.Level</td>
-                            </tr>
-                            <tr>
-                                <th width="30%">Gpa</th>
-                                <td width="2%">:</td>
-                                <td>@Model.Gpa</td>
                             </tr>
                             <tr>
                                 <th width="30%">Department</th>

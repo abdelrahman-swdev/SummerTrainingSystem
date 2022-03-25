@@ -4,6 +4,7 @@ using SummerTrainingSystemCore.Enums;
 using SummerTrainingSystemCore.Interfaces;
 using SummerTrainingSystemEF.Data;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace SummerTrainingSystemEF.Services

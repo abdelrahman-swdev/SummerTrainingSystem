@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace SummerTrainingSystem.Models
@@ -61,5 +62,9 @@ namespace SummerTrainingSystem.Models
         [Required(ErrorMessage = "Company Size is required")]
         [Display(Name = "Company Size")]
         public int CompanySizeId { get; set; }
+
+        [Display(Name = "Profile Picture")]
+        public IFormFile ProfilePicture { get; set; }
+        public string ProfilePictureUrl { get; set; }
     }
 }

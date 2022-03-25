@@ -9,7 +9,7 @@
 
             <h1 class="display-5">Create New Student</h1>
             <hr />
-            <form method="post">
+            <form method="post" enctype="multipart/form-data">
                 <div class="row">
                     <div class="col-md-6 mt-4">
                         <input class="form-control" asp-for="FirstName" placeholder="First Name" />
@@ -57,6 +57,12 @@
                     </div>
                 </div>
 
+                <div class="mt-4">
+                    <label asp-for="ProfilePicture"></label>
+                    <input class="form-control" asp-for="ProfilePicture"/>
+                    <span class="text-danger" asp-validation-for="ProfilePicture"></span>
+                </div>
+
                 <div class="row">
                     <div class="col-md-6 mt-4">
                         <div class="">
@@ -71,6 +77,7 @@
                         <span class="text-danger" asp-validation-for="ConfirmPassword"></span>
                     </div>
                 </div>
+
                 <div class="mt-4 d-flex justify-content-between">
                     <button type="submit" class="btn btn-success">Save</button>
                     <a class="btn btn-outline-dark" asp-controller="Users" asp-action="GetAllStudents">Back</a>

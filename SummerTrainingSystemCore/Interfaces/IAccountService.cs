@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using SummerTrainingSystemCore.Entities;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace SummerTrainingSystemCore.Interfaces
@@ -15,5 +16,6 @@ namespace SummerTrainingSystemCore.Interfaces
         Task<SignInResult> LoginAsync(int universityId, string password);
         Task<SignInResult> LoginAsCompanyAsync(string email, string password);
         Task LogoutAsync();
+
     }
 }

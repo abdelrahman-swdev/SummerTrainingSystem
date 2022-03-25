@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SummerTrainingSystemEF.Data;
 
 namespace SummerTrainingSystemEF.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220324211301_AddProfilePictureToSupervisorAndUpdateSomeIntegersToByt")]
+    partial class AddProfilePictureToSupervisorAndUpdateSomeIntegersToByt
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -378,9 +380,6 @@ namespace SummerTrainingSystemEF.Data.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<string>("ProfilePictureUrl")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Specialities")
                         .IsRequired()
                         .HasMaxLength(255)
@@ -413,9 +412,6 @@ namespace SummerTrainingSystemEF.Data.Migrations
 
                     b.Property<byte>("Level")
                         .HasColumnType("tinyint");
-
-                    b.Property<string>("ProfilePictureUrl")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UniversityID")
                         .HasColumnType("int");

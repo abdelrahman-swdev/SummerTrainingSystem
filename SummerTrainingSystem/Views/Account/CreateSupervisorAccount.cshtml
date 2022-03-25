@@ -10,20 +10,7 @@
             <h1 class="display-5">Create New Supervisor</h1>
             <hr />
 
-            @if (!String.IsNullOrEmpty(ViewBag.SupervisorCreated))
-            {
-                <div class="alert alert-success">
-                    @ViewBag.SupervisorCreated
-                </div>
-            }
-            @if (!String.IsNullOrEmpty(ViewBag.SupervisorNotCreated))
-            {
-                <div class="alert alert-danger">
-                    @ViewBag.SupervisorNotCreated
-                </div>
-            }
-
-            <form method="post">
+            <form method="post" enctype="multipart/form-data">
                 <div class="row">
                     <div class="col-md-6 mt-4">
                         <input class="form-control" asp-for="FirstName" placeholder="First Name" />
@@ -61,6 +48,12 @@
                     </div>
                 </div>
 
+                <div class="mt-4">
+                    <label asp-for="ProfilePicture"></label>
+                    <input class="form-control" asp-for="ProfilePicture"/>
+                    <span class="text-danger" asp-validation-for="ProfilePicture"></span>
+                </div>
+
                 <div class="row">
                     <div class="col-md-6 mt-4">
                         <input class="form-control" asp-for="Password" placeholder="Password" />
@@ -71,6 +64,9 @@
                         <span class="text-danger" asp-validation-for="ConfirmPassword"></span>
                     </div>
                 </div>
+
+                
+
                 <div style="display:flex;justify-content:space-between;" class="mt-4">
                     <button type="submit" class="btn btn-success">Save</button>
                     <a class="btn btn-outline-dark" asp-controller="Users" asp-action="GetAllSupervisors">Back</a>

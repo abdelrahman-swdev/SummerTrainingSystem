@@ -63,7 +63,7 @@ const deleteStudent = (data) => {
     }).then((result) => {
         if (result.isConfirmed) {
             $.ajax({
-                url: '/api/delete-account/' + data,
+                url: '/account/delete/' + data,
                 method: 'Delete',
                 beforeSend: (xhr) => {
                     document.getElementById(data).classList.toggle('d-none');

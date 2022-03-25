@@ -1,0 +1,27 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using SummerTrainingSystemCore.Enums
+
+@inject UserManager<IdentityUser> userManager
+@{
+    if (User.IsInRole(Roles.Student.ToString()))
+    {
+        <img class="profile-picture" 
+        src="~/@( string.IsNullOrEmpty(((Student)userManager.GetUserAsync(User).Result).ProfilePictureUrl) ?
+        "images/avatar.svg" : 
+        "uploads/" + ((Student)userManager.GetUserAsync(User).Result).ProfilePictureUrl)" alt="profile" />
+    }
+    if (User.IsInRole(Roles.Supervisor.ToString()))
+    {
+        <img class="profile-picture" 
+        src="~/@( string.IsNullOrEmpty(((Supervisor)userManager.GetUserAsync(User).Result).ProfilePictureUrl) ?
+        "images/avatar.svg" : 
+        "uploads/" + ((Supervisor)userManager.GetUserAsync(User).Result).ProfilePictureUrl)" alt="profile" />
+    }
+    if (User.IsInRole(Roles.Company.ToString()))
+    {
+        <img class="profile-picture" 
+        src="~/@( string.IsNullOrEmpty(((HrCompany)userManager.GetUserAsync(User).Result).ProfilePictureUrl) ?
+        "images/avatar.svg" : 
+        "uploads/" + ((HrCompany)userManager.GetUserAsync(User).Result).ProfilePictureUrl)" alt="profile" />
+    }
+}

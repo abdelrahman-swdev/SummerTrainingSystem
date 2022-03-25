@@ -10,36 +10,49 @@
 <div class="container">
     <div class="hetadiv">
         <div class="bluediv"></div>
-        <div>
-            <img src="~/images/landing.jpg" class="profile-photo">
+        <div class="d-flex align-items-center shadow">
+            <div class="me-3 text-center">
+                <div class="profile-pic my-2">
+                    <label class="-label" for="ProfilePictureFile">
+                        <i class="fas fa-camera"></i>
+                        <span>Change Image</span>
+                    </label>
+                    <input id="ProfilePictureFile" type="file" onchange="loadFile(event)"/>
+                    <img src="~/@(string.IsNullOrEmpty(Model.ProfilePictureUrl) ? "images/avatar.svg" : 
+                                    "uploads/" + Model.ProfilePictureUrl)" id="ProfilePicture" width="200" alt="profile" />
+                </div>
+                <div class="spinner-border text-secondary spinner-border-sm d-none" role="status" id="profilePicSpinner">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+            <div class="photodiv">
+        <div class="headdiv">
+            <h1 class="head">@Model.Name</h1>
+        </div>
+
+        <!--الحنة اللي فيها كايرو ايجيبت-->
+        <div class="descdiv">
+            <span>
+                <a class="manu">@Model.Industry</a>
+            </span>
+             | 
+            <span class="location-info">@Model.City , @Model.Country</span>
+             | 
+            <span class="company-size">@Model.CompanySize.SizeRange</span>
+        </div>
+
+        <!--الحتة اللي فيها لوجو الفيس-->
+        <div class="linksdiv">
+            <div class="comlink">
+                <i class="fas fa-globe me-1 text-primary"></i>
+                <a href="@Model.CompanyWebsite" class="weblink">@Model.CompanyWebsite</a>
+            </div>
+        </div>
+    </div>
         </div>
     </div>
     <!--الصورة والكلام-->
-    <div class="photodiv">
-    <div class="headdiv">
-        <h1 class="head">@Model.Name
-        </h1>
-    </div>
-
-    <!--الحنة اللي فيها كايرو ايجيبت-->
-    <div class="descdiv">
-        <span>
-        <a class="manu">@Model.Industry</a>
-        </span>
-         | 
-        <span class="location-info">@Model.City , @Model.Country</span>
-         | 
-        <span class="company-size">@Model.CompanySize.SizeRange</span>
-    </div>
-
-    <!--الحتة اللي فيها لوجو الفيس-->
-    <div class="linksdiv">
-        <div class="comlink">
-            <i class="fas fa-globe me-1 text-primary"></i>
-            <a href="@Model.CompanyWebsite" class="weblink">@Model.CompanyWebsite</a>
-        </div>
-    </div>
-    </div>
+    
 
     <!--الديسكريبشن-->
     <div class="prof mt-4">

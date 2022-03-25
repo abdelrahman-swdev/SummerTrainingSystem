@@ -1,13 +1,16 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using AutoMapper;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using SummerTrainingSystem.Extensions;
 using SummerTrainingSystem.Models;
 using SummerTrainingSystemCore.Entities;
 using SummerTrainingSystemCore.Enums;
 using SummerTrainingSystemCore.Interfaces;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -25,6 +28,7 @@ namespace SummerTrainingSystem.Controllers
         private readonly IGenericRepository<HrCompany> _comRepo;
         private readonly INotyfService _notyfService;
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly IWebHostEnvironment _env;
 
         public AccountController(IAccountService accountService,
             IMapper mapper,
@@ -34,7 +38,8 @@ namespace SummerTrainingSystem.Controllers
             SignInManager<IdentityUser> signInManager,
             IGenericRepository<Trainning> trainRepo,
             INotyfService notyfService,
-            IGenericRepository<HrCompany> comRepo)
+            IGenericRepository<HrCompany> comRepo,
+            IWebHostEnvironment env)
         {
             _userManager = userManager;
             _accountService = accountService;
@@ -45,6 +50,7 @@ namespace SummerTrainingSystem.Controllers
             _trainRepo = trainRepo;
             _notyfService = notyfService;
             _comRepo = comRepo;
+            _env = env;
         }
 
         [HttpGet("student/new")]
@@ -60,6 +66,12 @@ namespace SummerTrainingSystem.Controllers
             if (!ModelState.IsValid)
             {
                 return View(model);
+            }
+            // upload the profile photo
+            if (model.ProfilePicture != null)
+            {
+                string uploadsFolder = "uploads/";
+                model.ProfilePictureUrl = await UploadFile(uploadsFolder, model.ProfilePicture);
             }
             var student = _mapper.Map<Student>(model);
             var result = await _accountService.CreateStudentAccountAsync(student, model.Password);
@@ -92,6 +104,13 @@ namespace SummerTrainingSystem.Controllers
             {
                 return View(model);
             }
+
+            // upload the profile photo
+            if (model.ProfilePicture != null)
+            {
+                string uploadsFolder = "uploads/";
+                model.ProfilePictureUrl = await UploadFile(uploadsFolder, model.ProfilePicture);
+            }
             var supervisor = _mapper.Map<Supervisor>(model);
             var result = await _accountService.CreateSupervisorAccountAsync(supervisor, model.Password);
             if (result.Succeeded)
@@ -108,6 +127,8 @@ namespace SummerTrainingSystem.Controllers
                 return View(model);
             }
         }
+
+        
 
         [HttpGet("loginascompany")]
         public IActionResult LoginAsCompany()
@@ -281,6 +302,12 @@ namespace SummerTrainingSystem.Controllers
             {
                 return View(model);
             }
+            // upload the profile photo
+            if (model.ProfilePicture != null)
+            {
+                string uploadsFolder = "uploads/";
+                model.ProfilePictureUrl = await UploadFile(uploadsFolder, model.ProfilePicture);
+            }
             var company = _mapper.Map<HrCompany>(model);
             var result = await _accountService.CreateCompanyAccountAsync(company, model.Password);
             if (result.Succeeded)
@@ -335,7 +362,7 @@ namespace SummerTrainingSystem.Controllers
             }
         }
 
-        [HttpGet("my-trainings")]
+        [HttpGet("company/trainings")]
         public async Task<IActionResult> GetTrainingsForCompany()
         {
             var loggedInCompanyId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -358,18 +385,127 @@ namespace SummerTrainingSystem.Controllers
             return View(_mapper.Map<CompanyVM>(company));
             
         }
+
         [HttpGet("student-profile")]
-        public async Task<IActionResult> StudentProfile(string id)
+        public async Task<IActionResult> StudentProfile()
         {
-            if(string.IsNullOrEmpty(id))
-            {
-                id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            }
+            var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var student = await _stuRepo.GetAsync(s => s.Id == id, new string[] { Includes.Department.ToString() });
             if (student == null) return NotFound();
             return View(_mapper.Map<StudentVM>(student));
         }
 
+        [HttpGet("supervisor-profile")]
+        public async Task<IActionResult> SupervisorProfile()
+        {
+            var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var supervisor = await _supRepo.GetAsync(s => s.Id == id, new string[] { Includes.Department.ToString() });
+            if (supervisor == null) return NotFound();
+            return View(_mapper.Map<SupervisorVM>(supervisor));
+        }
+
+        [HttpGet("student/trainings")]
+        public async Task<IActionResult> GetTrainningForStudent()
+        {
+            var logedInStudent = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var student = await _stuRepo.GetAsync(s => s.Id == logedInStudent, new string[] { Includes.Trainnings.ToString()});
+            var model = _mapper.Map<StudentVM>(student);
+
+            return View(model);
+        }
+
+        [HttpPost("update-photo")]
+        public async Task<IActionResult> UpdateProfilePhoto(IFormFile file)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (await _userManager.IsInRoleAsync(user, Roles.Supervisor.ToString()))
+            {
+                var super = (Supervisor)user;
+                if(!string.IsNullOrEmpty(super.ProfilePictureUrl))
+                {
+                    DeleteFile("uploads/", super.ProfilePictureUrl);
+                }
+                super.ProfilePictureUrl = await UploadFile("uploads/", file);
+                var result = _supRepo.Update(super);
+                if (result > 0) return Ok();
+            }
+            if (await _userManager.IsInRoleAsync(user, Roles.Student.ToString()))
+            {
+                var student = (Student)user;
+                if (!string.IsNullOrEmpty(student.ProfilePictureUrl))
+                {
+                    DeleteFile("uploads/", student.ProfilePictureUrl);
+                }
+                student.ProfilePictureUrl = await UploadFile("uploads/", file);
+                var result = _stuRepo.Update(student);
+                if (result > 0) return Ok();
+            }
+            if (await _userManager.IsInRoleAsync(user, Roles.Company.ToString()))
+            {
+                var company = (HrCompany)user;
+                if (!string.IsNullOrEmpty(company.ProfilePictureUrl))
+                {
+                    DeleteFile("uploads/", company.ProfilePictureUrl);
+                }
+                company.ProfilePictureUrl = await UploadFile("uploads/", file);
+                var result = _comRepo.Update(company);
+                if (result > 0) return Ok();
+            }
+            
+            return NotFound();
+        }
+
+        [HttpDelete("delete/{id}")]
+        public async Task<IActionResult> DeleteAccount(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (await _userManager.IsInRoleAsync(user, Roles.Student.ToString()))
+            {
+                // check if student applied for trainings
+                var student = await _stuRepo.GetAsync(s => s.Id == id, new string[] { Includes.Trainnings.ToString() });
+                if (student.Trainnings.Count > 0)
+                {
+                    // update applicants count for those trainings
+                    foreach (var tr in student.Trainnings)
+                    {
+                        tr.ApplicantsCount -= 1;
+                    }
+                }
+            }
+            var result = await _userManager.DeleteAsync(user);
+            if (result.Succeeded) return Ok();
+            return BadRequest();
+        }
+
+        private void DeleteFile(string filePath, string fileUrl)
+        {
+            string fullFilePath = filePath + fileUrl;
+            string FullPathOnServer = Path.Combine(_env.WebRootPath, fullFilePath);
+            if ((System.IO.File.Exists(FullPathOnServer)))
+            {
+                try
+                {
+                    System.IO.File.Delete(FullPathOnServer);
+                }
+                catch(Exception e)
+                {
+                    return;
+                }
+            }
+        }
+
+        private async Task<string> UploadFile(string filePath, IFormFile file)
+        {
+
+            string fileName = Guid.NewGuid().ToString() + "_" + file.FileName;
+            string fullPhotoPath = filePath + fileName;
+            string FullPathOnServer = Path.Combine(_env.WebRootPath, fullPhotoPath);
+            using (FileStream fileStream = new(FullPathOnServer, FileMode.Create))
+            {
+                await file.CopyToAsync(fileStream);
+            }
+            return fileName;
+        }
         private async Task<IdentityResult> UpdateStudentFromModelAsync(EditStudentProfileVM model)
         {
             var student = (Student)await _userManager.FindByIdAsync(model.Id);

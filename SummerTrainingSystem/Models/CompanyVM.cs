@@ -26,5 +26,6 @@ namespace SummerTrainingSystem.Models
         public int CompanySizeId { get; set; }
 
         public CompanySizeVM CompanySize{ get; set; }
+        public string ProfilePictureUrl { get; set; }
     }
 }

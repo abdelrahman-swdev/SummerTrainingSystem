@@ -24,4 +24,8 @@
 	<ProjectReference Include="..\SummerTrainingSystemEF\SummerTrainingSystemEF.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\uploads\" />
+  </ItemGroup>
+
 </Project>

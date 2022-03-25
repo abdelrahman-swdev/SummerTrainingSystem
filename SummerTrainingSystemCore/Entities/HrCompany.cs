@@ -7,21 +7,29 @@ namespace SummerTrainingSystemCore.Entities
     public class HrCompany : IdentityUser
     { 
     
-        [Required, MaxLength(256)]
+        [Required, MaxLength(255)]
         public string Name { get; set; }
-        [Required, MaxLength(256)]
+
+        [Required, MaxLength(255)]
         public string City { get; set; }
-        [Required, MaxLength(256)]
+
+        [Required, MaxLength(255)]
         public string Country { get; set; }
-        [Required, MaxLength(256)]
+
+        [Required, MaxLength(255)]
         public string Industry { get; set; }
-        [Required]
+
+        [Required, MaxLength(255)]
         public string Specialities { get; set; }
+
+        [MaxLength(255)]
         public string CompanyWebsite { get; set; }
         [Required]
         public string AboutCompany { get; set; }
         public DateTime FoundedAt { get; set; }
         public int CompanySizeId { get; set; }
         public CompanySize CompanySize { get; set; }
+        public string ProfilePictureUrl { get; set; }
+
     }
 }

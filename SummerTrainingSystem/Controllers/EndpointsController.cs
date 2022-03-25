@@ -1,12 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SummerTrainingSystemCore.Entities;
-using SummerTrainingSystemCore.Enums;
 using SummerTrainingSystemEF.Data;
 using System.Linq;
 using System.Linq.Dynamic.Core;
-using System.Threading.Tasks;
 
 namespace SummerTrainingSystem.Controllers
 {
@@ -14,40 +11,11 @@ namespace SummerTrainingSystem.Controllers
     public class EndpointsController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly UserManager<IdentityUser> _userManager;
 
         public EndpointsController(
-            ApplicationDbContext context,
-            UserManager<IdentityUser> userManager)
+            ApplicationDbContext context)
         {
             _context = context;
-            _userManager = userManager;
-        }
-
-        [HttpDelete("delete-account/{id}")]
-        public async Task<IActionResult> DeleteAccount(string id)
-        {
-            var user = await _userManager.FindByIdAsync(id);
-            if(await _userManager.IsInRoleAsync(user, Roles.Student.ToString()))
-            {
-                // check if student applied for trainings
-                var student = _context.Students
-                    .Where(s => s.Id == user.Id)
-                    .Include(Includes.Trainnings.ToString())
-                    .FirstOrDefault();
-                if(student.Trainnings.Count() > 0)
-                {
-                    // update applicants count for those trainings
-                    foreach(var tr in student.Trainnings)
-                    {
-                        tr.ApplicantsCount -= 1;
-                    }
-                    _context.SaveChanges();
-                }
-            }
-            var result = await _userManager.DeleteAsync(user);
-            if (result.Succeeded) return Ok();
-            return BadRequest();
         }
 
         [HttpPost("students")]

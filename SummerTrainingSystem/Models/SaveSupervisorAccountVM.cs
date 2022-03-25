@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 
 namespace SummerTrainingSystem.Models
 {
@@ -44,5 +45,9 @@ namespace SummerTrainingSystem.Models
         [Compare("Password", ErrorMessage = "Password doesn't match")]
         [Display(Name = "Confirm your password")]
         public string ConfirmPassword { get; set; }
+
+        [Display(Name = "Profile Picture")]
+        public IFormFile ProfilePicture { get; set; }
+        public string ProfilePictureUrl { get; set; }
     }
 }

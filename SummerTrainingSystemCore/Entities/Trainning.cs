@@ -21,7 +21,7 @@ namespace SummerTrainingSystemCore.Entities
         public DateTime EndAt { get; set; }
         public DateTime CreatedAt { get; set; }
 
-        public int OpenPositions { get; set; }
+        public byte OpenPositions { get; set; }
         public int ApplicantsCount { get; set; }
         public int? DepartmentId { get; set; }
         public Department Department { get; set; }

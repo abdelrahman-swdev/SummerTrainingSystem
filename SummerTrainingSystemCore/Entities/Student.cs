@@ -13,22 +13,24 @@ namespace SummerTrainingSystemCore.Entities
 
         public List<Trainning> Trainnings { get; set; }
 
-        [Required, MaxLength(256)]
+        [Required, MaxLength(255)]
         public string FirstName { get; set; }
 
-        [Required, MaxLength(256)]
+        [Required, MaxLength(255)]
         public string LastName { get; set; }
 
         [Required]
-        public int Level { get; set; }
+        public byte Level { get; set; }
 
         [Required]
-        public double Gpa { get; set; }
+        public float Gpa { get; set; }
 
         [Required]
         public int UniversityID { get; set; }
 
         public int? DepartmentId { get; set; }
         public Department Department { get; set; }
+        public string ProfilePictureUrl { get; set; }
+
     }
 }

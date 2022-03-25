@@ -12,15 +12,16 @@ namespace SummerTrainingSystem.Models
 
         public string LastName { get; set; }
 
-        public int Level { get; set; }
+        public byte Level { get; set; }
 
-        public double Gpa { get; set; }
+        public float Gpa { get; set; }
 
         public int UniversityID { get; set; }
 
-        public int DepartmentId { get; set; }
         public DepartmentVM Department { get; set; }
 
         public List<TrainingVM> Trainnings { get; set; }
+        public string ProfilePictureUrl { get; set; }
+
     }
 }
