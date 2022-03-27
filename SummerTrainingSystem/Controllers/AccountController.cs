@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SummerTrainingSystem.Models;
 using SummerTrainingSystemCore.Entities;
 using SummerTrainingSystemCore.Enums;
@@ -204,7 +205,7 @@ namespace SummerTrainingSystem.Controllers
                 if (result.Succeeded)
                 {
                     _notyfService.Success("Account updated successfully");
-                    return View();
+                    return RedirectToAction(nameof(StudentProfile));
                 }
                 else
                 {
@@ -240,7 +241,7 @@ namespace SummerTrainingSystem.Controllers
                 if (result.Succeeded)
                 {
                     _notyfService.Success("Account updated successfully");
-                    return View();
+                    return RedirectToAction(nameof(SupervisorProfile));
                 }
                 else
                 {
@@ -345,7 +346,7 @@ namespace SummerTrainingSystem.Controllers
                 if (result.Succeeded)
                 {
                     _notyfService.Success("Account updated successfully");
-                    return View();
+                    return RedirectToAction(nameof(CompanyProfile));
                 }
                 else
                 {
@@ -366,11 +367,9 @@ namespace SummerTrainingSystem.Controllers
         public async Task<IActionResult> GetTrainingsForCompany()
         {
             var loggedInCompanyId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var trainings = await _trainRepo.ListAsync(t => t.CompanyId == loggedInCompanyId, 
-                new string[] { 
-                    Includes.Department.ToString(),
-                    Includes.TrainingType.ToString()
-                });
+            var trainings = await _trainRepo.ListAsync(t => t.CompanyId == loggedInCompanyId, source => 
+            source.Include(s => s.TrainingType));
+
             var model = _mapper.Map<List<TrainingVM>>(trainings);
             return View(model);
         }
@@ -380,7 +379,7 @@ namespace SummerTrainingSystem.Controllers
         {
             if(string.IsNullOrEmpty(id)) id = User.FindFirstValue(ClaimTypes.NameIdentifier);
             
-            var company = await _comRepo.GetAsync(c => c.Id == id, new string[] { Includes.CompanySize.ToString() });
+            var company = await _comRepo.GetAsync(c => c.Id == id, source => source.Include(s => s.CompanySize));
             if (company == null) return NotFound();
             return View(_mapper.Map<CompanyVM>(company));
             
@@ -390,7 +389,7 @@ namespace SummerTrainingSystem.Controllers
         public async Task<IActionResult> StudentProfile()
         {
             var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var student = await _stuRepo.GetAsync(s => s.Id == id, new string[] { Includes.Department.ToString() });
+            var student = await _stuRepo.GetAsync(s => s.Id == id, source => source.Include(s => s.Department));
             if (student == null) return NotFound();
             return View(_mapper.Map<StudentVM>(student));
         }
@@ -399,7 +398,7 @@ namespace SummerTrainingSystem.Controllers
         public async Task<IActionResult> SupervisorProfile()
         {
             var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var supervisor = await _supRepo.GetAsync(s => s.Id == id, new string[] { Includes.Department.ToString() });
+            var supervisor = await _supRepo.GetAsync(s => s.Id == id, source => source.Include(s => s.Department));
             if (supervisor == null) return NotFound();
             return View(_mapper.Map<SupervisorVM>(supervisor));
         }
@@ -408,7 +407,9 @@ namespace SummerTrainingSystem.Controllers
         public async Task<IActionResult> GetTrainningForStudent()
         {
             var logedInStudent = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var student = await _stuRepo.GetAsync(s => s.Id == logedInStudent, new string[] { Includes.Trainnings.ToString()});
+            var student = await _stuRepo.GetAsync(s => s.Id == logedInStudent, source => 
+            source.Include(s => s.Trainnings)
+            .ThenInclude(s => s.TrainingType));
             var model = _mapper.Map<StudentVM>(student);
 
             return View(model);
@@ -462,7 +463,7 @@ namespace SummerTrainingSystem.Controllers
             if (await _userManager.IsInRoleAsync(user, Roles.Student.ToString()))
             {
                 // check if student applied for trainings
-                var student = await _stuRepo.GetAsync(s => s.Id == id, new string[] { Includes.Trainnings.ToString() });
+                var student = await _stuRepo.GetAsync(s => s.Id == id, source => source.Include(s => s.Trainnings));
                 if (student.Trainnings.Count > 0)
                 {
                     // update applicants count for those trainings

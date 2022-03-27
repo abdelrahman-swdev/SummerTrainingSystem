@@ -1,6 +1,6 @@
 ﻿@model StudentVM
     @{
-        ViewData["Title"] = "My Trainings";
+        ViewData["Title"] = "Applications";
     }
 
     <div class="container mt-4">
@@ -10,7 +10,7 @@
                 @if (Model.Trainnings.Count() == 0)
                 {
                     <div class="alert alert-info">
-                        You have not added trainings yet
+                        You have not applied to any trainings yet.
                     </div>
                 }
                 else
@@ -20,6 +20,7 @@
                             <thead>
                                 <tr>
                                     <th>Title</th>
+                                    <th>Type</th>
                                     <th>Created At</th>
                                 </tr>
                             </thead>
@@ -28,6 +29,7 @@
                                 {
                                     <tr>
                                         <td><a asp-controller="Trainings" asp-action="Details" asp-route-id="@tr.Id">@tr.Title</a></td>
+                                        <td>@tr.TrainingType.TypeName</td>
                                         <td>@tr.CreatedAt.ToString("d")</td>
                                     </tr>
                                 }

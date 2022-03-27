@@ -29,10 +29,14 @@
                         @foreach(var s in @Model)
                         {
                             <tr>
-                                <td>@s.Title</td>
                                 <td>
-                                    <a asp-controller="Trainings" asp-action="GetApplicationsForTraining" asp-route-trid="@s.Id">
-                                        See Applications
+                                    <a class="text-decoration-none" asp-controller="Trainings" asp-action="Details" asp-route-id="@s.Id">
+                                        @s.Title
+                                    </a>
+                                </td>
+                                <td>
+                                    <a class="text-decoration-none" asp-controller="Trainings" asp-action="GetApplicationsForTraining" asp-route-trid="@s.Id">
+                                        Applications
                                     </a>
                                 </td>
                                 <td>@s.CreatedAt.ToString("d")</td>

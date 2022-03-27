@@ -2,6 +2,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SummerTrainingSystem.Extensions;
 using SummerTrainingSystem.Models;
 using SummerTrainingSystemCore.Entities;
@@ -68,9 +69,11 @@ namespace SummerTrainingSystem.Controllers
             }
 
             // all trainings (no search query was sent or department was selected)
-            var trainings = await _trainRepo.ListAsync(t => true, new string[] { 
-                Includes.Department.ToString(), Includes.Company.ToString(), Includes.TrainingType.ToString() 
-            });
+            var trainings = await _trainRepo.ListAsync(t => true, source => source
+            .Include(a => a.Department)
+            .Include(a => a.TrainingType)
+            .Include(a => a.Company));
+
             var model = _mapper.Map<IReadOnlyList<TrainingVM>>(trainings);
             return PartialView(model);
         }
@@ -79,12 +82,12 @@ namespace SummerTrainingSystem.Controllers
         [HttpGet("{id:int}")]
         public async Task<ActionResult> Details([FromRoute] int id)
         {
-            var trainning = await _trainRepo.GetAsync(t => t.Id == id, new string[] { 
-                Includes.Department.ToString(), 
-                Includes.Company.ToString(), 
-                Includes.TrainingType.ToString(), 
-                Includes.Students.ToString()
-            });
+            var trainning = await _trainRepo.GetAsync(t => t.Id == id, source => 
+            source
+            .Include(s => s.Company)
+            .Include(s => s.TrainingType)
+            .Include(s => s.Students));
+
             if (trainning == null) return NotFound();
             return View(_mapper.Map<TrainingVM>(trainning));
         }
@@ -170,7 +173,7 @@ namespace SummerTrainingSystem.Controllers
         [HttpGet("{trid}/apply")]
         public async Task<IActionResult> ApplyForTraining(int trid)
         {
-            var training = await _trainRepo.GetAsync(t =>t.Id == trid, new string[] {Includes.Students.ToString()});
+            var training = await _trainRepo.GetAsync(t =>t.Id == trid, source => source.Include(a => a.Students));
             var loggedInStudent = (Student)await _userManager.GetUserAsync(User);
             int result = await _trainRepo.ApplyForTraining(loggedInStudent, training);
             if(result > 0)
@@ -187,9 +190,7 @@ namespace SummerTrainingSystem.Controllers
         [HttpGet("{trid}/applications")]
         public async Task<IActionResult> GetApplicationsForTraining(int trid)
         {
-            var tr = await _trainRepo.GetAsync(t => t.Id == trid, new string[] { 
-                Includes.Students.ToString(), Includes.Department.ToString(), Includes.TrainingType.ToString()
-            });
+            var tr = await _trainRepo.GetAsync(t => t.Id == trid, source => source.Include(s => s.Students).ThenInclude(s => s.Department));
             var model = _mapper.Map<TrainingVM>(tr);
             return View(model);
         }
@@ -199,8 +200,10 @@ namespace SummerTrainingSystem.Controllers
         private async Task<IReadOnlyList<TrainingVM>> GetTrainingsByDepIdAndSearch(int depid, string search)
         {
             var trainningsBySearchAndDep = await _trainRepo.ListAsync(t =>
-                    t.DepartmentId == depid && (t.Title.Contains(search) || t.Description.Contains(search)),
-                    new string[] { Includes.Department.ToString(), Includes.Company.ToString(), Includes.TrainingType.ToString() }
+                    t.DepartmentId == depid && (t.Title.Contains(search) || t.Description.Contains(search)), source => source
+                    .Include(s => s.Company)
+                    .Include(s => s.Department)
+                    .Include(s => s.TrainingType)
                 );
             return _mapper.Map<IReadOnlyList<TrainingVM>>(trainningsBySearchAndDep);
         }
@@ -211,8 +214,10 @@ namespace SummerTrainingSystem.Controllers
             var department = await _depRepo.GetByIdAsync(depid);
             if (department == null) return null;
             var trainningsByDepartment = await _trainRepo.ListAsync(t =>
-                t.DepartmentId == department.Id, new string[] { 
-                    Includes.Department.ToString(), Includes.Company.ToString(), Includes.TrainingType.ToString() }
+                t.DepartmentId == department.Id, source => source
+                    .Include(s => s.Company)
+                    .Include(s => s.Department)
+                    .Include(s => s.TrainingType)
                 );
             return _mapper.Map<IReadOnlyList<TrainingVM>>(trainningsByDepartment);
         }
@@ -220,10 +225,13 @@ namespace SummerTrainingSystem.Controllers
         // trainings by search query
         private async Task<IReadOnlyList<TrainingVM>> GetTrainingsBySearch(string search)
         {
-            var trainningsBySearch = await _trainRepo.ListAsync(t => t.Title.Contains(search) || t.Description.Contains(search),
-                new string[] { 
-                    Includes.Department.ToString(), Includes.Company.ToString(), Includes.TrainingType.ToString() 
-                });
+            var trainningsBySearch = await _trainRepo.ListAsync(t => 
+            t.Title.Contains(search) || 
+            t.Description.Contains(search), source => source
+                    .Include(s => s.Company)
+                    .Include(s => s.Department)
+                    .Include(s => s.TrainingType)
+                );
             return _mapper.Map<IReadOnlyList<TrainingVM>>(trainningsBySearch);
         }
     }
