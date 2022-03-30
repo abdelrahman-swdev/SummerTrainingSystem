@@ -173,9 +173,11 @@ namespace SummerTrainingSystem.Controllers
         [HttpGet("{trid}/apply")]
         public async Task<IActionResult> ApplyForTraining(int trid)
         {
-            var training = await _trainRepo.GetAsync(t =>t.Id == trid, source => source.Include(a => a.Students));
-            var loggedInStudent = (Student)await _userManager.GetUserAsync(User);
-            int result = await _trainRepo.ApplyForTraining(loggedInStudent, training);
+            var loggedInStudentId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if(loggedInStudentId == null || await _trainRepo.GetByIdAsync(trid) == null) return NotFound();
+
+            int result = _trainRepo.ApplyForTraining(loggedInStudentId, trid);
+
             if(result > 0)
             {
                 _notyfService.Success("Applied Successfully.");
@@ -191,6 +193,7 @@ namespace SummerTrainingSystem.Controllers
         public async Task<IActionResult> GetApplicationsForTraining(int trid)
         {
             var tr = await _trainRepo.GetAsync(t => t.Id == trid, source => source.Include(s => s.Students).ThenInclude(s => s.Department));
+            if(tr == null) return NotFound();
             var model = _mapper.Map<TrainingVM>(tr);
             return View(model);
         }

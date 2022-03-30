@@ -75,7 +75,7 @@ namespace SummerTrainingSystemEF.Data.SeedData
                         Gpa = 3,
                         Level = 1,
                         PhoneNumber = "0123",
-                        DepartmentId = 8
+                        DepartmentId = 1
                     };
                     var supervisor = new Supervisor()
                     {
@@ -85,7 +85,7 @@ namespace SummerTrainingSystemEF.Data.SeedData
                         UserName = "visor@sup.com",
                         UniversityID = 20,
                         PhoneNumber = "0123",
-                        DepartmentId = 8
+                        DepartmentId = 2
                     };
                     var admin = new IdentityUser()
                     {

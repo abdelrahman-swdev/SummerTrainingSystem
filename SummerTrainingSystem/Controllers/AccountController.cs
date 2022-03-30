@@ -407,6 +407,7 @@ namespace SummerTrainingSystem.Controllers
         public async Task<IActionResult> GetTrainningForStudent()
         {
             var logedInStudent = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if(logedInStudent == null) return NotFound();
             var student = await _stuRepo.GetAsync(s => s.Id == logedInStudent, source => 
             source.Include(s => s.Trainnings)
             .ThenInclude(s => s.TrainingType));
@@ -547,7 +548,6 @@ namespace SummerTrainingSystem.Controllers
             hrCompany.CompanyWebsite = model.CompanyWebsite;
             hrCompany.CompanySizeId = model.CompanySizeId;
             hrCompany.AboutCompany = model.AboutCompany;
-
             return await _userManager.UpdateAsync(hrCompany);
         }
 

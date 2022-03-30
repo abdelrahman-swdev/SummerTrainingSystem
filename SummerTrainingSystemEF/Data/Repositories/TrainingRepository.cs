@@ -1,40 +1,42 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using SummerTrainingSystemCore.Entities;
 using SummerTrainingSystemCore.Interfaces;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace SummerTrainingSystemEF.Data.Repositories
 {
     public class TrainingRepository : GenericRepository<Trainning>, ITrainingRepository
     {
         private readonly ApplicationDbContext _context;
-        private readonly UserManager<IdentityUser> _userManager;
 
-        public TrainingRepository(ApplicationDbContext context, UserManager<IdentityUser> userManager) : base(context)
+        public TrainingRepository(ApplicationDbContext context) : base(context)
         {
             _context = context;
-            _userManager = userManager;
         }
-        public async Task<int> ApplyForTraining(Student student, Trainning training)
+        public int ApplyForTraining(string stdId, int trainingId)
         {
-            training.Students.Add(student);
-            training.ApplicantsCount += 1;
-            student.Trainnings.Add(training);
-            return await _context.SaveChangesAsync();
+            var studentId = new SqlParameter("@studentId", stdId);
+            var trId = new SqlParameter("@trId", trainingId);
+            try
+            {
+                return _context.Database.ExecuteSqlInterpolated($"exec spApplyForTraining {studentId}, {trId}");
+            }
+            catch
+            {
+                return 0;
+            }
         }
 
-        public async Task<bool> CheckIfStudentApplied(string studentUserName, int trainingId)
+        public bool CheckIfStudentApplied(string studentUserName, int trainingId)
         {
-            var training = _context.Trainnings
-                .Where(t => t.Id == trainingId)
-                .Include(t => t.Students)
+            var student = _context.Students
+                .Where(t => t.UserName == studentUserName)
+                .Include(t => t.Trainnings)
                 .FirstOrDefault();
 
-            var student = (Student)await _userManager.FindByNameAsync(studentUserName);
-
-            return training.Students.Find(s => s.Id == student.Id) != null;
+            return student.Trainnings.Find(s => s.Id == trainingId) != null;
         }
     }
 }
