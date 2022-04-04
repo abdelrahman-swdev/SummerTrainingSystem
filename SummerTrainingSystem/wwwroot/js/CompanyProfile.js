@@ -25,7 +25,7 @@ function handleSubmit(e) {
     }
     $.ajax({
         method: "post",
-        url: '/comment/comment',
+        url: '/comment/add',
         data: JSON.stringify(data),
         contentType: "application/json",
         beforeSend: (xhr) => {
@@ -40,7 +40,8 @@ function handleSubmit(e) {
             var imgChildDiv = document.createElement("div");
             imgChildDiv.className = 'photocommentdiv';
             var userImg = document.createElement("img");
-            userImg.src = '/uploads/' + ProfilePicUrl;
+            ProfilePicUrl = ProfilePicUrl == null ? '/images/avatar.svg' : '/uploads/' + ProfilePicUrl;
+            userImg.src = ProfilePicUrl;
             imgChildDiv.appendChild(userImg);
             var commentChildDiv = document.createElement("div");
             commentChildDiv.className = 'commenttextdiv';
@@ -73,13 +74,14 @@ function handleSubmit(e) {
             commentperson.appendChild(spanTime);
             commentperson.appendChild(br);
             commentperson.appendChild(textcomment);
-            commet.appendChild(ParentDiv);
-            if (Parent.childElementCount > 0) {
+            commet?.appendChild(ParentDiv);
+            if (Parent?.childElementCount > 0) {
                 noCommet.className = 'd-none';
             }
             const spinner = document.getElementById("spinner");
             spinner.classList.toggle('d-none');
-
+            toastr.options.closeButton = true;
+            toastr.success('Review added successfully.');
         }
     });
 }

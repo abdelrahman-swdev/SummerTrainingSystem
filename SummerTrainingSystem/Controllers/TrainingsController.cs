@@ -141,7 +141,7 @@ namespace SummerTrainingSystem.Controllers
                 if (result != 0)
                 {
                     _notyfService.Success("Training updated successfully");
-                    return View(model);
+                    return RedirectToAction("GetTrainingsForCompany","Account");
                 }
                 else
                 {

@@ -25,7 +25,7 @@ namespace SummerTrainingSystem.Controllers
             _stuRepo = stuRepo;
             _commentRepo = commentrepo;
         }
-        [HttpPost("comment")]
+        [HttpPost("add")]
         public async Task<IActionResult> AddComment([FromBody] CommentJsonVM model)
         {
             if (ModelState.IsValid)
@@ -43,7 +43,12 @@ namespace SummerTrainingSystem.Controllers
                 if (result > 0)
                 {
                     var student = await _stuRepo.GetByStringIdAsync(loggedInUser);
-                    return Ok(new { firstname = student.FirstName, lastname = student.LastName, comment = comment.Message, profilePicUrl = student.ProfilePictureUrl });
+                    return Ok(new { 
+                        firstname = student.FirstName, 
+                        lastname = student.LastName, 
+                        comment = comment.Message, 
+                        profilePicUrl = student.ProfilePictureUrl 
+                    });
                 }
             }
             return BadRequest();

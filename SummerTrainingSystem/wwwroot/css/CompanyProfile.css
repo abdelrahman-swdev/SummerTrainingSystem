@@ -293,9 +293,15 @@
 }
 .box #SubmitComment{
 }
-.commentdiv{
+.CommentsView
+{
+    margin-top: 3rem;
+}
+.commentdiv {
     display: flex;
-    padding: 1rem 1.1rem;
+    padding: 1rem !important;
+    margin-top: 1rem !important;
+    border: 1px solid #dee2e6 !important;
 }
 .photocommentdiv img{
     width: 3.2rem;

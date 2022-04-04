@@ -27,6 +27,7 @@ namespace SummerTrainingSystem.Controllers
         private readonly IGenericRepository<Supervisor> _supRepo;
         private readonly IGenericRepository<Trainning> _trainRepo;
         private readonly IGenericRepository<HrCompany> _comRepo;
+        private readonly IGenericRepository<Comment> _commentsRepo;
         private readonly INotyfService _notyfService;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly IWebHostEnvironment _env;
@@ -40,6 +41,7 @@ namespace SummerTrainingSystem.Controllers
             IGenericRepository<Trainning> trainRepo,
             INotyfService notyfService,
             IGenericRepository<HrCompany> comRepo,
+            IGenericRepository<Comment> commentsRepo,
             IWebHostEnvironment env)
         {
             _userManager = userManager;
@@ -51,6 +53,7 @@ namespace SummerTrainingSystem.Controllers
             _trainRepo = trainRepo;
             _notyfService = notyfService;
             _comRepo = comRepo;
+            _commentsRepo = commentsRepo;
             _env = env;
         }
 
@@ -465,6 +468,16 @@ namespace SummerTrainingSystem.Controllers
             var user = await _userManager.FindByIdAsync(id);
             if (await _userManager.IsInRoleAsync(user, Roles.Student.ToString()))
             {
+                // check if student has reviews
+                var comments = await _commentsRepo.ListAsync(s => s.StudentId == id);
+                if (comments.Count > 0)
+                {
+                    // update applicants count for those trainings
+                    foreach (var c in comments)
+                    {
+                        _commentsRepo.Delete(c);
+                    }
+                }
                 // check if student applied for trainings
                 var student = await _stuRepo.GetAsync(s => s.Id == id, source => source.Include(s => s.Trainnings));
                 if (student.Trainnings.Count > 0)

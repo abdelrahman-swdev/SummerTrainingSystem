@@ -6,7 +6,11 @@ using System.ComponentModel.DataAnnotations;
 namespace SummerTrainingSystemCore.Entities
 {
     public class HrCompany : IdentityUser
-    { 
+    {
+        public HrCompany()
+        {
+            Comments = new List<Comment>();
+        }
     
         [Required, MaxLength(255)]
         public string Name { get; set; }
