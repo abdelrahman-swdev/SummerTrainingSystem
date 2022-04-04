@@ -379,7 +379,9 @@ namespace SummerTrainingSystem.Controllers
         {
             if(string.IsNullOrEmpty(id)) id = User.FindFirstValue(ClaimTypes.NameIdentifier);
             
-            var company = await _comRepo.GetAsync(c => c.Id == id, source => source.Include(s => s.CompanySize));
+            var company = await _comRepo.GetAsync(c => c.Id == id, source => source
+            .Include(s => s.CompanySize)
+            .Include(s  => s.Comments).ThenInclude(s => s.Student));
             if (company == null) return NotFound();
             return View(_mapper.Map<CompanyVM>(company));
             

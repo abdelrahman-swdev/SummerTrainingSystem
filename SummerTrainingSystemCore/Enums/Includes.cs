@@ -7,6 +7,7 @@
         TrainingType,
         CompanySize,
         Students,
-        Trainnings
+        Trainnings,
+        Commnets
     }
 }

@@ -1,10 +1,12 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using SummerTrainingSystemCore.Entities;
+using System;
+using System.Collections.Generic;
 
 namespace SummerTrainingSystem.Models
 {
     public class CompanyVM
     {
+        public string Id { get; set; }
         public string Name { get; set; }
 
         public string City { get; set; }
@@ -27,5 +29,6 @@ namespace SummerTrainingSystem.Models
 
         public CompanySizeVM CompanySize{ get; set; }
         public string ProfilePictureUrl { get; set; }
+        public List<Comment> Comments { get; set; }
     }
 }
