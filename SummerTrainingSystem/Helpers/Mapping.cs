@@ -25,6 +25,7 @@ namespace SummerTrainingSystem.Helpers
             CreateMap<Student, EditStudentProfileVM>().ForMember(m => m.Email, s => s.MapFrom(st => st.UserName)).ReverseMap();
             CreateMap<Supervisor, EditSupervisorProfileVM>().ForMember(m => m.Email, s => s.MapFrom(st => st.UserName)).ReverseMap();
             CreateMap<Department, CreateDepartmentVM>().ReverseMap();
+            CreateMap<Comment, CommentVM>().ReverseMap();
         }
     }
 }

@@ -12,6 +12,9 @@ namespace SummerTrainingSystemCore.Interfaces
         // get entity by id with out related entities
         Task<T> GetByIdAsync(int id);
 
+        // get entity by string id with out related entities
+        Task<T> GetByStringIdAsync(string id);
+
         // get entity by any criteria with related entities
         Task<T> GetAsync(Expression<Func<T, bool>> criteria, Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null);
 

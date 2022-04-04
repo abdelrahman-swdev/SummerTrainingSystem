@@ -47,6 +47,11 @@ namespace SummerTrainingSystemEF.Data.Repositories
             return await _dbSet.FindAsync(id);
         }
 
+        public async Task<T> GetByStringIdAsync(string id)
+        {
+            return await _dbSet.FindAsync(id);
+        }
+
         // return all entities without related data
         public async Task<IReadOnlyList<T>> ListAllAsync()
         {

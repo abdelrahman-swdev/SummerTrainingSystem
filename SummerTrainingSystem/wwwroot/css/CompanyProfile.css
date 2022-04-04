@@ -263,3 +263,92 @@
         padding: 0.2em;
         height: 2em;
     }
+    .box{
+    max-width:100%;
+    border: 2px solid #333;
+    padding:  15px 10px;
+    margin-top: 10px;
+}
+.box h2{
+    margin-bottom: 15px;
+}
+.box textarea{
+    height: 40px;
+    width: 100%;
+    border: none;
+    border-bottom: 2px solid #aaa;
+    background-color: transparent;
+    outline: none;
+    resize: none;
+    margin-bottom: 10px;
+    transition: .5s ease-in-out;
+}
+.box #SubmitComment {
+    padding: 10px 15px;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+.box #SubmitComment{
+}
+.commentdiv{
+    display: flex;
+    padding: 1rem 1.1rem;
+}
+.photocommentdiv img{
+    width: 3.2rem;
+    height: 3.2rem;
+    background: 0 0;
+    border: 1px solid #d1d7dc;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    object-fit: cover;
+    color: #fff;
+    vertical-align: middle;
+    max-width: 100%;
+}
+.commenttextdiv{
+    flex: 1;
+    min-width: 1px;
+    padding-left: 0.8rem;
+}
+.commenttext{
+    display: flex;
+}
+.commenttext .txt{
+    flex: 1;
+    min-width: 1px;
+    padding-right: 1.6rem;
+}
+.commenttext .txt h4 a{
+    display: inline-flex;
+    max-width: 100%;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -.02rem;
+    font-size: 1.6rem;
+}
+.commentperson{
+    font-weight: 400;
+    line-height: 1.4;
+    font-size: 1.2rem;
+}
+.commentperson a{
+    display: inline-block;
+    color: #5624d0;
+    text-decoration: none;
+    background-color: transparent;
+    font-weight: 400;
+    line-height: 1.4;
+    font-size: 1.2rem;
+}
+.time {
+    color: rgb(96, 96, 96);
+    font-weight: 400;
+    line-height: 2rem;
+    font-size: 16px;
+}

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace SummerTrainingSystemCore.Entities
@@ -30,6 +31,7 @@ namespace SummerTrainingSystemCore.Entities
         public int CompanySizeId { get; set; }
         public CompanySize CompanySize { get; set; }
         public string ProfilePictureUrl { get; set; }
+        public List<Comment> Comments { get; set; }
 
     }
 }

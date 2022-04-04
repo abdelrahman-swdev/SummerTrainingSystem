@@ -17,8 +17,8 @@
                         <i class="fas fa-camera"></i>
                         <span>Change Image</span>
                     </label>
-                    <input id="ProfilePictureFile" type="file" onchange="loadFile(event)"/>
-                    <img src="~/@(string.IsNullOrEmpty(Model.ProfilePictureUrl) ? "images/avatar.svg" : 
+                    <input id="ProfilePictureFile" type="file" onchange="loadFile(event)" />
+                    <img src="~/@(string.IsNullOrEmpty(Model.ProfilePictureUrl) ? "images/avatar.svg" :
                                     "uploads/" + Model.ProfilePictureUrl)" id="ProfilePicture" width="200" alt="profile" />
                 </div>
                 <div class="spinner-border text-secondary spinner-border-sm d-none" role="status" id="profilePicSpinner">
@@ -26,39 +26,37 @@
                 </div>
             </div>
             <div class="photodiv">
-        <div class="headdiv">
-            <h1 class="head">@Model.Name</h1>
-        </div>
+                <div class="headdiv">
+                    <h1 class="head">@Model.Name</h1>
+                </div>
 
-        <!--الحنة اللي فيها كايرو ايجيبت-->
-        <div class="descdiv">
-            <span>
-                <a class="manu">@Model.Industry</a>
-            </span>
-             | 
-            <span class="location-info">@Model.City , @Model.Country</span>
-             | 
-            <span class="company-size">@Model.CompanySize.SizeRange</span>
-        </div>
+                <!--الحنة اللي فيها كايرو ايجيبت-->
+                <div class="descdiv">
+                    <span>
+                        <a class="manu">@Model.Industry</a>
+                    </span>
+                    |
+                    <span class="location-info">@Model.City , @Model.Country</span>
+                    |
+                    <span class="company-size">@Model.CompanySize.SizeRange</span>
+                </div>
 
-        <!--الحتة اللي فيها لوجو الفيس-->
-        <div class="linksdiv">
-            <div class="comlink">
-                <i class="fas fa-globe me-1 text-primary"></i>
-                <a href="@Model.CompanyWebsite" class="weblink">@Model.CompanyWebsite</a>
+                <!--الحتة اللي فيها لوجو الفيس-->
+                <div class="linksdiv">
+                    <div class="comlink">
+                        <i class="fas fa-globe me-1 text-primary"></i>
+                        <a href="@Model.CompanyWebsite" class="weblink">@Model.CompanyWebsite</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-        </div>
-    </div>
     <!--الصورة والكلام-->
-    
-
     <!--الديسكريبشن-->
     <div class="prof mt-4">
         <div class="d-flex justify-content-between align-items-center">
             <h2 class="profhead">Company Profile</h2>
-            @if(User.IsInRole(Includes.Company.ToString()) && Model.Email == User.Identity.Name )
+            @if (User.IsInRole(Includes.Company.ToString()) && Model.Email == User.Identity.Name)
             {
                 <a class="btn btn-secondary" asp-controller="Account" asp-action="EditCompany">
                     <i class="fas fa-pen"></i> Edit Profile
@@ -87,13 +85,82 @@
                 <span class="year">@Model.Specialities</span>
             </span>
             <span class="sizespan">
-            <span class="comsize">Company Size: </span>
-            <span class="num">@Model.CompanySize.SizeRange</span>
+                <span class="comsize">Company Size: </span>
+                <span class="num">@Model.CompanySize.SizeRange</span>
             </span>
         </div>
         <p class="about">
             @Model.AboutCompany
         </p>
     </div>
-        
+    @if (User.IsInRole(Roles.Student.ToString()))
+    {
+        @*<div class="Comment-form">
+                <form id="form" name="checkit" onsubmit="handleSubmit(event)">
+                    <input id="CompanyId" name="CompanyId" type="hidden" asp-for="@Model.Id" />
+                    <input id="Message" name="Message" type="text" class="Message" onkeyup="checkform()" />
+                    <button type="submit" id="SubmitComment" disabled="disabled">
+                        Post
+                        <div id="spinner" class="spinner-border spinner-border-sm d-none" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </button>
+                </form>
+            </div>*@
+        <div class="box">
+            <h2>Leave Us a Comment</h2>
+            <form id="form" name="checkit" onsubmit="handleSubmit(event)">
+                <input id="CompanyId" name="CompanyId" type="hidden" asp-for="@Model.Id" />
+                <textarea id="Message" placeholder="Add Your Comment" name="Message" class="Message" onkeyup="checkform()"></textarea>
+                <button type="submit" id="SubmitComment" disabled="disabled">
+                    Post
+                    <div id="spinner" class="spinner-border spinner-border-sm d-none" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </button>
+            </form>
+        </div>
+        <div id="Parent">
+            @if (Model.Comments.Count() == 0)
+            {
+                <div class="alert alert-light " id="NoComments">
+                    There Is No Commnets Yet
+                </div>
+            }
+        </div>
+        <div class="CommentsView">
+            @foreach (var comment in Model.Comments)
+            {
+                <div class="commentdiv">
+                    <div class="photocommentdiv">
+                        <img src="~/@(string.IsNullOrEmpty(Model.ProfilePictureUrl) ? "images/avatar.svg" :
+                                        "uploads/" + comment.Student.ProfilePictureUrl)" alt="--الصورة">
+                    </div>
+                    <div class="commenttextdiv">
+                        <div class="commenttext">
+                            <div class="txt">
+                                <h5 tabindex="-1">
+                                    <a role="button">@comment.Student.FirstName @comment.Student.LastName</a>
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="commentperson">
+                            <span class="time">
+                                @(
+                    (DateTime.Now - comment.CreateAt).Days == 0 ? "Today" : $"Posted {(DateTime.Now - comment.CreateAt).Days} ago"
+                     )
+                            </span>
+                            <br />
+                            <a>@comment.Message</a>
+                        </div>
+                    </div>
+                </div>
+            }
+            <div id="comments-added"></div>
+        </div>
+    }
+
 </div>
+@section Scripts{
+    <script src="~/js/CompanyProfile.js"></script>
+}
