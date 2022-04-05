@@ -22,7 +22,7 @@ namespace SummerTrainingSystem.Extensions
             // add toast notificatios
             services.AddNotyf(options =>
             {
-                options.DurationInSeconds = 5;
+                options.DurationInSeconds = 20;
                 options.IsDismissable = true;
                 options.Position = NotyfPosition.TopRight;
             });

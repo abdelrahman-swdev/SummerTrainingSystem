@@ -18,9 +18,11 @@
                         <span>Change Image</span>
                     </label>
                     <input id="ProfilePictureFile" type="file" onchange="loadFile(event)" />
-                    <img src="~/@(string.IsNullOrEmpty(Model.ProfilePictureUrl) ? "images/avatar.svg" :
-                                    "uploads/" + Model.ProfilePictureUrl)" id="ProfilePicture" width="200" alt="profile"
-                                    asp-append-version="true"/>
+                    <img src="~/uploads/@(Model.ProfilePictureUrl ?? "avatar.svg")" 
+                    id="ProfilePicture" 
+                    width="200" 
+                    alt="profile"
+                    asp-append-version="true"/>
                 </div>
                 <div class="spinner-border text-secondary spinner-border-sm d-none" role="status" id="profilePicSpinner">
                     <span class="visually-hidden">Loading...</span>
@@ -119,9 +121,7 @@
         {
             <div class="commentdiv border p-3 mt-3">
                 <div class="photocommentdiv">
-                    <img src="~/@(
-                                    string.IsNullOrEmpty(comment.Student.ProfilePictureUrl) ? "images/avatar.svg" :
-                                    "uploads/" + comment.Student.ProfilePictureUrl)" alt="profile" asp-append-version="true">
+                    <img src="~/uploads/@(comment.Student.ProfilePictureUrl ?? "avatar.svg")" alt="profile" asp-append-version="true">
                 </div>
                 <div class="commenttextdiv">
                     <div class="commenttext">
