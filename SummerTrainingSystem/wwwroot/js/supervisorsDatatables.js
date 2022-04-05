@@ -62,7 +62,6 @@ const deleteSupervisor = (data) => {
         confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
         if (result.isConfirmed) {
-            console.log(data);
             $.ajax({
                 url: '/account/delete/' + data,
                 method: 'Delete',

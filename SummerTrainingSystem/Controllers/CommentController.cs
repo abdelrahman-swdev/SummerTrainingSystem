@@ -1,16 +1,16 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SummerTrainingSystem.Models;
 using SummerTrainingSystemCore.Entities;
 using SummerTrainingSystemCore.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace SummerTrainingSystem.Controllers
 {
+    [Authorize(Roles ="Student")]
     [Route("comment")]
     public class CommentController : Controller
     {

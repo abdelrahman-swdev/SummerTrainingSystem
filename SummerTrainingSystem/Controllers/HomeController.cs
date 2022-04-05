@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using SummerTrainingSystem.Models;
 using System.Diagnostics;
 
@@ -7,9 +6,6 @@ namespace SummerTrainingSystem.Controllers
 {
     public class HomeController : Controller
     {
-        public HomeController()
-        {
-        }
 
         [HttpGet("")]
         public IActionResult Index()

@@ -19,7 +19,8 @@
                     </label>
                     <input id="ProfilePictureFile" type="file" onchange="loadFile(event)" />
                     <img src="~/@(string.IsNullOrEmpty(Model.ProfilePictureUrl) ? "images/avatar.svg" :
-                                    "uploads/" + Model.ProfilePictureUrl)" id="ProfilePicture" width="200" alt="profile" />
+                                    "uploads/" + Model.ProfilePictureUrl)" id="ProfilePicture" width="200" alt="profile"
+                                    asp-append-version="true"/>
                 </div>
                 <div class="spinner-border text-secondary spinner-border-sm d-none" role="status" id="profilePicSpinner">
                     <span class="visually-hidden">Loading...</span>
@@ -83,7 +84,8 @@
                 <span class="num">@Model.CompanySize.SizeRange</span>
             </span>
         </div>
-        <p class="about">
+        <h4 class="text-secondary mt-3">About</h4>
+        <p class="about mt-0">
             @Model.AboutCompany
         </p>
     </div>
@@ -109,9 +111,9 @@
             <div class="alert alert-info mt-3 mb-5" id="NoComments">
                 No reviews to show
             </div>
-    </div>
+        </div>
     }
-    <div class="CommentsView">
+    <div class="CommentsView mb-5">
         <h2 class="display-6 text-secondary">Reviews</h2>
         @foreach (var comment in Model.Comments)
         {
@@ -119,7 +121,7 @@
                 <div class="photocommentdiv">
                     <img src="~/@(
                                     string.IsNullOrEmpty(comment.Student.ProfilePictureUrl) ? "images/avatar.svg" :
-                                    "uploads/" + comment.Student.ProfilePictureUrl)" alt="">
+                                    "uploads/" + comment.Student.ProfilePictureUrl)" alt="profile" asp-append-version="true">
                 </div>
                 <div class="commenttextdiv">
                     <div class="commenttext">

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SummerTrainingSystemCore.Entities;
 using SummerTrainingSystemEF.Data;
@@ -7,6 +8,7 @@ using System.Linq.Dynamic.Core;
 
 namespace SummerTrainingSystem.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [Route("api")]
     public class EndpointsController : Controller
     {

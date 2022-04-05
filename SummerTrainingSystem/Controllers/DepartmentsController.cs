@@ -1,5 +1,6 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SummerTrainingSystem.Models;
 using SummerTrainingSystemCore.Entities;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace SummerTrainingSystem.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [Route("departments")]
     public class DepartmentsController : Controller
     {

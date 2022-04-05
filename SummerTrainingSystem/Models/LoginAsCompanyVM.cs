@@ -4,6 +4,7 @@ namespace SummerTrainingSystem.Models
 {
     public class LoginAsCompanyVM
     {
+        public string ReturnUrl { get; set; }
         [Required(ErrorMessage = "Email is required")]
         [Display(Name = "Email Address")]
         [EmailAddress(ErrorMessage = "Email is not valid")]

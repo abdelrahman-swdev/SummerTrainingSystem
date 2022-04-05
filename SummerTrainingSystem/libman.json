@@ -26,21 +26,54 @@
       ]
     },
     {
+      "library": "toastr.js@2.1.4",
+      "destination": "wwwroot/lib/toastr.js/"
+    },
+    {
+      "library": "font-awesome@5.15.4",
+      "destination": "wwwroot/lib/font-awesome/",
+      "files": [
+        "css/all.min.css",
+        "css/all.css",
+        "js/all.js",
+        "js/all.min.js",
+        "webfonts/fa-brands-400.eot",
+        "webfonts/fa-brands-400.svg",
+        "webfonts/fa-brands-400.ttf",
+        "webfonts/fa-brands-400.woff",
+        "webfonts/fa-brands-400.woff2",
+        "webfonts/fa-regular-400.eot",
+        "webfonts/fa-regular-400.svg",
+        "webfonts/fa-regular-400.ttf",
+        "webfonts/fa-regular-400.woff",
+        "webfonts/fa-regular-400.woff2",
+        "webfonts/fa-solid-900.eot",
+        "webfonts/fa-solid-900.svg",
+        "webfonts/fa-solid-900.ttf",
+        "webfonts/fa-solid-900.woff",
+        "webfonts/fa-solid-900.woff2",
+        "sprites/brands.svg",
+        "sprites/regular.svg",
+        "sprites/solid.svg"
+      ]
+    },
+    {
       "library": "bootstrap@5.1.3",
-      "destination": "wwwroot/lib/bootstrap/",
+      "destination": "wwwroot/lib/bootstrap",
       "files": [
         "js/bootstrap.min.js",
         "css/bootstrap.css",
+        "css/bootstrap.css.map",
         "css/bootstrap.min.css",
         "css/bootstrap.min.css.map",
         "js/bootstrap.bundle.js",
-        "js/bootstrap.bundle.min.js"
+        "js/bootstrap.bundle.js.map",
+        "js/bootstrap.bundle.min.js",
+        "js/bootstrap.bundle.min.js.map",
+        "js/bootstrap.js",
+        "js/bootstrap.js.map",
+        "js/bootstrap.min.js.map"
       ]
     }
-  ,
-{
-  "library": "toastr.js@2.1.4",
-  "destination": "wwwroot/lib/toastr.js/"
-}
-]
+  ]
 }

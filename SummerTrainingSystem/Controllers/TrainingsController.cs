@@ -1,12 +1,11 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using SummerTrainingSystem.Extensions;
 using SummerTrainingSystem.Models;
 using SummerTrainingSystemCore.Entities;
-using SummerTrainingSystemCore.Enums;
 using SummerTrainingSystemCore.Interfaces;
 using System.Collections.Generic;
 using System.Security.Claims;
@@ -14,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace SummerTrainingSystem.Controllers
 {
+    [Authorize]
     [Route("trainings")]
     public class TrainingsController : Controller
     {
@@ -93,6 +93,7 @@ namespace SummerTrainingSystem.Controllers
         }
 
         // GET: trainings/new
+        [Authorize(Roles = "Admin,Company")]
         [HttpGet("new")]
         public ActionResult Create()
         {
@@ -100,6 +101,7 @@ namespace SummerTrainingSystem.Controllers
         }
 
         // POST: trainings/new
+        [Authorize(Roles = "Admin,Company")]
         [HttpPost("new")]
         [ValidateAntiForgeryToken]
         public ActionResult Create(SaveTrainingVM model)
@@ -118,6 +120,7 @@ namespace SummerTrainingSystem.Controllers
         }
 
         // GET: trainings/edit/5
+        [Authorize(Roles = "Admin,Company")]
         [HttpGet("edit/{id:int}")]
         public async Task<ActionResult> Edit(int id)
         {
@@ -130,6 +133,7 @@ namespace SummerTrainingSystem.Controllers
         }
 
         // POST: trainings/edit/5
+        [Authorize(Roles = "Admin,Company")]
         [HttpPost("edit/{id:int}")]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, SaveTrainingVM model)
@@ -156,6 +160,7 @@ namespace SummerTrainingSystem.Controllers
         }
 
         // Delete: trainings/5
+        [Authorize(Roles = "Admin,Company")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -170,6 +175,7 @@ namespace SummerTrainingSystem.Controllers
         }
 
         // apply for training
+        [Authorize(Roles = "Student")]
         [HttpGet("{trid}/apply")]
         public async Task<IActionResult> ApplyForTraining(int trid)
         {
@@ -189,6 +195,7 @@ namespace SummerTrainingSystem.Controllers
         }
 
         // Get Applications For Training
+        [Authorize(Roles = "Admin,Company")]
         [HttpGet("{trid}/applications")]
         public async Task<IActionResult> GetApplicationsForTraining(int trid)
         {

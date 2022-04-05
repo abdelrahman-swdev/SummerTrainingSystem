@@ -1,5 +1,6 @@
 ﻿using AspNetCoreHero.ToastNotification.Abstractions;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -57,12 +58,14 @@ namespace SummerTrainingSystem.Controllers
             _env = env;
         }
 
+        [Authorize(Roles ="Admin")]
         [HttpGet("student/new")]
         public IActionResult CreateStudentAccount()
         {
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost("student/new")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateStudentAccount(SaveStudentAccountVM model)
@@ -94,12 +97,14 @@ namespace SummerTrainingSystem.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("supervisor/new")]
         public IActionResult CreateSupervisorAccount()
         {
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost("supervisor/new")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateSupervisorAccount(SaveSupervisorAccountVM model)
@@ -135,9 +140,15 @@ namespace SummerTrainingSystem.Controllers
         
 
         [HttpGet("loginascompany")]
-        public IActionResult LoginAsCompany()
+        public IActionResult LoginAsCompany([FromQuery] string ReturnUrl)
         {
-            return View();
+            var model = new LoginAsCompanyVM
+            {
+                ReturnUrl = ReturnUrl,
+                Email = string.Empty,
+                Password = string.Empty
+            };
+            return View(model);
         }
 
         [HttpPost("loginascompany")]
@@ -191,6 +202,7 @@ namespace SummerTrainingSystem.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [Authorize(Roles = "Student")]
         [HttpGet("student/edit")]
         public async Task<ActionResult> EditStudent()
         {
@@ -199,6 +211,7 @@ namespace SummerTrainingSystem.Controllers
             return View(_mapper.Map<EditStudentProfileVM>(logedInStudent));
         }
 
+        [Authorize(Roles = "Student")]
         [HttpPost("student/edit")]
         public async Task<ActionResult> EditStudent(EditStudentProfileVM model)
         {
@@ -225,6 +238,7 @@ namespace SummerTrainingSystem.Controllers
             }
         }
 
+        [Authorize(Roles = "Supervisor")]
         [HttpGet("supervisor/edit")]
         public async Task<ActionResult> EditSupervisor()
         {
@@ -234,6 +248,7 @@ namespace SummerTrainingSystem.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Supervisor")]
         [HttpPost("supervisor/edit")]
         public async Task<ActionResult> EditSupervisor(EditSupervisorProfileVM model)
         {
@@ -261,12 +276,14 @@ namespace SummerTrainingSystem.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet("reset-password")]
         public ActionResult ResetPassword()
         {
             return View();
         }
 
+        [Authorize]
         [HttpPost("reset-password")]
         public async Task<ActionResult> ResetPassword(ResetPasswordVM model)
         {
@@ -292,12 +309,14 @@ namespace SummerTrainingSystem.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet("company/new")]
         public IActionResult CreateCompanyAccount()
         {
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost("company/new")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateCompanyAccount(SaveCompanyAccountVM model)
@@ -329,8 +348,8 @@ namespace SummerTrainingSystem.Controllers
             }
         }
 
-        
 
+        [Authorize(Roles = "Company")]
         [HttpGet("company/edit")]
         public async Task<ActionResult> EditCompany()
         {
@@ -340,6 +359,7 @@ namespace SummerTrainingSystem.Controllers
             return View(model);
         }
 
+        [Authorize(Roles = "Company")]
         [HttpPost("company/edit")]
         public async Task<ActionResult> EditCompany(EditHrCompanyVM model)
         {
@@ -366,6 +386,7 @@ namespace SummerTrainingSystem.Controllers
             }
         }
 
+        [Authorize(Roles = "Company")]
         [HttpGet("company/trainings")]
         public async Task<IActionResult> GetTrainingsForCompany()
         {
@@ -377,6 +398,7 @@ namespace SummerTrainingSystem.Controllers
             return View(model);
         }
 
+        [Authorize]
         [HttpGet("company-profile")]
         public async Task<IActionResult> CompanyProfile([FromQuery]string id)
         {
@@ -390,6 +412,7 @@ namespace SummerTrainingSystem.Controllers
             
         }
 
+        [Authorize]
         [HttpGet("student-profile")]
         public async Task<IActionResult> StudentProfile()
         {
@@ -399,6 +422,7 @@ namespace SummerTrainingSystem.Controllers
             return View(_mapper.Map<StudentVM>(student));
         }
 
+        [Authorize]
         [HttpGet("supervisor-profile")]
         public async Task<IActionResult> SupervisorProfile()
         {
@@ -408,6 +432,7 @@ namespace SummerTrainingSystem.Controllers
             return View(_mapper.Map<SupervisorVM>(supervisor));
         }
 
+        [Authorize(Roles ="Student")]
         [HttpGet("student/trainings")]
         public async Task<IActionResult> GetTrainningForStudent()
         {
@@ -421,6 +446,7 @@ namespace SummerTrainingSystem.Controllers
             return View(model);
         }
 
+        [Authorize]
         [HttpPost("update-photo")]
         public async Task<IActionResult> UpdateProfilePhoto(IFormFile file)
         {
@@ -462,6 +488,7 @@ namespace SummerTrainingSystem.Controllers
             return NotFound();
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteAccount(string id)
         {
@@ -486,6 +513,19 @@ namespace SummerTrainingSystem.Controllers
                     foreach (var tr in student.Trainnings)
                     {
                         tr.ApplicantsCount -= 1;
+                    }
+                }
+            }
+            else if(await _userManager.IsInRoleAsync(user, Roles.Company.ToString()))
+            {
+                // check if company has reviews
+                var comments = await _commentsRepo.ListAsync(s => s.HrCompanyId == id);
+                if (comments.Count > 0)
+                {
+                    // update applicants count for those trainings
+                    foreach (var c in comments)
+                    {
+                        _commentsRepo.Delete(c);
                     }
                 }
             }

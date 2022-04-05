@@ -42,7 +42,7 @@
                                 <td>@s.CreatedAt.ToString("d")</td>
                                 <td>@s.TrainingType.TypeName</td>
                                 <td>
-                                    <a asp-controller="Trainings" asp-action="Edit" asp-route-id="@s.Id" class="btn btn-secondary me-2">Edit</a>
+                                    <a asp-controller="Trainings" asp-action="Edit" asp-route-id="@s.Id" class="btn btn-secondary mb-1 me-2">Edit</a>
                                     <button class="btn btn-danger" onclick="deleteTraining(@s.Id)">
                                         Delete
                                         <div class="spinner-border spinner-border-sm d-none" role="status" id="@s.Id">

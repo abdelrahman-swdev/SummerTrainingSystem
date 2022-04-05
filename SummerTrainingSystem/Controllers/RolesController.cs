@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SummerTrainingSystem.Models;
 using System.Linq;
@@ -6,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace SummerTrainingSystem.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [Route("roles")]
     public class RolesController : Controller
     {

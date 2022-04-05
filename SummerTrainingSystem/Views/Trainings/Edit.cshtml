@@ -19,15 +19,19 @@
             <form method="post">
                 <input asp-for="Id" type="hidden" />
                 <input asp-for="CompanyId" type="hidden" />
+                <input asp-for="ApplicantsCount" type="hidden" />
 
-                <div class="mt-4">
-                    <input asp-for="Title" class="form-control" placeholder="Title" />
-                    <span asp-validation-for="Title" style="color: #ff008d;"></span>
-                </div>
-
-                <div class="mt-4">
-                    <textarea asp-for="Description" class="form-control" placeholder="Description"></textarea>
-                    <span asp-validation-for="Description" style="color: #ff008d;"></span>
+                <div class="row">
+                    <div class="col-md-6 mt-4">
+                        <label asp-for="Title"></label>
+                        <input asp-for="Title" class="form-control" placeholder="Title" />
+                        <span asp-validation-for="Title" style="color: #ff008d;"></span>
+                    </div>
+                    <div class="col-md-6 mt-4">
+                        <label asp-for="OpenPositions"></label>
+                        <input asp-for="OpenPositions" class="form-control" placeholder="Open Positions"/>
+                        <span asp-validation-for="OpenPositions" style="color: #ff008d;"></span>
+                    </div>
                 </div>
 
                 <div class="row">
@@ -45,6 +49,7 @@
 
                 <div class="row">
                     <div class="col-md-6 mt-4">
+                        <label asp-for="DepartmentId"></label>
                         <select asp-for="DepartmentId" class="form-select" 
                                 asp-items="@(
                                     depRepo.ListAllAsync().Result
@@ -55,6 +60,7 @@
                         <span class="text-danger" asp-validation-for="DepartmentId"></span>
                     </div>
                     <div class="col-md-6 mt-4">
+                        <label asp-for="TrainingTypeId"></label>
                         <select asp-for="TrainingTypeId" class="form-select" 
                                 asp-items="@(
                                     typesRepo.ListAllAsync().Result
@@ -65,6 +71,12 @@
                         <span class="text-danger" asp-validation-for="TrainingTypeId"></span>
                     </div>
                 </div>
+                <div class="mt-4">
+                    <label asp-for="Description"></label>
+                    <textarea asp-for="Description" class="form-control" placeholder="Description"></textarea>
+                    <span asp-validation-for="Description" style="color: #ff008d;"></span>
+                </div>
+
                 <div class="mt-4 d-flex justify-content-between">
                     <button type="submit" class="btn btn-success">Save</button>
                     <a asp-controller="Account" asp-action="GetTrainingsForCompany" class="btn btn-outline-dark">Back</a>

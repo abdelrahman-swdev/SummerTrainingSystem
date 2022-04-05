@@ -8,20 +8,24 @@
         <img class="profile-picture" 
         src="~/@( string.IsNullOrEmpty(((Student)userManager.GetUserAsync(User).Result).ProfilePictureUrl) ?
         "images/avatar.svg" : 
-        "uploads/" + ((Student)userManager.GetUserAsync(User).Result).ProfilePictureUrl)" alt="profile" />
+        "uploads/" + ((Student)userManager.GetUserAsync(User).Result).ProfilePictureUrl)" alt="profile" asp-append-version="true"/>
     }
-    if (User.IsInRole(Roles.Supervisor.ToString()))
+    else if (User.IsInRole(Roles.Supervisor.ToString()))
     {
         <img class="profile-picture" 
         src="~/@( string.IsNullOrEmpty(((Supervisor)userManager.GetUserAsync(User).Result).ProfilePictureUrl) ?
         "images/avatar.svg" : 
-        "uploads/" + ((Supervisor)userManager.GetUserAsync(User).Result).ProfilePictureUrl)" alt="profile" />
+        "uploads/" + ((Supervisor)userManager.GetUserAsync(User).Result).ProfilePictureUrl)" alt="profile" asp-append-version="true"/>
     }
-    if (User.IsInRole(Roles.Company.ToString()))
+    else if (User.IsInRole(Roles.Company.ToString()))
     {
         <img class="profile-picture" 
         src="~/@( string.IsNullOrEmpty(((HrCompany)userManager.GetUserAsync(User).Result).ProfilePictureUrl) ?
         "images/avatar.svg" : 
-        "uploads/" + ((HrCompany)userManager.GetUserAsync(User).Result).ProfilePictureUrl)" alt="profile" />
+        "uploads/" + ((HrCompany)userManager.GetUserAsync(User).Result).ProfilePictureUrl)" alt="profile" asp-append-version="true"/>
+    }
+    else
+    {
+        <img class="profile-picture" src="~/images/avatar.svg" alt="profile" asp-append-version="true"/>
     }
 }
