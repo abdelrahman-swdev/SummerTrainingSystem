@@ -134,7 +134,7 @@
                     <div class="commentperson">
                         <span class="time">
                             @(
-                                (DateTime.Now - comment.CreateAt).Days == 0 ? "Today" : $"Posted {(DateTime.Now - comment.CreateAt).Days} ago"
+                                (DateTime.Now - comment.CreateAt).Days == 0 ? "Today" : $"{(DateTime.Now - comment.CreateAt).Days} days ago"
                             )
                         </span>
                         <br />

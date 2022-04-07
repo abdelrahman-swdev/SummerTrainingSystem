@@ -493,6 +493,7 @@ namespace SummerTrainingSystem.Controllers
         public async Task<IActionResult> DeleteAccount(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
+            if (user == null) return NotFound();
             if (await _userManager.IsInRoleAsync(user, Roles.Student.ToString()))
             {
                 // check if student has reviews
@@ -540,14 +541,7 @@ namespace SummerTrainingSystem.Controllers
             string FullPathOnServer = Path.Combine(_env.WebRootPath, fullFilePath);
             if ((System.IO.File.Exists(FullPathOnServer)))
             {
-                try
-                {
-                    System.IO.File.Delete(FullPathOnServer);
-                }
-                catch(Exception e)
-                {
-                    return;
-                }
+                System.IO.File.Delete(FullPathOnServer);
             }
         }
 

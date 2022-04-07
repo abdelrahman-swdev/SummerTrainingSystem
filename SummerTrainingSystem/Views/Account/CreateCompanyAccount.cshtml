@@ -11,88 +11,100 @@
             <hr />
             <form method="post" enctype="multipart/form-data">
                 <div class="row">
-                    <div class="col-md-6 mt-4">
+                    <div class="form-floating col-md-6 mt-4 ps-0">
                         <input class="form-control" asp-for="Name" placeholder="Company Name" />
+                        <label asp-for="Name">Company Name</label>
                         <span class="text-danger" asp-validation-for="Name"></span>
                     </div>
-                    <div class="col-md-6 mt-4">
+                    <div class="form-floating col-md-6 mt-4 ps-0">
                         <input class="form-control" asp-for="PhoneNumber" placeholder="Phone Number" />
+                        <label asp-for="PhoneNumber">Phone Number</label>
                         <span class="text-danger" asp-validation-for="PhoneNumber"></span>
                     </div>
                 </div>
                 
                 <div class="row">
-                    <div class="col-md-6 mt-4">
+                    <div class="form-floating col-md-6 mt-4 ps-0">
                         <input class="form-control" asp-for="Country" placeholder="Country" />
+                        <label asp-for="Country">Country</label>
                         <span class="text-danger" asp-validation-for="Country"></span>
                     </div>
-                    <div class="col-md-6 mt-4">
-                        <input class="form-control" asp-for="City" placeholder="City"/>
+                    <div class="form-floating col-md-6 mt-4 ps-0">
+                        <input class="form-control" asp-for="City" placeholder="City" />
+                        <label asp-for="City">City</label>
                         <span class="text-danger" asp-validation-for="City"></span>
                     </div>
                 </div>
+
                 <div class="row">
-                    <div class="col-md-6 mt-4">
+                    <div class="form-floating col-md-6 mt-4 ps-0">
                         <input class="form-control" asp-for="Industry" placeholder="Industry (Computer Software, Finance ...)" />
+                        <label asp-for="Industry">Industry(Computer Software, Finance ...)</label>
                         <span class="text-danger" asp-validation-for="Industry"></span>
                     </div>
-                    <div class="col-md-6 mt-4">
-                        <input class="form-control" asp-for="Specialities" placeholder="Specialities (IT Services, Consulting Services ...)"/>
+                    <div class="form-floating col-md-6 mt-4 ps-0">
+                        <input class="form-control" asp-for="Specialities" placeholder="Specialities (IT Services, Consulting Services ...)" />
+                        <label asp-for="Specialities">Specialities(IT Services, Consulting Services ...)</label>
                         <span class="text-danger" asp-validation-for="Specialities"></span>
                     </div>
                 </div>
+
                 <div class="row">
-                    <div class="col-md-6 mt-4">
-                        <input class="form-control" asp-for="CompanyWebsite" placeholder="Company Website (optional)" style="margin-top:25px;"/>
+                    <div class="form-floating col-md-6 mt-4 ps-0">
+                        <input class="form-control" asp-for="CompanyWebsite" placeholder="Company Website (optional)" />
+                        <label asp-for="CompanyWebsite">Company Website</label>
                         <span class="text-danger" asp-validation-for="CompanyWebsite"></span>
                     </div>
-                    <div class="col-md-6 mt-4">
-                        <label asp-for="FoundedAt"></label>
-                        <input class="form-control" asp-for="FoundedAt" />
+                    <div class="form-floating col-md-6 mt-4 ps-0">
+                        <input class="form-control" asp-for="FoundedAt" placeholder="Founded At" />
+                        <label asp-for="FoundedAt">Founded At</label>
                         <span class="text-danger" asp-validation-for="FoundedAt"></span>
                     </div>
                 </div>
+
                 <div class="row">
-                    <div class="col-md-6 mt-4">
+                    <div class="form-floating col-md-6 mt-4 ps-0">
                         <input class="form-control" asp-for="Email" placeholder="Email" />
+                        <label asp-for="Email">Email Address</label>
                         <span class="text-danger" asp-validation-for="Email"></span>
                     </div>
-                    <div class="col-md-6 mt-4">
-                        <select asp-for="CompanySizeId" class="form-select" 
+                    <div class="form-floating col-md-6 mt-4 ps-0">
+                        <select asp-for="CompanySizeId" class="form-select"
                                 asp-items="@(
-                                    sizesRepo.ListAllAsync().Result
-                                    .Select(l => new SelectListItem() {Text = l.SizeName + " - " + l.SizeRange, Value = l.Id.ToString() })
-                                )">
+                                        sizesRepo.ListAllAsync().Result
+                                        .Select(l => new SelectListItem() {Text = l.SizeName + " - " + l.SizeRange, Value = l.Id.ToString() })
+                                    )">
                             <option value="">Company Size</option>
                         </select>
+                        <label asp-for="CompanySizeId">Company Size</label>
                         <span class="text-danger" asp-validation-for="CompanySizeId"></span>
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="col mt-4">
+                    <div class="form-floating col mt-4 ps-0">
                         <textarea class="form-control" asp-for="AboutCompany" placeholder="About Company"></textarea>
+                        <label asp-for="AboutCompany">About Company</label>
                         <span class="text-danger" asp-validation-for="AboutCompany"></span>
                     </div>
                 </div>
-
-                <div class="mt-4">
-                    <label asp-for="ProfilePicture"></label>
-                    <input class="form-control" asp-for="ProfilePicture"/>
-                    <span class="text-danger" asp-validation-for="ProfilePicture"></span>
+                <div class="row">
+                    <div class="ps-0 mt-4">
+                        <label asp-for="ProfilePicture"></label>
+                        <input class="form-control" asp-for="ProfilePicture"/>
+                        <span class="text-danger" asp-validation-for="ProfilePicture"></span>
+                    </div>
                 </div>
 
                 <div class="row">
-                    <div class="col-md-6 mt-4">
-                        <div class="">
-                            <input class="form-control" asp-for="Password" placeholder="Password" />
-                        </div>
+                    <div class="form-floating col-md-6 mt-4 ps-0">
+                        <input class="form-control" asp-for="Password" placeholder="Password" />
+                        <label asp-for="Password">Password</label>
                         <span class="text-danger" asp-validation-for="Password"></span>
                     </div>
-                    <div class="col-md-6 mt-4">
-                        <div class="">
-                            <input class="form-control" asp-for="ConfirmPassword" placeholder="Confirm Password" />
-                        </div>
+                    <div class="form-floating col-md-6 mt-4 ps-0">
+                        <input class="form-control" asp-for="ConfirmPassword" placeholder="Confirm Password" />
+                        <label asp-for="ConfirmPassword">Confirm Password</label>
                         <span class="text-danger" asp-validation-for="ConfirmPassword"></span>
                     </div>
                 </div>

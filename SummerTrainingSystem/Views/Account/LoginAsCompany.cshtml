@@ -14,12 +14,14 @@
                 </div>
             }
             <form method="post">
-                <div class="mt-4">
+                <div class="form-floating mt-4">
                     <input class="form-control" asp-for="Email" placeholder="Email Address" />
+                    <label asp-for="Email">Email Address</label>
                     <span class="text-danger" asp-validation-for="Email"></span>
                 </div>
-                <div class="mt-4">
+                <div class="form-floating mt-4">
                     <input class="form-control" asp-for="Password" placeholder="Password" />
+                    <label asp-for="Password">Password</label>
                     <span class="text-danger" asp-validation-for="Password"></span>
                 </div>
                 <div class="mt-4 d-flex justify-content-between">

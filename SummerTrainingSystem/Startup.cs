@@ -53,21 +53,27 @@ namespace SummerTrainingSystem
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
-                app.UseHsts();
+                app.UseExceptionHandler("/errors");
+                // add middleware for redirect to errors path when requesting endpoint that doesnot exist
+                app.UseStatusCodePagesWithReExecute("/errors/{0}");
             }
+
+
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
-            app.UseRouting();
 
             app.UseNotyf();
+
+            app.UseRouting();
 
             app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapDefaultControllerRoute();
                 endpoints.MapControllers();
             });
         }
