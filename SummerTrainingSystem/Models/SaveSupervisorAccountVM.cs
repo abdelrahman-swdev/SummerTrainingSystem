@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
 namespace SummerTrainingSystem.Models
@@ -29,6 +30,7 @@ namespace SummerTrainingSystem.Models
 
         [Required(ErrorMessage = "University Id is required")]
         [Display(Name = "University Id")]
+        [Remote(action: "IsUniversityIdInUse", controller: "Account")]
         public int? UniversityID { get; set; }
 
         [Required(ErrorMessage = "Department is required")]

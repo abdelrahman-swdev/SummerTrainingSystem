@@ -195,7 +195,7 @@ namespace SummerTrainingSystem.Controllers
             }
         }
 
-        [Route("logout")]
+        [HttpPost("logout")]
         public async Task<IActionResult> Logout()
         {
             await _accountService.LogoutAsync();
@@ -535,6 +535,18 @@ namespace SummerTrainingSystem.Controllers
             return BadRequest();
         }
 
+        
+        public JsonResult IsUniversityIdInUse([FromQuery] int universityId)
+        {
+            if (_accountService.CheckIsUniversityIdExists(universityId))
+            {
+                return Json($"University Id {universityId} is in use.");
+            }
+            else
+            {
+                return Json(true);
+            }
+        }
         private void DeleteFile(string filePath, string fileUrl)
         {
             string fullFilePath = filePath + fileUrl;
