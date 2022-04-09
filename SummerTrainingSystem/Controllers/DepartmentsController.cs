@@ -9,21 +9,24 @@ using System.Threading.Tasks;
 
 namespace SummerTrainingSystem.Controllers
 {
-    [Authorize(Roles = "Admin")]
     [Route("departments")]
+    [Authorize(Roles = "Admin")]
     public class DepartmentsController : Controller
     {
-        private readonly IGenericRepository<Department> _depRepo;
         private readonly IMapper _mapper;
         private readonly INotyfService _notyfService;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IGenericRepository<Department> _depRepo;
 
-        public DepartmentsController(IGenericRepository<Department> depRepo,
-            IMapper mapper,
-            INotyfService notyfService)
+        public DepartmentsController(IMapper mapper,
+            INotyfService notyfService,
+            IUnitOfWork unitOfWork)
         {
-            _depRepo = depRepo;
+            //_depRepo = depRepo;
             _mapper = mapper;
             _notyfService = notyfService;
+            _unitOfWork = unitOfWork;
+            _depRepo = _unitOfWork.GenericRepository<Department>();
         }
 
         [HttpGet]
@@ -40,11 +43,12 @@ namespace SummerTrainingSystem.Controllers
         }
 
         [HttpPost("new")]
-        public IActionResult CreateDepartment(CreateDepartmentVM model)
+        public async Task<IActionResult> CreateDepartment(CreateDepartmentVM model)
         {
             if (ModelState.IsValid)
             {
-                var result = _depRepo.Add(_mapper.Map<Department>(model));
+                _depRepo.Add(_mapper.Map<Department>(model));
+                var result = await _unitOfWork.Complete();
                 if (result > 0)
                 {
                     _notyfService.Success("Department created successfully");
@@ -59,7 +63,8 @@ namespace SummerTrainingSystem.Controllers
         {
             try
             {
-                return _depRepo.Delete(await _depRepo.GetByIdAsync(id)) == 0 ? BadRequest() : Ok();
+                _depRepo.Delete(await _depRepo.GetByIdAsync(id));
+                return await _unitOfWork.Complete() == 0 ? BadRequest() : Ok();
             }
             catch
             {

@@ -1,6 +1,5 @@
 ﻿@model SaveTrainingVM
-@inject SummerTrainingSystemCore.Interfaces.IGenericRepository<Department> depRepo
-@inject SummerTrainingSystemCore.Interfaces.IGenericRepository<TrainingType> typesRepo
+@inject SummerTrainingSystemCore.Interfaces.IUnitOfWork unitOfWork
 @{
     ViewData["Title"] = "New Training";
 }
@@ -42,7 +41,7 @@
                     <div class="col-md-6 mt-4">
                         <select asp-for="DepartmentId" class="form-select" 
                                 asp-items="@(
-                                    depRepo.ListAllAsync().Result
+                                    unitOfWork.GenericRepository<Department>().ListAllAsync().Result
                                     .Select(l => new SelectListItem() {Text = l.Abbreviation, Value = l.Id.ToString() })
                                 )">
                             <option value="">Department</option>
@@ -52,7 +51,7 @@
                     <div class="col-md-6 mt-4">
                         <select asp-for="TrainingTypeId" class="form-select" 
                                 asp-items="@(
-                                    typesRepo.ListAllAsync().Result
+                                    unitOfWork.GenericRepository<TrainingType>().ListAllAsync().Result
                                     .Select(l => new SelectListItem() {Text = l.TypeName, Value = l.Id.ToString() })
                                 )">
                             <option value="">Training Type</option>
@@ -69,7 +68,7 @@
 
                 <div class="mt-4 d-flex justify-content-between">
                     <button type="submit" class="btn btn-success">Save</button>
-                    <a asp-controller="Trainings" asp-action="Index" class="btn btn-outline-dark">Back</a>
+                    <a asp-controller="Trainings" asp-action="Index" class="btn btn-dark">Back</a>
                 </div>
             </form>
         </div>

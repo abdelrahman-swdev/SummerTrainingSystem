@@ -26,6 +26,7 @@ namespace SummerTrainingSystem.Models
         [Display(Name = "Email Address")]
         [EmailAddress(ErrorMessage = "Email is not valid")]
         [MaxLength(256)]
+        [Remote(action: "IsEmailInUse", controller: "Account")]
         public string Email { get; set; }
 
         [Required(ErrorMessage = "University Id is required")]

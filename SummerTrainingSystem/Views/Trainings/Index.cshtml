@@ -1,4 +1,4 @@
-﻿@inject SummerTrainingSystemCore.Interfaces.IGenericRepository<Department> depRepo
+﻿@inject SummerTrainingSystemCore.Interfaces.IUnitOfWork unitOfWork
 @{
     ViewData["Title"] = "Trainings";
 }
@@ -15,7 +15,7 @@
 
                     All
                 </li>
-                @foreach (var dep in await depRepo.ListAllAsync())
+                @foreach (var dep in await unitOfWork.GenericRepository<Department>().ListAllAsync())
                 {
                     <li class="list-group-item list-group-item-action" 
                         id="@dep.Abbreviation"

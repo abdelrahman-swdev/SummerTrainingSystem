@@ -1,7 +1,7 @@
 ﻿using AspNetCoreHero.ToastNotification;
 using Microsoft.Extensions.DependencyInjection;
 using SummerTrainingSystemCore.Interfaces;
-using SummerTrainingSystemEF.Data.Repositories;
+using SummerTrainingSystemEF.Data;
 using SummerTrainingSystemEF.Services;
 
 namespace SummerTrainingSystem.Extensions
@@ -10,11 +10,14 @@ namespace SummerTrainingSystem.Extensions
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
-            // add Generic Repository service to container
-            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-            
-            // add training Repository service to container
-            services.AddScoped<ITrainingRepository, TrainingRepository>();
+            //// add Generic Repository service to container
+            //services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
+            //// add training Repository service to container
+            //services.AddScoped<ITrainingRepository, TrainingRepository>();
+
+            // add unit of work service to container with the same lifetime of repositories
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             // add auto mapper
             services.AddAutoMapper(typeof(Startup));

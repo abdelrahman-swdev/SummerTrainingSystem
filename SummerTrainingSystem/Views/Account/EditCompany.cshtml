@@ -1,5 +1,5 @@
 ﻿@model EditHrCompanyVM
-@inject SummerTrainingSystemCore.Interfaces.IGenericRepository<CompanySize> sizesRepo
+@inject SummerTrainingSystemCore.Interfaces.IUnitOfWork unitOfWork
 @{
     ViewData["Title"] = "Edit Company";
 }
@@ -69,7 +69,7 @@
                     <div class="form-floating col-md-6 mt-4 ps-0">
                         <select asp-for="CompanySizeId" class="form-select"
                                 asp-items="@(
-                                        sizesRepo.ListAllAsync().Result
+                                        unitOfWork.GenericRepository<CompanySize>().ListAllAsync().Result
                                         .Select(l => new SelectListItem() {Text = l.SizeName + " - " + l.SizeRange, Value = l.Id.ToString() })
                                     )">
                             <option value="">Company Size</option>
@@ -89,7 +89,7 @@
 
                 <div class="mt-4 mb-2 d-flex justify-content-between">
                     <button type="submit" class="btn btn-success">Save</button>
-                    <a class="btn btn-outline-dark" asp-controller="Home" asp-action="Index">Back</a>
+                    <a class="btn btn-dark" asp-controller="Home" asp-action="Index">Back</a>
                 </div>
                 <a asp-controller="Account" asp-action="ResetPassword">Reset Password</a>
             </form>

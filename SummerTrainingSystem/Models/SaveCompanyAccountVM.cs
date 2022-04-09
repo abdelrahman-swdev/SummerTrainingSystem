@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.ComponentModel.DataAnnotations;
 
@@ -21,6 +22,7 @@ namespace SummerTrainingSystem.Models
         [Display(Name = "Email Address")]
         [EmailAddress(ErrorMessage = "Email is not valid")]
         [MaxLength(256)]
+        [Remote(action: "IsEmailInUse", controller: "Account")]
         public string Email { get; set; }
 
         [Required(ErrorMessage = "Password is required")]

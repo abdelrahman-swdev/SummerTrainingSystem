@@ -29,10 +29,7 @@ namespace SummerTrainingSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                IdentityRole role = new IdentityRole
-                {
-                    Name = model.Name
-                };
+                IdentityRole role = new() { Name = model.Name };
                 var result = await _roleManager.CreateAsync(role);
                 if (result.Succeeded)
                 {

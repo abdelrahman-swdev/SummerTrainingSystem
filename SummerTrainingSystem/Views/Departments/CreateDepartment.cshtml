@@ -1,5 +1,4 @@
 ﻿@model CreateDepartmentVM
-@inject SummerTrainingSystemCore.Interfaces.IGenericRepository<Department> depRepo
 @{
     ViewData["Title"] = "Create Department";
 }
@@ -25,7 +24,7 @@
 
                         <div class="mt-4 d-flex justify-content-between">
                             <button type="submit" class="btn btn-success">Save</button>
-                            <a class="btn btn-outline-dark" asp-controller="Departments" asp-action="GetDepartments">Back</a>
+                            <a class="btn btn-dark" asp-controller="Departments" asp-action="GetDepartments">Back</a>
                         </div>
 
                     </div>

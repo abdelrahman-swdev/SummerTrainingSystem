@@ -1,5 +1,5 @@
 ﻿@model SaveCompanyAccountVM
-@inject SummerTrainingSystemCore.Interfaces.IGenericRepository<CompanySize> sizesRepo
+@inject SummerTrainingSystemCore.Interfaces.IUnitOfWork unitOfWork
 @{
     ViewData["Title"] = "Create Company";
 }
@@ -71,7 +71,7 @@
                     <div class="form-floating col-md-6 mt-4 ps-0">
                         <select asp-for="CompanySizeId" class="form-select"
                                 asp-items="@(
-                                        sizesRepo.ListAllAsync().Result
+                                        unitOfWork.GenericRepository<CompanySize>().ListAllAsync().Result
                                         .Select(l => new SelectListItem() {Text = l.SizeName + " - " + l.SizeRange, Value = l.Id.ToString() })
                                     )">
                             <option value="">Company Size</option>

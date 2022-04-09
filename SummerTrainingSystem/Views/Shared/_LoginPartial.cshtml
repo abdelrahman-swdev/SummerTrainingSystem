@@ -2,46 +2,67 @@
 
 @if (User.Identity.IsAuthenticated)
 {
-    <ul class="navbar-nav ml-auto text-center">
-        <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <partial name="_ProfilePictureLogicPartial"/>
-            </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                @if (User.IsInRole(Roles.Student.ToString()))
-                {
-                    <a class="dropdown-item" asp-controller="Account" asp-action="GetTrainningForStudent">
+    <div class="btn-group">
+      <button type="button" class="btn text-white fw-bold shadow-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+        <partial name="_ProfilePictureLogicPartial"/>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end">
+          @if (User.IsInRole(Roles.Student.ToString()))
+            {
+                <li>
+                    <a class="dropdown-item @Html.ActiveClass("Account", "GetTrainningForStudent")" 
+                    asp-controller="Account" asp-action="GetTrainningForStudent">
                         <i class="fas fa-list me-1"></i> Applications
                     </a>
-                    <a class="dropdown-item" asp-controller="Account" asp-action="StudentProfile">
+                </li>
+                <li>
+                    <a class="dropdown-item @Html.ActiveClass("Account", "StudentProfile")" 
+                    asp-controller="Account" asp-action="StudentProfile">
                         <i class="fas fa-user me-1"></i> Profile
                     </a>
-                    <a class="dropdown-item" asp-controller="Account" asp-action="EditStudent">
+                </li>
+                <li>
+                    <a class="dropdown-item @Html.ActiveClass("Account", "EditStudent")" 
+                    asp-controller="Account" asp-action="EditStudent">
                         <i class="fas fa-edit me-1"></i>Edit Profile
                     </a>
-                }
-                else if (User.IsInRole(Roles.Supervisor.ToString()))
-                {
-                    <a class="dropdown-item" asp-controller="Account" asp-action="SupervisorProfile">
+                </li>
+            }
+            else if (User.IsInRole(Roles.Supervisor.ToString()))
+            {
+                <li>
+                    <a class="dropdown-item @Html.ActiveClass("Account", "SupervisorProfile")" 
+                    asp-controller="Account" asp-action="SupervisorProfile">
                         <i class="fas fa-user me-1"></i> Profile
                     </a>
-                    <a class="dropdown-item" asp-controller="Account" asp-action="EditSupervisor">
+                </li>
+                <li>
+                    <a class="dropdown-item @Html.ActiveClass("Account", "EditSupervisor")" 
+                    asp-controller="Account" asp-action="EditSupervisor">
                         <i class="fas fa-edit me-1"></i> Edit Profile
                     </a>
-                }
-                else if (User.IsInRole(Roles.Company.ToString()))
-                {
-                    <a class="dropdown-item" asp-controller="Account" asp-action="GetTrainingsForCompany">
+                </li>
+            }
+            else if (User.IsInRole(Roles.Company.ToString()))
+            {
+                <li>
+                    <a class="dropdown-item @Html.ActiveClass("Account", "GetTrainingsForCompany")" 
+                    asp-controller="Account" asp-action="GetTrainingsForCompany">
                         <i class="fas fa-list me-1"></i> My Trainings
                     </a>
-                    <a class="dropdown-item" asp-controller="Account" asp-action="CompanyProfile">
+                </li>
+                <li>
+                    <a class="dropdown-item @Html.ActiveClass("Account", "CompanyProfile")" 
+                    asp-controller="Account" asp-action="CompanyProfile">
                         <i class="fas fa-user me-1"></i> Profile
                     </a>
-                }
+                </li>
+            }
+            <li>
                 <form method="post" asp-action="Logout" asp-controller="Account">
                     <button class="dropdown-item" type="submit"><i class="fas fa-sign-out-alt me-1"></i> Logout</button>
                 </form>
-            </div>
-        </li>
-    </ul>
+            </li>
+      </ul>
+    </div>
 }

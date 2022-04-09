@@ -5,54 +5,89 @@
         asp-action="Index">
             <img src="~/images/logo.svg" alt="logo"/>
         </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#siteNav" aria-controls="siteNav"
-                aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" style="font-size:18px;padding-bottom: 3px;" id="siteNav">
-            <ul class="navbar-nav m-auto mb-2 mb-lg-0 text-center">
-                <li class="nav-item">
-                    <a class="nav-link
-                    @Html.ActiveClass("Trainings", "Index")"
-                        asp-controller="Trainings"
-                        asp-action="Index">Trainings</a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link
-                        @Html.ActiveClass("Users", "GetAllStudents")"
-                        asp-controller="Users"
-                        asp-action="GetAllStudents">Students</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link
-                    @Html.ActiveClass("Users", "GetAllSupervisors")"
-                        asp-controller="Users"
-                        asp-action="GetAllSupervisors">Supervisors</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link
-                    @Html.ActiveClass("Users", "GetAllCompanies")"
-                        asp-controller="Users"
-                        asp-action="GetAllCompanies">Companies</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link
-                    @Html.ActiveClass("Departments", "GetDepartments")"
-                        asp-controller="Departments"
-                        asp-action="GetDepartments">Departments</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link
-                    @Html.ActiveClass("Roles", "ListRoles")" 
-                    asp-controller="Roles" 
-                    asp-action="ListRoles">Roles</a>
-                </li>
-
+        <div class="dropdown">
+            <button 
+            class="btn text-white bg-black shadow-none dropdown-toggle fw-bold" 
+            style="width:180px"
+            type="button" 
+            id="dropdownMenuButton"
+            data-bs-toggle="dropdown" 
+            aria-expanded="false">
+            Manage
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <li>
+                <a class="dropdown-item @Html.ActiveClass("Trainings", "Index")"
+                    asp-controller="Trainings"
+                    asp-action="Index">Trainings</a>
+            </li>
+            <li>
+                <a class="dropdown-item @Html.ActiveClass("Users", "GetAllStudents")"
+                    asp-controller="Users"
+                    asp-action="GetAllStudents">Students</a>
+            </li>
+            <li>
+                <a class="dropdown-item @Html.ActiveClass("Users", "GetAllSupervisors")"
+                    asp-controller="Users"
+                    asp-action="GetAllSupervisors">Supervisors</a>
+            </li>
+            <li>
+                <a class="dropdown-item @Html.ActiveClass("Users", "GetAllCompanies")"
+                    asp-controller="Users"
+                    asp-action="GetAllCompanies">Companies</a>
+            </li>
+            <li>
+                <a class="dropdown-item @Html.ActiveClass("Departments", "GetDepartments")"
+                    asp-controller="Departments"
+                    asp-action="GetDepartments">Departments</a>
+            </li>
+            <li>
+                <a class="dropdown-item @Html.ActiveClass("Roles", "ListRoles")" 
+                asp-controller="Roles" 
+                asp-action="ListRoles">Roles</a>
+            </li>
             </ul>
-
-            <partial name="_LoginPartial" />
         </div>
+        @*<ul class="navbar-nav m-auto mb-2 mb-lg-0 text-center">
+            <li class="nav-item">
+                <a class="nav-link
+                @Html.ActiveClass("Trainings", "Index")"
+                    asp-controller="Trainings"
+                    asp-action="Index">Trainings</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link
+                    @Html.ActiveClass("Users", "GetAllStudents")"
+                    asp-controller="Users"
+                    asp-action="GetAllStudents">Students</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link
+                @Html.ActiveClass("Users", "GetAllSupervisors")"
+                    asp-controller="Users"
+                    asp-action="GetAllSupervisors">Supervisors</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link
+                @Html.ActiveClass("Users", "GetAllCompanies")"
+                    asp-controller="Users"
+                    asp-action="GetAllCompanies">Companies</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link
+                @Html.ActiveClass("Departments", "GetDepartments")"
+                    asp-controller="Departments"
+                    asp-action="GetDepartments">Departments</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link
+                @Html.ActiveClass("Roles", "ListRoles")" 
+                asp-controller="Roles" 
+                asp-action="ListRoles">Roles</a>
+            </li>
+        </ul>*@
+
+        <partial name="_LoginPartial" />
     </div>
 </nav>

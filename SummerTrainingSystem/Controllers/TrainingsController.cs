@@ -13,28 +13,28 @@ using System.Threading.Tasks;
 
 namespace SummerTrainingSystem.Controllers
 {
-    [Authorize]
     [Route("trainings")]
+    [Authorize]
     public class TrainingsController : Controller
     {
         private readonly ITrainingRepository _trainRepo;
         private readonly IGenericRepository<Department> _depRepo;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly INotyfService _notyfService;
         private readonly UserManager<IdentityUser> _userManager;
 
-        public TrainingsController(
-            ITrainingRepository trainRepo, 
-            IGenericRepository<Department> depRepo, 
+        public TrainingsController(IUnitOfWork unitOfWork,
             IMapper mapper,
             INotyfService notyfService,
             UserManager<IdentityUser> userManager)
         {
-            _trainRepo = trainRepo;
-            _depRepo = depRepo;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
             _notyfService = notyfService;
             _userManager = userManager;
+            _trainRepo = _unitOfWork.TrainningRepository();
+            _depRepo = _unitOfWork.GenericRepository<Department>();
         }
 
         // GET: trainings
@@ -104,12 +104,13 @@ namespace SummerTrainingSystem.Controllers
         [Authorize(Roles = "Admin,Company")]
         [HttpPost("new")]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(SaveTrainingVM model)
+        public async Task<ActionResult> Create(SaveTrainingVM model)
         {
             if (ModelState.IsValid)
             {
                 model.CompanyId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                var result = _trainRepo.Add(_mapper.Map<Trainning>(model));
+                _trainRepo.Add(_mapper.Map<Trainning>(model));
+                var result = await _unitOfWork.Complete();
                 if(result > 0)
                 {
                     _notyfService.Success("Training created successfully");
@@ -136,12 +137,13 @@ namespace SummerTrainingSystem.Controllers
         [Authorize(Roles = "Admin,Company")]
         [HttpPost("edit/{id:int}")]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, SaveTrainingVM model)
+        public async Task<ActionResult> Edit(int id, SaveTrainingVM model)
         {
             if (ModelState.IsValid)
             {
                 if (id != model.Id) return NotFound();
-                var result = _trainRepo.Update(_mapper.Map<Trainning>(model));
+                _trainRepo.Update(_mapper.Map<Trainning>(model));
+                var result = await _unitOfWork.Complete();
                 if (result != 0)
                 {
                     _notyfService.Success("Training updated successfully");
@@ -166,7 +168,8 @@ namespace SummerTrainingSystem.Controllers
         {
             try
             {
-                return _trainRepo.Delete(await _trainRepo.GetByIdAsync(id)) == 0 ? BadRequest() : Ok();
+                _trainRepo.Delete(await _trainRepo.GetByIdAsync(id));
+                return await _unitOfWork.Complete() == 0 ? BadRequest() : Ok();
             }
             catch
             {

@@ -1,5 +1,5 @@
 ﻿@model SaveStudentAccountVM
-@inject SummerTrainingSystemCore.Interfaces.IGenericRepository<Department> depRepo
+@inject SummerTrainingSystemCore.Interfaces.IUnitOfWork unitOfWork
 @{
     ViewData["Title"] = "Create Student";
 }
@@ -48,7 +48,7 @@
                     <div class="col-md-6 mt-4">
                         <select asp-for="DepartmentId" class="form-select" 
                                 asp-items="@(
-                                    depRepo.ListAllAsync().Result
+                                    unitOfWork.GenericRepository<Department>().ListAllAsync().Result
                                     .Select(l => new SelectListItem() {Text = l.Abbreviation, Value = l.Id.ToString() })
                                 )">
                             <option value="">Department</option>
@@ -80,7 +80,7 @@
 
                 <div class="mt-4 d-flex justify-content-between">
                     <button type="submit" class="btn btn-success">Save</button>
-                    <a class="btn btn-outline-dark" asp-controller="Users" asp-action="GetAllStudents">Back</a>
+                    <a class="btn btn-dark" asp-controller="Users" asp-action="GetAllStudents">Back</a>
                 </div>
             </form>
             <div class="mt-4 bg-danger p-2 text-white" asp-validation-summary="ModelOnly"></div>

@@ -1,5 +1,5 @@
 ﻿@model EditSupervisorProfileVM
-@inject SummerTrainingSystemCore.Interfaces.IGenericRepository<Department> depRepo
+@inject SummerTrainingSystemCore.Interfaces.IUnitOfWork unitOfWork
 @{
     ViewData["Title"] = "Edit Profile";
 }
@@ -42,7 +42,7 @@
                     <div class="col-md-6 mt-4">
                         <select disabled asp-for="DepartmentId" class="form-select"
                                 asp-items="@(
-                                    depRepo.ListAllAsync().Result
+                                    unitOfWork.GenericRepository<Department>().ListAllAsync().Result
                                     .Select(l => new SelectListItem() {Text = l.Abbreviation, Value = l.Id.ToString() })
                                 )">
                             <option value="">Select Department</option>
@@ -53,7 +53,7 @@
 
                 <div class="mt-4 mb-2 d-flex justify-content-between">
                     <button type="submit" class="btn btn-success">Save</button>
-                    <a class="btn btn-outline-dark" asp-controller="Home" asp-action="Index">Back</a>
+                    <a class="btn btn-dark" asp-controller="Home" asp-action="Index">Back</a>
                 </div>
                 <a asp-controller="Account" asp-action="ResetPassword">Reset Password</a>
             </form>

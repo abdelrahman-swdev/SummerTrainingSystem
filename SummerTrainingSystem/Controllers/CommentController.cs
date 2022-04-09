@@ -10,20 +10,21 @@ using System.Threading.Tasks;
 
 namespace SummerTrainingSystem.Controllers
 {
-    [Authorize(Roles ="Student")]
     [Route("comment")]
+    [Authorize(Roles ="Student")]
     public class CommentController : Controller
     {
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IGenericRepository<Student> _stuRepo;
         private readonly IGenericRepository<Comment> _commentRepo;
-        public CommentController(IGenericRepository<Comment> commentrepo,
-            IGenericRepository<Student> stuRepo,
+        public CommentController(IUnitOfWork unitOfWork,
             IMapper mapper)
         {
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
-            _stuRepo = stuRepo;
-            _commentRepo = commentrepo;
+            _stuRepo = _unitOfWork.GenericRepository<Student>();
+            _commentRepo = _unitOfWork.GenericRepository<Comment>();
         }
         [HttpPost("add")]
         public async Task<IActionResult> AddComment([FromBody] CommentJsonVM model)
@@ -39,7 +40,8 @@ namespace SummerTrainingSystem.Controllers
                     StudentId = loggedInUser
                 };
                 var map = _mapper.Map<Comment>(comment);
-                var result = _commentRepo.Add(map);
+                _commentRepo.Add(map);
+                var result = await _unitOfWork.Complete();
                 if (result > 0)
                 {
                     var student = await _stuRepo.GetByStringIdAsync(loggedInUser);

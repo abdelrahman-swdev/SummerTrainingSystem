@@ -24,11 +24,7 @@ namespace SummerTrainingSystem.Controllers
         private readonly IAccountService _accountService;
         private readonly IMapper _mapper;
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly IGenericRepository<Student> _stuRepo;
-        private readonly IGenericRepository<Supervisor> _supRepo;
-        private readonly IGenericRepository<Trainning> _trainRepo;
-        private readonly IGenericRepository<HrCompany> _comRepo;
-        private readonly IGenericRepository<Comment> _commentsRepo;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly INotyfService _notyfService;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly IWebHostEnvironment _env;
@@ -36,25 +32,17 @@ namespace SummerTrainingSystem.Controllers
         public AccountController(IAccountService accountService,
             IMapper mapper,
             UserManager<IdentityUser> userManager,
-            IGenericRepository<Student> stuRepo,
-            IGenericRepository<Supervisor> supRepo,
+            IUnitOfWork unitOfWork,
             SignInManager<IdentityUser> signInManager,
-            IGenericRepository<Trainning> trainRepo,
             INotyfService notyfService,
-            IGenericRepository<HrCompany> comRepo,
-            IGenericRepository<Comment> commentsRepo,
             IWebHostEnvironment env)
         {
             _userManager = userManager;
+            _unitOfWork = unitOfWork;
             _accountService = accountService;
             _mapper = mapper;
-            _stuRepo = stuRepo;
-            _supRepo = supRepo;
             _signInManager = signInManager;
-            _trainRepo = trainRepo;
             _notyfService = notyfService;
-            _comRepo = comRepo;
-            _commentsRepo = commentsRepo;
             _env = env;
         }
 
@@ -85,7 +73,7 @@ namespace SummerTrainingSystem.Controllers
             if (result.Succeeded)
             {
                 _notyfService.Success("Student created successfully");
-                return View();
+                return RedirectToAction("GetAllStudents", "Users");
             }
             else
             {
@@ -125,7 +113,7 @@ namespace SummerTrainingSystem.Controllers
             if (result.Succeeded)
             {
                 _notyfService.Success("Supervisor created successfully");
-                return View();
+                return RedirectToAction("GetAllSupervisors", "Users");
             }
             else
             {
@@ -336,7 +324,7 @@ namespace SummerTrainingSystem.Controllers
             if (result.Succeeded)
             {
                 _notyfService.Success("Company created successfully");
-                return View();
+                return RedirectToAction("GetAllCompanies", "Users");
             }
             else
             {
@@ -391,8 +379,8 @@ namespace SummerTrainingSystem.Controllers
         public async Task<IActionResult> GetTrainingsForCompany()
         {
             var loggedInCompanyId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var trainings = await _trainRepo.ListAsync(t => t.CompanyId == loggedInCompanyId, source => 
-            source.Include(s => s.TrainingType));
+            var trainings = await _unitOfWork.GenericRepository<Trainning>().ListAsync(t => t.CompanyId == loggedInCompanyId, 
+                source => source.Include(s => s.TrainingType));
 
             var model = _mapper.Map<List<TrainingVM>>(trainings);
             return View(model);
@@ -404,7 +392,7 @@ namespace SummerTrainingSystem.Controllers
         {
             if(string.IsNullOrEmpty(id)) id = User.FindFirstValue(ClaimTypes.NameIdentifier);
             
-            var company = await _comRepo.GetAsync(c => c.Id == id, source => source
+            var company = await _unitOfWork.GenericRepository<HrCompany>().GetAsync(c => c.Id == id, source => source
             .Include(s => s.CompanySize)
             .Include(s  => s.Comments).ThenInclude(s => s.Student));
             if (company == null) return NotFound();
@@ -417,7 +405,8 @@ namespace SummerTrainingSystem.Controllers
         public async Task<IActionResult> StudentProfile()
         {
             var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var student = await _stuRepo.GetAsync(s => s.Id == id, source => source.Include(s => s.Department));
+            var student = await _unitOfWork.GenericRepository<Student>().GetAsync(s => s.Id == id, source => 
+            source.Include(s => s.Department));
             if (student == null) return NotFound();
             return View(_mapper.Map<StudentVM>(student));
         }
@@ -427,7 +416,8 @@ namespace SummerTrainingSystem.Controllers
         public async Task<IActionResult> SupervisorProfile()
         {
             var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var supervisor = await _supRepo.GetAsync(s => s.Id == id, source => source.Include(s => s.Department));
+            var supervisor = await _unitOfWork.GenericRepository<Supervisor>().GetAsync(s => s.Id == id, 
+                source => source.Include(s => s.Department));
             if (supervisor == null) return NotFound();
             return View(_mapper.Map<SupervisorVM>(supervisor));
         }
@@ -438,7 +428,7 @@ namespace SummerTrainingSystem.Controllers
         {
             var logedInStudent = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if(logedInStudent == null) return NotFound();
-            var student = await _stuRepo.GetAsync(s => s.Id == logedInStudent, source => 
+            var student = await _unitOfWork.GenericRepository<Student>().GetAsync(s => s.Id == logedInStudent, source => 
             source.Include(s => s.Trainnings)
             .ThenInclude(s => s.TrainingType));
             var model = _mapper.Map<StudentVM>(student);
@@ -459,7 +449,8 @@ namespace SummerTrainingSystem.Controllers
                     DeleteFile("uploads/", super.ProfilePictureUrl);
                 }
                 super.ProfilePictureUrl = await UploadFile("uploads/", file);
-                var result = _supRepo.Update(super);
+                _unitOfWork.GenericRepository<Supervisor>().Update(super);
+                var result = await _unitOfWork.Complete();
                 if (result > 0) return Ok();
             }
             if (await _userManager.IsInRoleAsync(user, Roles.Student.ToString()))
@@ -470,7 +461,8 @@ namespace SummerTrainingSystem.Controllers
                     DeleteFile("uploads/", student.ProfilePictureUrl);
                 }
                 student.ProfilePictureUrl = await UploadFile("uploads/", file);
-                var result = _stuRepo.Update(student);
+                _unitOfWork.GenericRepository<Student>().Update(student);
+                var result = await _unitOfWork.Complete();
                 if (result > 0) return Ok();
             }
             if (await _userManager.IsInRoleAsync(user, Roles.Company.ToString()))
@@ -481,7 +473,8 @@ namespace SummerTrainingSystem.Controllers
                     DeleteFile("uploads/", company.ProfilePictureUrl);
                 }
                 company.ProfilePictureUrl = await UploadFile("uploads/", file);
-                var result = _comRepo.Update(company);
+                _unitOfWork.GenericRepository<HrCompany>().Update(company);
+                var result = await _unitOfWork.Complete();
                 if (result > 0) return Ok();
             }
             
@@ -497,17 +490,18 @@ namespace SummerTrainingSystem.Controllers
             if (await _userManager.IsInRoleAsync(user, Roles.Student.ToString()))
             {
                 // check if student has reviews
-                var comments = await _commentsRepo.ListAsync(s => s.StudentId == id);
+                var comments = await _unitOfWork.GenericRepository<Comment>().ListAsync(s => s.StudentId == id);
                 if (comments.Count > 0)
                 {
                     // update applicants count for those trainings
                     foreach (var c in comments)
                     {
-                        _commentsRepo.Delete(c);
+                        _unitOfWork.GenericRepository<Comment>().Delete(c);
                     }
                 }
                 // check if student applied for trainings
-                var student = await _stuRepo.GetAsync(s => s.Id == id, source => source.Include(s => s.Trainnings));
+                var student = await _unitOfWork.GenericRepository<Student>().GetAsync(s => s.Id == id, 
+                    source => source.Include(s => s.Trainnings));
                 if (student.Trainnings.Count > 0)
                 {
                     // update applicants count for those trainings
@@ -520,13 +514,13 @@ namespace SummerTrainingSystem.Controllers
             else if(await _userManager.IsInRoleAsync(user, Roles.Company.ToString()))
             {
                 // check if company has reviews
-                var comments = await _commentsRepo.ListAsync(s => s.HrCompanyId == id);
+                var comments = await _unitOfWork.GenericRepository<Comment>().ListAsync(s => s.HrCompanyId == id);
                 if (comments.Count > 0)
                 {
                     // update applicants count for those trainings
                     foreach (var c in comments)
                     {
-                        _commentsRepo.Delete(c);
+                        _unitOfWork.GenericRepository<Comment>().Delete(c);
                     }
                 }
             }
@@ -535,12 +529,25 @@ namespace SummerTrainingSystem.Controllers
             return BadRequest();
         }
 
-        
-        public JsonResult IsUniversityIdInUse([FromQuery] int universityId)
+        [Route("IsUniversityIdInUse")]
+        public JsonResult IsUniversityIdInUse([FromQuery] int UniversityId)
         {
-            if (_accountService.CheckIsUniversityIdExists(universityId))
+            if (_accountService.CheckIsUniversityIdExists(UniversityId))
             {
-                return Json($"University Id {universityId} is in use.");
+                return Json($"University Id {UniversityId} is in use.");
+            }
+            else
+            {
+                return Json(true);
+            }
+        }
+
+        [Route("IsEmailInUse")]
+        public JsonResult IsEmailInUse([FromQuery] string Email)
+        {
+            if (_accountService.CheckIsEmailExists(Email))
+            {
+                return Json($"Email {Email} is in use.");
             }
             else
             {

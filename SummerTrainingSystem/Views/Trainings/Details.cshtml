@@ -1,5 +1,5 @@
 ﻿@using SummerTrainingSystemCore.Enums
-@inject SummerTrainingSystemCore.Interfaces.ITrainingRepository trRepo
+@inject SummerTrainingSystemCore.Interfaces.IUnitOfWork unitOfWork
 @model TrainingVM
 @{
     ViewData["Title"] = Model.Title;
@@ -39,7 +39,7 @@
             <hr />
             @if(User.IsInRole(Roles.Student.ToString()))
             {
-                @if(trRepo.CheckIfStudentApplied(User.Identity.Name, Model.Id))
+                @if(unitOfWork.TrainningRepository().CheckIfStudentApplied(User.Identity.Name, Model.Id))
                 {
                     <span class="btn btn-secondary btn-lg">Applied</span>
                 }
