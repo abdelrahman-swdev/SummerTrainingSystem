@@ -12,6 +12,7 @@ namespace SummerTrainingSystemCore.Interfaces
         Task<IdentityResult> CreateCompanyAccountAsync(HrCompany company, string password);
 
         bool CheckIsUniversityIdExists(int universityId);
+        bool CheckIsEmailExists(string email);
 
         Task<SignInResult> LoginAsync(int universityId, string password);
         Task<SignInResult> LoginAsCompanyAsync(string email, string password);

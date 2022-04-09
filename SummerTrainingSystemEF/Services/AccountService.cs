@@ -26,17 +26,6 @@ namespace SummerTrainingSystemEF.Services
         }
         public async Task<IdentityResult> CreateStudentAccountAsync(Student student, string password)
         {
-            var checkIfUniversityIdExist = CheckIsUniversityIdExists(student.UniversityID);
-            if (checkIfUniversityIdExist) 
-            {
-                return IdentityResult.Failed(
-                    new IdentityError
-                    {
-                        Description = "This university id is already taken"
-                    }
-                );
-            }
-
             var result = await _userManager.CreateAsync(student, password);
             if (result.Succeeded)
             {
@@ -47,17 +36,6 @@ namespace SummerTrainingSystemEF.Services
 
         public async Task<IdentityResult> CreateSupervisorAccountAsync(Supervisor supervisor, string password)
         {
-            var checkIfUniversityIdExist = CheckIsUniversityIdExists(supervisor.UniversityID);
-            if (checkIfUniversityIdExist)
-            {
-                return IdentityResult.Failed(
-                    new IdentityError
-                    {
-                        Description = "This university id is already taken"
-                    }
-                );
-            }
-
             var result = await _userManager.CreateAsync(supervisor, password);
             if (result.Succeeded)
             {
@@ -99,6 +77,13 @@ namespace SummerTrainingSystemEF.Services
             var supervisor = _context.Supervisors.FirstOrDefault(c => c.UniversityID == universityId);
             if (supervisor != null) return true;
 
+            return false;
+        }
+
+        public bool CheckIsEmailExists(string email)
+        {
+            var user = _userManager.Users.SingleOrDefault(s => s.Email == email);
+            if(user != null) return true;
             return false;
         }
 

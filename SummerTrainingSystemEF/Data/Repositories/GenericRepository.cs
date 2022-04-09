@@ -19,16 +19,14 @@ namespace SummerTrainingSystemEF.Data.Repositories
             _context = context;
             _dbSet = _context.Set<T>();
         }
-        public int Add(T entity)
+        public void Add(T entity)
         {
             _dbSet.Add(entity);
-            return _context.SaveChanges();
         }
 
-        public int Delete(T entity)
+        public void Delete(T entity)
         {
             _dbSet.Remove(entity);
-            return _context.SaveChanges();
         }
 
         // return one entity with related data
@@ -74,10 +72,9 @@ namespace SummerTrainingSystemEF.Data.Repositories
             return await query.ToListAsync();
         }
 
-        public int Update(T entity)
+        public void Update(T entity)
         {
             _dbSet.Update(entity);
-            return _context.SaveChanges();
         }
     }
 }
