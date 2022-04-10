@@ -46,47 +46,13 @@
                 asp-controller="Roles" 
                 asp-action="ListRoles">Roles</a>
             </li>
+            <li>
+                <a class="dropdown-item @Html.ActiveClass("Analysis", "Index")" 
+                asp-controller="Analysis" 
+                asp-action="Index">Sentiment Analysis</a>
+            </li>
             </ul>
         </div>
-        @*<ul class="navbar-nav m-auto mb-2 mb-lg-0 text-center">
-            <li class="nav-item">
-                <a class="nav-link
-                @Html.ActiveClass("Trainings", "Index")"
-                    asp-controller="Trainings"
-                    asp-action="Index">Trainings</a>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link
-                    @Html.ActiveClass("Users", "GetAllStudents")"
-                    asp-controller="Users"
-                    asp-action="GetAllStudents">Students</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link
-                @Html.ActiveClass("Users", "GetAllSupervisors")"
-                    asp-controller="Users"
-                    asp-action="GetAllSupervisors">Supervisors</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link
-                @Html.ActiveClass("Users", "GetAllCompanies")"
-                    asp-controller="Users"
-                    asp-action="GetAllCompanies">Companies</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link
-                @Html.ActiveClass("Departments", "GetDepartments")"
-                    asp-controller="Departments"
-                    asp-action="GetDepartments">Departments</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link
-                @Html.ActiveClass("Roles", "ListRoles")" 
-                asp-controller="Roles" 
-                asp-action="ListRoles">Roles</a>
-            </li>
-        </ul>*@
 
         <partial name="_LoginPartial" />
     </div>

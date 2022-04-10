@@ -1,0 +1,64 @@
+﻿@model List<SentimentAnalysisVM>
+@{
+    ViewData["Title"] = "Sentiment Analysis";
+}
+<link href="~/css/sentimentAnalysis.css" rel="stylesheet" />
+
+<div class="container">
+    <h3 class="display-4 my-5 text-secondary">Companies Analysis</h3>
+    @foreach(var company in Model)
+    {
+        <div class="d-flex flex-column border-2 shadow p-3 my-5">
+            <div class="d-flex justify-content-between align-items-start flex-wrap">
+                <div class="d-flex flex-column gap-2">
+                    <img class="profile-photo" src="~/uploads/@(company.ProfilePictureUrl ?? "avatar.svg")" asp-append-version="true" alt="@company.Name"/>
+                    <a class="text-secondary mt-1 fw-bold ps-3 fs-5" asp-controller="Account" asp-action="CompanyProfile" asp-route-id="@company.CompanyId">@company.Name</a>
+                </div>
+                @if(company.AnalysisResult != null)
+                {
+                    <div class="d-flex justify-content-center align-items-center flex-column flex-wrap">
+                        <svg class="radial-progress" data-percentage="@company.CalculatedPercentage" viewBox="0 0 80 80">
+                            <circle class="incomplete" cx="40" cy="40" r="35"></circle>
+                            <circle class="complete" cx="40" cy="40" r="35" style="stroke-dashoffset: 39.58406743523136;"></circle>
+                            <text class="percentage" x="50%" y="57%" transform="matrix(0, 1, -1, 0, 80, 0)">@company.CalculatedPercentage%</text>
+                        </svg>
+                        <h6 class="text-secondary">Recommend to a friend</h6>
+                    </div>
+                }
+            </div>
+            @if(company.AnalysisResult == null)
+            {
+                <div class="alert alert-info mt-3">
+                    No reviews to show.
+                </div>
+            }
+            else
+            {
+                <div class="d-flex justify-content-start gap-5 flex-wrap p-3 mt-3">
+                    <div class="d-flex justify-content-start flex-column">
+                        <span class="pros-span">Pros</span>
+                        <ul class="m-0 p-0 list-unstyled">
+                            @foreach(var comment in company.AnalysisResult.PredictedResults.Where(p => Convert.ToBoolean(p.Prediction)))
+                            {
+                                <li class="review-text text-secondary">"@comment.SentimentText"</li>
+                            }
+                        </ul>
+                    </div>
+                    <div class="d-flex justify-content-start flex-column">
+                        <span class="cons-span">Cons</span>
+                        <ul class="m-0 p-0 list-unstyled">
+                            @foreach(var comment in company.AnalysisResult.PredictedResults.Where(p => !Convert.ToBoolean(p.Prediction)))
+                            {
+                                <li class="review-text text-secondary">"@comment.SentimentText"</li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+@section Scripts
+{
+    <script src="~/js/sentimentAnalysis.js"></script>
+}

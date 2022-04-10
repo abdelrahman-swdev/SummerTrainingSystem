@@ -1,0 +1,74 @@
+﻿/*** RADIAL PROGRESS ***/
+/* Circumference = 2πr */
+/* π = 3.1415926535898 */
+/* r = 35 */
+svg.radial-progress {
+    height: auto;
+    max-width: 120px;
+    padding: 1em;
+    transform: rotate(-90deg);
+    width: 100%;
+}
+
+svg.radial-progress circle {
+    fill: rgba(0, 0, 0, 0);
+    stroke: #fff;
+    stroke-dashoffset: 219.91148575129; /* Circumference */
+    stroke-width: 10;
+}
+
+svg.radial-progress circle.incomplete {
+    opacity: 0.25;
+}
+
+svg.radial-progress circle.complete {
+    stroke-dasharray: 219.91148575129; /* Circumference */
+}
+
+svg.radial-progress text {
+    fill: gray;
+    font: 400 1em/1 "Oswald", sans-serif;
+    text-anchor: middle;
+}
+
+/*** COLORS ***/
+/* Success */
+svg.radial-progress:nth-of-type(6n + 1) circle {
+    stroke: rgb(12, 170, 65);
+}
+
+/* Danger */
+svg.radial-progress:nth-of-type(6n + 2) circle {
+    stroke: #d93e30;
+}
+
+.pros-span,
+.cons-span {
+    border-radius: 3px;
+    color: rgb(255, 255, 255);
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 24px;
+    padding: 4px 16px;
+    width: 70px;
+    margin-bottom: 20px;
+}
+.pros-span
+{
+    background: rgb(12, 170, 65);
+}
+.cons-span {
+    background: rgb(217, 62, 48);
+}
+.review-text {
+    margin: 10px 0;
+    color: rgb(64, 64, 64);
+    line-height: 24px;
+}
+.profile-photo {
+    object-fit: cover;
+    width: 120px;
+    height: 120px;
+    box-shadow: 0 0 10px 0 rgba(255, 255, 255, 0.35);
+    border-radius: 100px;
+}

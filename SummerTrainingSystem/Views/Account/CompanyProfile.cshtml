@@ -109,7 +109,7 @@
             <h2 class="display-6 text-secondary">Add a review</h2>
             <form id="form" name="checkit" onsubmit="handleSubmit(event)">
                 <input id="CompanyId" name="CompanyId" type="hidden" asp-for="@Model.Id" />
-                <textarea id="Message" placeholder="leave a review here.." name="Message" class="Message" onkeyup="checkform()"></textarea>
+                <textarea lang="en" id="Message" placeholder="leave a review here.." name="Message" class="Message" onkeyup="checkform()"></textarea>
                 <button type="submit" id="SubmitComment" disabled="disabled">
                     Save
                     <div id="spinner" class="spinner-border spinner-border-sm d-none" role="status">
@@ -163,4 +163,19 @@
 </div>
 @section Scripts{
     <script src="~/js/CompanyProfile.js"></script>
+    <script>
+        // to restrict user to type english
+        $("#Message").keypress(function(event){
+            var ew = event.which;
+            if(ew == 32 || ew == 44 || ew == 39 || ew == 46)
+                return true;
+            if(48 <= ew && ew <= 57)
+                return true;
+            if(65 <= ew && ew <= 90)
+                return true;
+            if(97 <= ew && ew <= 122)
+                return true;
+            return false;
+        });
+    </script>
 }

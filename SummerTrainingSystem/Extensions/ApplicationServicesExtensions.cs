@@ -1,5 +1,6 @@
 ﻿using AspNetCoreHero.ToastNotification;
 using Microsoft.Extensions.DependencyInjection;
+using SummerTrainingSystem.SentimentAnalysis;
 using SummerTrainingSystemCore.Interfaces;
 using SummerTrainingSystemEF.Data;
 using SummerTrainingSystemEF.Services;
@@ -18,6 +19,9 @@ namespace SummerTrainingSystem.Extensions
 
             // add unit of work service to container with the same lifetime of repositories
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            // add SentimentAnalysis Service
+            services.AddScoped<ISentimentAnalysisService, SentimentAnalysisService>();
 
             // add auto mapper
             services.AddAutoMapper(typeof(Startup));
