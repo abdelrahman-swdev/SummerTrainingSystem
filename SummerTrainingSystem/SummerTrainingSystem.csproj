@@ -7,9 +7,13 @@
 
   <ItemGroup>
     <Compile Remove="SentimentAnalysis\Data\**" />
+    <Compile Remove="wwwroot\Logs\**" />
     <Content Remove="SentimentAnalysis\Data\**" />
+    <Content Remove="wwwroot\Logs\**" />
     <EmbeddedResource Remove="SentimentAnalysis\Data\**" />
+    <EmbeddedResource Remove="wwwroot\Logs\**" />
     <None Remove="SentimentAnalysis\Data\**" />
+    <None Remove="wwwroot\Logs\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,6 +34,11 @@
     <PackageReference Include="Microsoft.ML" Version="1.7.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
     <PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.16" />
+    <PackageReference Include="Serilog.AspNetCore" Version="5.0.0" />
+    <PackageReference Include="Serilog.Enrichers.Environment" Version="2.2.0" />
+    <PackageReference Include="Serilog.Enrichers.Process" Version="2.0.2" />
+    <PackageReference Include="Serilog.Enrichers.Thread" Version="3.1.0" />
+    <PackageReference Include="Serilog.Settings.Configuration" Version="3.3.0" />
   </ItemGroup>
 
   <ItemGroup>

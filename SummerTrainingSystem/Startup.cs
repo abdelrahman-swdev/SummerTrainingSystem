@@ -55,11 +55,8 @@ namespace SummerTrainingSystem
             {
                 app.UseExceptionHandler("/errors");
                 // add middleware for redirect to errors path when requesting endpoint that doesnot exist
-                app.UseStatusCodePagesWithReExecute("/errors/{0}");
             }
-
-
-
+            app.UseStatusCodePagesWithReExecute("/errors/{0}");
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
