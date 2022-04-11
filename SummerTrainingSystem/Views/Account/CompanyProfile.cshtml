@@ -4,7 +4,6 @@
     ViewData["title"] = "Company";
 }
 
-<link href="~/css/trainings.css" rel="stylesheet" />
 <link href="~/css/CompanyProfile.css" rel="stylesheet" />
 
 <div class="container">
@@ -65,7 +64,7 @@
     <div class="prof mt-4">
         <div class="d-flex justify-content-between align-items-center">
             <h2 class="profhead">Company Profile</h2>
-            @if (User.IsInRole(Includes.Company.ToString()) && Model.Email == User.Identity.Name)
+            @if (User.IsInRole(Roles.Company.ToString()) && Model.Email == User.Identity.Name)
             {
                 <a class="btn btn-secondary" asp-controller="Account" asp-action="EditCompany">
                     <i class="fas fa-pen"></i> Edit Profile

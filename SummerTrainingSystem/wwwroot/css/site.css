@@ -153,4 +153,7 @@ body {
     border-radius: 50%;
     object-fit: cover;
 }
+.customActiveLink {
+    color: #3b88c3 !important;
+}
 

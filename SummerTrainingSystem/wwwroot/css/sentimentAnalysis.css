@@ -72,3 +72,10 @@ svg.radial-progress:nth-of-type(6n + 2) circle {
     box-shadow: 0 0 10px 0 rgba(255, 255, 255, 0.35);
     border-radius: 100px;
 }
+@media(max-width:768px)
+{
+    .profile-photo {
+        width: 100px;
+        height: 100px;
+    }
+}

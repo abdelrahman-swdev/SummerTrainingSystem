@@ -71,7 +71,6 @@ namespace SummerTrainingSystem
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
-                endpoints.MapControllers();
             });
         }
     }

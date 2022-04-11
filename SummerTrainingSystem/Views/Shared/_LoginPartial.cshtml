@@ -3,7 +3,12 @@
 @if (User.Identity.IsAuthenticated)
 {
     <div class="btn-group">
-      <button type="button" class="btn text-white fw-bold shadow-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+      <button 
+        style="min-width:auto !important;" 
+        type="button" 
+        class="btn text-white fw-bold shadow-none dropdown-toggle p-0" 
+        data-bs-toggle="dropdown" 
+        aria-expanded="false">
         <partial name="_ProfilePictureLogicPartial"/>
       </button>
       <ul class="dropdown-menu dropdown-menu-end">
