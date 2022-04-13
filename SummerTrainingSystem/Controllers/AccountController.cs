@@ -13,6 +13,7 @@ using SummerTrainingSystemCore.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -392,10 +393,15 @@ namespace SummerTrainingSystem.Controllers
         {
             if(string.IsNullOrEmpty(id)) id = User.FindFirstValue(ClaimTypes.NameIdentifier);
             
-            var company = await _unitOfWork.GenericRepository<HrCompany>().GetAsync(c => c.Id == id, source => source
-            .Include(s => s.CompanySize)
-            .Include(s  => s.Comments).ThenInclude(s => s.Student));
+            var company = await _unitOfWork.GenericRepository<HrCompany>()
+                .GetAsync(c => c.Id == id, source => source
+                .Include(s => s.CompanySize)
+                .Include(s  => s.Comments).ThenInclude(s => s.Student));
             if (company == null) return NotFound();
+            if(company.Comments.Count > 1)
+            {
+                company.Comments = company.Comments.OrderByDescending(c => c.CreateAt).ToList();
+            }
             return View(_mapper.Map<CompanyVM>(company));
             
         }
