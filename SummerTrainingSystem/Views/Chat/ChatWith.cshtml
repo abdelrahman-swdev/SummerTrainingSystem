@@ -1,0 +1,47 @@
+﻿@model ChatMessagesVM
+
+@{
+    ViewData["Title"] = "Chat";
+}
+
+<div id="chatWrapper" class="my-4">
+
+    <h1 class="mb-5">chat with @Model.WithEmail</h1>
+
+    @foreach(var m in @Model.Messages)
+    {
+        if(@m.SenderEmail == User.Identity.Name)
+        {
+            <span class="badge bg-dark">@m.SenderEmail</span>
+            <h6 class="list-group-item list-group-item-success ">@m.Content</h6>
+            <span class="badge bg-light">@m.When</span>
+            <hr />
+        }
+        else
+        {
+            <span class="badge bg-dark">@m.SenderEmail</span>
+            <h6 class="list-group-item list-group-item-secondary ">@m.Content</h6>
+            <span class="badge bg-light">@m.When</span>
+            <hr />
+        }
+
+    }
+</div>
+
+
+<input type="hidden" name="RecieverEmail" id="RecieverEmail" value="@Model.WithEmail"/>
+<input type="hidden" name="MyEmail" id="MyEmail" value="@User.Identity.Name"/>
+
+<label for="messageInput" class="mt-2">Message</label>
+<input type="text" name="messageInput" id="messageInput" class="form-control w-50" />
+
+<button id="sendButton" onclick="sendPrivateMessage()">Send Message</button>
+
+<div class="dropdown-divider"></div>
+
+
+@section Scripts
+{
+    <script src="~/lib/signalr/signalr.js"></script>
+    <script src="~/js/chatWith.js"></script>
+}

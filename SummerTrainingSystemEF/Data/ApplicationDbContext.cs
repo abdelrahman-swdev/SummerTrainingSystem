@@ -21,6 +21,8 @@ namespace SummerTrainingSystemEF.Data
         public virtual DbSet<CompanySize> CompanySizes { get; set; }
         public virtual DbSet<TrainingType> TrainingTypes { get; set; }
         public virtual DbSet<Comment> Comments { get; set; }
+        public virtual DbSet<Group> Groups { get; set; }
+        public virtual DbSet<Message> Messages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

@@ -15,6 +15,12 @@
           @if (User.IsInRole(Roles.Student.ToString()))
             {
                 <li>
+                    <a class="dropdown-item @Html.ActiveClass("Account", "MySupervisors")" 
+                    asp-controller="Account" asp-action="MySupervisors">
+                        <i class="fas fa-users me-1"></i> Supervisors
+                    </a>
+                </li>
+                <li>
                     <a class="dropdown-item @Html.ActiveClass("Account", "GetTrainningForStudent")" 
                     asp-controller="Account" asp-action="GetTrainningForStudent">
                         <i class="fas fa-list me-1"></i> Applications
@@ -35,6 +41,12 @@
             }
             else if (User.IsInRole(Roles.Supervisor.ToString()))
             {
+                <li>
+                    <a class="dropdown-item @Html.ActiveClass("Account", "MyStudents")" 
+                    asp-controller="Account" asp-action="MyStudents">
+                        <i class="fas fa-users me-1"></i> Students
+                    </a>
+                </li>
                 <li>
                     <a class="dropdown-item @Html.ActiveClass("Account", "SupervisorProfile")" 
                     asp-controller="Account" asp-action="SupervisorProfile">

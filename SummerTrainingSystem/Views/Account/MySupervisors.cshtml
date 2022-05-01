@@ -1,0 +1,68 @@
+﻿@model List<SupervisorVM>
+@{
+    ViewData["title"] = "My Supervisors";
+}
+<link href="~/css/profile.css" rel="stylesheet" />
+@{
+    if(Model.Count == 0)
+    {
+        <div class="alert alert-info mt-4">
+            No supervisors assigned to your department yet.
+        </div>
+    }
+    else
+    {
+
+        foreach(var super in Model)
+        {
+            
+            <div class="student-profile py-4">
+                <div class="container text-center">
+                    <div class="row">
+                        <div class="col-lg-6 offset-lg-3 mb-3">
+                            <div class="card align-items-center shadow-sm">
+                                <img src="~/uploads/@(super.ProfilePictureUrl ?? "avatar.svg")"
+                                style="object-fit: cover;width: 150px;height: 150px;border-radius: 100px;"
+                                alt="@super.FirstName"
+                                width="200" 
+                                asp-append-version="true"/>
+                                <h4 class="mt-3 text-secondary text-uppercase">@super.FirstName @super.LastName</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 offset-lg-3">
+                            <div class="card shadow-sm">
+                                <div class="card-header bg-transparent border-0">
+                                    <h3 class="mb-0"><i class="far fa-clone pr-1"></i> Information</h3>
+                                </div>
+                                <div class="card-body pt-0">
+                                    <table class="table table-bordered">
+                                        <tr>
+                                            <th width="30%">Email</th>
+                                            <td width="2%">:</td>
+                                            <td>@super.Email</td>
+                                        </tr>
+                                        <tr>
+                                            <th width="30%">Phone</th>
+                                            <td width="2%">:</td>
+                                            <td>@super.PhoneNumber</td>
+                                        </tr>
+                                        <tr>
+                                            <th width="30%">Department</th>
+                                            <td width="2%">:</td>
+                                            <td>@super.Department.Abbreviation</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <a class="btn btn-primary my-4" asp-action="ChatWith" asp-controller="Chat" asp-route-with="@super.Email">
+                        Send Message
+                    </a>
+                </div>
+            </div>
+        }
+    }
+}

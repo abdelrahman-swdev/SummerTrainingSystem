@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SummerTrainingSystem.Extensions;
+using SummerTrainingSystem.Hubs;
 using SummerTrainingSystemEF.Data;
 
 namespace SummerTrainingSystem
@@ -42,6 +43,9 @@ namespace SummerTrainingSystem
             {
                 options.LoginPath = Configuration["Application:LoginPath"];
             });
+
+            // add signalr
+            services.AddSignalR();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -71,6 +75,7 @@ namespace SummerTrainingSystem
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapDefaultControllerRoute();
+                endpoints.MapHub<ChatHub>("/chatHub");
             });
         }
     }

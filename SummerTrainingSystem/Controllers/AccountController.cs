@@ -417,6 +417,28 @@ namespace SummerTrainingSystem.Controllers
             return View(_mapper.Map<StudentVM>(student));
         }
 
+        [Authorize(Roles = "Student")]
+        [HttpGet("my-supervisors")]
+        public async Task<IActionResult> MySupervisors()
+        {
+            var student = (Student)await _userManager.GetUserAsync(User);
+            var supervisors = await _unitOfWork.GenericRepository<Supervisor>()
+                .ListAsync(s => s.DepartmentId == student.DepartmentId, 
+                source => source.Include(s => s.Department));
+            return View(_mapper.Map<List<SupervisorVM>>(supervisors));
+        }
+
+        [Authorize(Roles = "Supervisor")]
+        [HttpGet("my-students")]
+        public async Task<IActionResult> MyStudents()
+        {
+            var supervisor = (Supervisor)await _userManager.GetUserAsync(User);
+            var students = await _unitOfWork.GenericRepository<Student>()
+                .ListAsync(s => s.DepartmentId == supervisor.DepartmentId,
+                source => source.Include(s => s.Department));
+            return View(_mapper.Map<List<StudentVM>>(students));
+        }
+
         [Authorize]
         [HttpGet("supervisor-profile")]
         public async Task<IActionResult> SupervisorProfile()

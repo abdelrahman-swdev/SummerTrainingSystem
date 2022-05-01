@@ -74,6 +74,10 @@
         "js/bootstrap.js.map",
         "js/bootstrap.min.js.map"
       ]
+    },
+    {
+      "library": "microsoft-signalr@6.0.3",
+      "destination": "wwwroot/lib/signalr/"
     }
   ]
 }
