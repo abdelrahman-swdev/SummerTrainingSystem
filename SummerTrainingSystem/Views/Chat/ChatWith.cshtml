@@ -1,43 +1,103 @@
-﻿@model ChatMessagesVM
+﻿@using Microsoft.AspNetCore.Identity
+@using SummerTrainingSystemCore.Enums
+@inject UserManager<IdentityUser> userManager
+@model ChatMessagesVM
 
 @{
     ViewData["Title"] = "Chat";
 }
 
-<div id="chatWrapper" class="my-4">
+<link href="~/css/chat.css" rel="stylesheet" />
 
-    <h1 class="mb-5">chat with @Model.WithEmail</h1>
+<div class="my-4 container">
 
-    @foreach(var m in @Model.Messages)
-    {
-        if(@m.SenderEmail == User.Identity.Name)
-        {
-            <span class="badge bg-dark">@m.SenderEmail</span>
-            <h6 class="list-group-item list-group-item-success ">@m.Content</h6>
-            <span class="badge bg-light">@m.When</span>
-            <hr />
-        }
-        else
-        {
-            <span class="badge bg-dark">@m.SenderEmail</span>
-            <h6 class="list-group-item list-group-item-secondary ">@m.Content</h6>
-            <span class="badge bg-light">@m.When</span>
-            <hr />
-        }
+    <div class="head">
+        <div class="user">
+            <div class="userimg">
+                <img src="~/uploads/@Model.WithPictureUrl" alt="@Model.WithEmail">
+            </div>
+            <div class="username">
+                <h4>@Model.WithEmail</h4>
+            </div>
+        </div>
+    </div>
+    <div class="chatbody">
+        <div class="messages" id="chatWrapper">
+            @foreach(var m in @Model.Messages)
+            {
+                if(@m.SenderEmail == User.Identity.Name)
+                {
+                    string profilePic = string.Empty;
+                    if (User.IsInRole(Roles.Student.ToString()))
+                    {
+                        profilePic = "/uploads/" + (((Student)userManager.GetUserAsync(User).Result).ProfilePictureUrl ?? "avatar.svg");
+                    }
+                    else if (User.IsInRole(Roles.Supervisor.ToString()))
+                    {
+                        profilePic = "/uploads/" + (((Supervisor)userManager.GetUserAsync(User).Result).ProfilePictureUrl ?? "avatar.svg");
+                    }
+                    <!-- اللي بيبعت -->
+                    <div class="sendermessagebody">
+                        <div class="sender-info">
+                            <div class="sender-img">
+                                <img src="@profilePic" alt="@Model.WithEmail">
+                            </div>
+                            <div class="sender-name">
+                                <h5>@m.SenderEmail</h5>
+                                <div class="sender-time">
+                                    @m.When
+                                </div>
+                            </div>
+                        </div>
+                        <div class="content" 
+                        style="background-color: #0a80ff;color: #fff;border-radius: 7px;padding: 10px 20px;word-break:break-all;">
+                            @m.Content
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <!-- اللي بيستقبل -->
+                    <div class="reciever">
+                        <div class="sender-info">
+                            <div class="sender-img">
+                                <img src="~/uploads/@Model.WithPictureUrl" alt="@Model.WithEmail">
+                            </div>
+                            <div class="sender-name">
+                                <h5>@m.SenderEmail</h5>
+                                <div class="sender-time">
+                                    @m.When
+                                </div>
+                            </div>
+                        </div>
+                        <div class="recievecontent" 
+                        style="background-color: #293145;color: #fff;border-radius: 7px;padding: 10px 20px;word-break:break-all;">
+                            @m.Content
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+    <!-- writre message -->
+    <footer class="footer">
+        <form class="footer-form" onsubmit="sendPrivateMessage(event)">
 
-    }
+            <input type="hidden" name="RecieverEmail" id="RecieverEmail" value="@Model.WithEmail"/>
+            <input type="hidden" name="MyEmail" id="MyEmail" value="@User.Identity.Name"/>
+            <input type="hidden" name="WithPictureUrl" id="WithPictureUrl" value="@Model.WithPictureUrl"/>
+
+            <input spellcheck="true" name="messageInput" id="messageInput" type="text" placeholder="write a message." class="footer-input">
+
+            <div class="sendbtn">
+                <button class="btn btn-primary" type="submit" id="sendButton">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+
+        </form>
+    </footer>
 </div>
-
-
-<input type="hidden" name="RecieverEmail" id="RecieverEmail" value="@Model.WithEmail"/>
-<input type="hidden" name="MyEmail" id="MyEmail" value="@User.Identity.Name"/>
-
-<label for="messageInput" class="mt-2">Message</label>
-<input type="text" name="messageInput" id="messageInput" class="form-control w-50" />
-
-<button id="sendButton" onclick="sendPrivateMessage()">Send Message</button>
-
-<div class="dropdown-divider"></div>
 
 
 @section Scripts

@@ -9,6 +9,8 @@ namespace SummerTrainingSystem.Models
         {
             Messages = new List<Message>();
         }
+
+        public string WithPictureUrl { get; set; }
         public string WithEmail { get; set; }
         public List<Message> Messages { get; set; }
     }

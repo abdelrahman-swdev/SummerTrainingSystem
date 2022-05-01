@@ -15,32 +15,67 @@ connection.on("ReceivePrivateMessage", function (senderName, message, when) {
     console.log("Received Message");
 
     var RecieverEmail = document.getElementById("RecieverEmail").value;
+    var withPictureUrl = document.getElementById("WithPictureUrl").value;
     var myEmail = document.getElementById("MyEmail").value;
+    var myPicUrl = document.querySelector(".profile-picture").getAttribute("src");
 
     if (senderName === myEmail || senderName === RecieverEmail) {
-        var classesName = "";
         if (senderName === myEmail) {
-            classesName = "list-group-item list-group-item-success";
+            document.getElementById("chatWrapper").insertAdjacentHTML("beforeend", `
+                <div class="sendermessagebody">
+                    <div class="sender-info">
+                        <div class="sender-img">
+                            <img src="${myPicUrl}" alt="${senderName}">
+                        </div>
+                        <div class="sender-name">
+                            <h5>${senderName}</h5>
+                            <div class="sender-time">
+                                ${when}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content"
+                        style="background-color: #0a80ff;color: #fff;border-radius: 7px;padding: 10px 20px;word-break:break-all;">
+                        ${message}
+                    </div>
+                </div>
+            `);
         }
-        else {
-            classesName = 'list-group-item list-group-item-secondary';
+        else
+        {
+            document.getElementById("chatWrapper").insertAdjacentHTML("beforeend", `
+                <div class="reciever">
+                    <div class="sender-info">
+                        <div class="sender-img">
+                            <img src="uploads/${withPictureUrl}" alt="${senderName}">
+                        </div>
+                        <div class="sender-name">
+                            <h5>${senderName}</h5>
+                            <div class="sender-time">
+                                ${when}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="recievecontent"
+                    style="background-color: #293145;color: #fff;border-radius: 7px;padding: 10px 20px;word-break:break-all;">
+                        ${message}
+                    </div>
+                </div>
+            `);
         }
 
-        document.getElementById("chatWrapper").insertAdjacentHTML("beforeend", `
-            <span class="badge bg-dark">${senderName}</span>
-            <h6 class="${classesName}">${message}</h6>
-            <span class="badge bg-light">${when}</span>
-            <hr />
-        `);
     }
 
 });
 
-function sendPrivateMessage() {
+function sendPrivateMessage(event) {
+
+    event.preventDefault();
+
     var receiver = document.getElementById("RecieverEmail").value;
     var message = document.getElementById("messageInput");
 
-    if (receiver != "") {
+    if (receiver != "" && message.value.trim() !== "") {
 
         connection.invoke("SendMessageToGroup", receiver, message.value)
             .catch(function (err) {

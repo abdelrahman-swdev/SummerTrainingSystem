@@ -1,18 +1,23 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using SummerTrainingSystem.Models;
 using SummerTrainingSystemCore.Entities;
+using SummerTrainingSystemCore.Enums;
 using SummerTrainingSystemEF.Data;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SummerTrainingSystem.Controllers
 {
     public class ChatController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public ChatController(ApplicationDbContext context)
+        public ChatController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
         public IActionResult Index()
         {
@@ -20,8 +25,27 @@ namespace SummerTrainingSystem.Controllers
         }
 
         [HttpGet("chat")]
-        public IActionResult ChatWith(string with)
+        public async Task<IActionResult> ChatWith(string with)
         {
+            var withUser = await _userManager.FindByNameAsync(with);
+            if(withUser == null) return NotFound();
+
+            Student IfStudentUser;
+            Supervisor IfSupervisorUser;
+            string withProfileUrl = string.Empty;
+
+            if (await _userManager.IsInRoleAsync(withUser, Roles.Student.ToString()))
+            {
+                IfStudentUser = (Student)withUser;
+                withProfileUrl = IfStudentUser.ProfilePictureUrl;
+            }
+
+            if (await _userManager.IsInRoleAsync(withUser, Roles.Supervisor.ToString()))
+            {
+                IfSupervisorUser = (Supervisor)withUser;
+                withProfileUrl = IfSupervisorUser.ProfilePictureUrl;
+            }
+
             var withGroup = _context.Groups.FirstOrDefault(g => g.Name == with);
             if (withGroup == null)
             {
@@ -53,11 +77,16 @@ namespace SummerTrainingSystem.Controllers
                 (m.SenderEmail == User.Identity.Name || m.SenderEmail == withGroup.Name)
             )
             .OrderByDescending(m => m.When)
-            .Take(10)
+            .Take(4)
             .OrderBy(m => m.When)
             .ToList();
 
-            return View(new ChatMessagesVM { Messages = messages, WithEmail = with });
+            return View(new ChatMessagesVM 
+            { 
+                Messages = messages, 
+                WithEmail = with,
+                WithPictureUrl = withProfileUrl
+            });
         }
     }
 }
