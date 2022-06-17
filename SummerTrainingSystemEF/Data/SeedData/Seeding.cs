@@ -65,7 +65,7 @@ namespace SummerTrainingSystemEF.Data.SeedData
 
                 if (!context.Users.Any())
                 {
-                    var student = new Student()
+                    /*var student = new Student()
                     {
                         FirstName = "student",
                         LastName = "student",
@@ -86,7 +86,7 @@ namespace SummerTrainingSystemEF.Data.SeedData
                         UniversityID = 20,
                         PhoneNumber = "0123",
                         DepartmentId = 2
-                    };
+                    };*/
                     var admin = new IdentityUser()
                     {
                         Email = "admin@admin.com",
@@ -96,11 +96,11 @@ namespace SummerTrainingSystemEF.Data.SeedData
 
                     var password = "Pa$$w0rd";
 
-                    var stResult = await userManager.CreateAsync(student, password);
+                    /*var stResult = await userManager.CreateAsync(student, password);
                     if(stResult.Succeeded) await userManager.AddToRoleAsync(student, Roles.Student.ToString());
 
                     var supResult = await userManager.CreateAsync(supervisor, password);
-                    if (supResult.Succeeded) await userManager.AddToRoleAsync(supervisor, Roles.Supervisor.ToString());
+                    if (supResult.Succeeded) await userManager.AddToRoleAsync(supervisor, Roles.Supervisor.ToString());*/
 
                     var adminResult = await userManager.CreateAsync(admin, password);
                     if (adminResult.Succeeded) await userManager.AddToRoleAsync(admin, Roles.Admin.ToString());

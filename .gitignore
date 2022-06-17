@@ -4,3 +4,6 @@ SummerTrainingSystem/appsettings.json
 SummerTrainingSystem/wwwroot/lib
 .vs
 .vscode
+/SummerTrainingSystem/.config
+/SummerTrainingSystem/Properties/PublishProfiles
+/SummerTrainingSystem/wwwroot

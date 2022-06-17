@@ -19,7 +19,7 @@ namespace SummerTrainingSystem.Controllers
         {
             var result = HttpContext.Features.Get<IStatusCodeReExecuteFeature>();
             if (statuscode == 404) {
-                _logger.LogWarning($"404 error occured on Path {result.OriginalPath} , queryString =  {result.OriginalQueryString}");
+                _logger.LogWarning($"404 error occurred on Path {result.OriginalPath} , queryString =  {result.OriginalQueryString}");
                 return View("NotFound");
             }
             return BadRequest();

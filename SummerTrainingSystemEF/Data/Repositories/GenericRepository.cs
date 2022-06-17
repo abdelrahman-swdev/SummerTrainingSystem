@@ -30,7 +30,8 @@ namespace SummerTrainingSystemEF.Data.Repositories
         }
 
         // return one entity with related data
-        public async Task<T> GetAsync(Expression<Func<T, bool>> criteria, Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null)
+        public async Task<T> GetAsync(Expression<Func<T, bool>> criteria, 
+            Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null)
         {
             var query = _dbSet.AsQueryable<T>();
             if (include != null)

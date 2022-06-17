@@ -20,7 +20,7 @@
             </div>
             <span class="text-secondary">
                 @(
-                    (DateTime.Now - Model.CreatedAt).Days == 0 ? "Today" : $"Posted {(DateTime.Now - Model.CreatedAt).Days} ago"
+                    (DateTime.Now - Model.CreatedAt).Days == 0 ? "Today" : $"Posted {(DateTime.Now - Model.CreatedAt).Days} days ago"
                 )
             </span>
             <div class="d-flex justify-content-start text-secondary mt-3">
