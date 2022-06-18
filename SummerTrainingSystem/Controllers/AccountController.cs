@@ -515,6 +515,15 @@ namespace SummerTrainingSystem.Controllers
         {
             var user = await _userManager.FindByIdAsync(id);
             if (user == null) return NotFound();
+            if(
+                await _userManager.IsInRoleAsync(user, Roles.Student.ToString()) ||
+                await _userManager.IsInRoleAsync(user, Roles.Supervisor.ToString())
+                )
+            {
+                // delete group for user
+                // where groupname == user.email
+                await DeleteGroupAndMessages(user);
+            }
             if (await _userManager.IsInRoleAsync(user, Roles.Student.ToString()))
             {
                 // check if student has reviews
@@ -528,7 +537,7 @@ namespace SummerTrainingSystem.Controllers
                     }
                 }
                 // check if student applied for trainings
-                var student = await _unitOfWork.GenericRepository<Student>().GetAsync(s => s.Id == id, 
+                var student = await _unitOfWork.GenericRepository<Student>().GetAsync(s => s.Id == id,
                     source => source.Include(s => s.Trainnings));
                 if (student.Trainnings.Count > 0)
                 {
@@ -555,6 +564,21 @@ namespace SummerTrainingSystem.Controllers
             var result = await _userManager.DeleteAsync(user);
             if (result.Succeeded) return Ok();
             return BadRequest();
+        }
+
+        private async Task DeleteGroupAndMessages(IdentityUser user)
+        {
+            var group = await _unitOfWork.GenericRepository<Group>().GetAsync(g => g.Name == user.Email);
+            if (group != null)
+            {
+                _unitOfWork.GenericRepository<Group>().Delete(group);
+                // delete messages sent by me
+                var messagesSentByHim = await _unitOfWork.GenericRepository<Message>().ListAsync(m => m.SenderEmail == user.Email);
+                foreach (var msg in messagesSentByHim)
+                {
+                    _unitOfWork.GenericRepository<Message>().Delete(msg);
+                }
+            }
         }
 
         [Route("IsUniversityIdInUse")]

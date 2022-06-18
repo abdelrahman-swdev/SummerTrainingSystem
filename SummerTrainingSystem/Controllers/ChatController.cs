@@ -37,13 +37,13 @@ namespace SummerTrainingSystem.Controllers
             if (await _userManager.IsInRoleAsync(withUser, Roles.Student.ToString()))
             {
                 IfStudentUser = (Student)withUser;
-                withProfileUrl = IfStudentUser.ProfilePictureUrl;
+                withProfileUrl = IfStudentUser.ProfilePictureUrl ?? "avatar.svg";
             }
 
             if (await _userManager.IsInRoleAsync(withUser, Roles.Supervisor.ToString()))
             {
                 IfSupervisorUser = (Supervisor)withUser;
-                withProfileUrl = IfSupervisorUser.ProfilePictureUrl;
+                withProfileUrl = IfSupervisorUser.ProfilePictureUrl ?? "avatar.svg";
             }
 
             var withGroup = _context.Groups.FirstOrDefault(g => g.Name == with);

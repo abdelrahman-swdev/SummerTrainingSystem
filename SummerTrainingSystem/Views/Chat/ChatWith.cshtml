@@ -14,7 +14,7 @@
     <div class="head">
         <div class="user">
             <div class="userimg">
-                <img src="~/uploads/@Model.WithPictureUrl" alt="@Model.WithEmail">
+                <img src="~/uploads/@(Model.WithPictureUrl ?? "avatar.svg")" alt="@Model.WithEmail">
             </div>
             <div class="username">
                 <h4>@Model.WithEmail</h4>
@@ -85,7 +85,7 @@
 
             <input type="hidden" name="RecieverEmail" id="RecieverEmail" value="@Model.WithEmail"/>
             <input type="hidden" name="MyEmail" id="MyEmail" value="@User.Identity.Name"/>
-            <input type="hidden" name="WithPictureUrl" id="WithPictureUrl" value="@Model.WithPictureUrl"/>
+            <input type="hidden" name="WithPictureUrl" id="WithPictureUrl" value="@(Model.WithPictureUrl ?? "avatar.svg")"/>
 
             <input spellcheck="true" name="messageInput" id="messageInput" type="text" placeholder="write a message." class="footer-input">
 
